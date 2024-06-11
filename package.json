@@ -4,17 +4,20 @@
   "version": "0.0.0",
   "description": "do-ob workspace for core components",
   "packageManager": "pnpm@9.2.0",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "pnpm --filter './packages/*' test",
+    "build": "pnpm --filter './packages/*' build"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
-  "dependencies": {
+  "devDependencies": {
     "@do-ob/eslint-config": "^2.3.0",
     "@do-ob/ts-config": "^2.0.0",
     "@do-ob/vite-lib-config": "^3.0.1",
     "@types/node": "^20.14.2",
+    "eslint": "^9.4.0",
     "typescript": "^5.4.5",
     "vite": "^5.2.13",
     "vitest": "^1.6.0"

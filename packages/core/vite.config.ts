@@ -1,7 +1,11 @@
-import { mergeConfig, defineConfig } from "vite";
-import { viteLibConfig } from "@do-ob/vite-lib-config";
+import { mergeConfig, defineConfig } from 'vite';
+import { viteLibConfig } from '@do-ob/vite-lib-config';
 
 export default mergeConfig(
   viteLibConfig(),
-  defineConfig({})
-)
+  defineConfig({
+    test: {
+      include: [ '**/*.{test,spec}.?(c|m)[jt]s?(x)' ]
+    },
+  })
+);

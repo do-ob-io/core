@@ -1,0 +1,28 @@
+{
+  "name": "@do-ob/core",
+  "version": "0.0.0",
+  "description": "A core library for common functions to share across many applications.",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./*": {
+      "import": "./dist/*.js",
+      "types": "./dist/*.d.ts"
+    },
+    "./index": null
+  },
+  "keywords": [
+    "library",
+    "core",
+    "common"
+  ],
+  "author": "Eric Crowell <eric@do-ob.io> (https://do-ob.io)",
+  "license": "MIT",
+  "scripts": {
+    "build": "vite build --mode production",
+    "test": "vitest --run"
+  }
+}
