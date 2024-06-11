@@ -1,0 +1,22 @@
+{
+  "name": "@do-ob/core",
+  "private": true,
+  "version": "0.0.0",
+  "description": "do-ob workspace for core components",
+  "packageManager": "pnpm@9.2.0",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@do-ob/eslint-config": "^2.3.0",
+    "@do-ob/ts-config": "^2.0.0",
+    "@do-ob/vite-lib-config": "^3.0.1",
+    "@types/node": "^20.14.2",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.13",
+    "vitest": "^1.6.0"
+  }
+}

@@ -1,0 +1,4 @@
+{
+  "extends": "@do-ob/ts-config",
+  "include": ["src"]
+}
