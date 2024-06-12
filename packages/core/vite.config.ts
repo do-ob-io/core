@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { mergeConfig, defineConfig } from 'vite';
 import { viteLibConfig } from '@do-ob/vite-lib-config';
 
