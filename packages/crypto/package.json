@@ -1,0 +1,52 @@
+{
+  "name": "@do-ob/crypto",
+  "version": "0.0.0",
+  "description": "Common cross-platform pre-configured cryptography methods using Node.js and Web Crypto API",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/do-ob-io/auth"
+  },
+  "homepage": "https://github.com/do-ob-io/auth/tree/main/packages/crypto",
+  "keywords": [
+    "crypto",
+    "webcrypto",
+    "typescript",
+    "library",
+    "esm",
+    "configured",
+    "pre-configured",
+    "simplified",
+    "utility",
+    "cross-platform",
+    "methods"
+  ],
+  "exports": {
+    ".": {
+      "default": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./*": {
+      "default": "./dist/*.js",
+      "types": "./dist/*.d.ts"
+    },
+    "./index": null
+  },
+  "author": "Eric Crowell <eric@do-ob.io> (https://do-ob.io)",
+  "license": "MIT",
+  "scripts": {
+    "test": "pnpm run test:node && pnpm run test:browser",
+    "test:node": "vitest --run",
+    "test:browser": "vitest --run --browser.name=chrome --browser.headless",
+    "build": "vite build --mode production"
+  },
+  "dependencies": {
+    "@do-ob/crypto": "workspace:*"
+  }
+}

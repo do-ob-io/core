@@ -7,7 +7,8 @@
   "type": "module",
   "scripts": {
     "test": "pnpm --filter './packages/*' test",
-    "build": "pnpm --filter './packages/*' build"
+    "build": "pnpm --filter './packages/*' build",
+    "lint": "eslint"
   },
   "keywords": [],
   "author": "",
