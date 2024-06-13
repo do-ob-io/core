@@ -8,7 +8,7 @@
 
 # Cross-Platform Crypto Methods
 
-This library contains of a set of preconfigured and recommended cryptographic methods using native Web Crypto API for simplification. It is tested and designed to be used in both the browser and Node.JS environments.
+This library contains of a set of preconfigured cryptographic methods using native Web Crypto API. It is tested and designed to be used in both the browser and Node.JS environments.
 
 This package has ZERO dependencies by solely leveraging the environment's native crypto libraries.
 
