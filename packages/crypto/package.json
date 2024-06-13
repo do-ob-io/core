@@ -1,6 +1,6 @@
 {
   "name": "@do-ob/crypto",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Common cross-platform pre-configured cryptography methods using Node.js and Web Crypto API",
   "type": "module",
   "main": "dist/index.js",
