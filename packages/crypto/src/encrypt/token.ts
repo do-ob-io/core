@@ -14,14 +14,14 @@ export type Token = {
    * Expiration time.
    */
   exp: number,
-}
+};
 
 export type TokenBody = Omit<Token, 'iat' | 'exp'> & { exp?: number };
 
 export type TokenHeader = {
   alg: 'ES256',
   typ: 'JWT'
-}
+};
 
 /**
  * Sign a JSON object and return a JWT.
@@ -114,7 +114,7 @@ export async function verify<T extends Record<string, unknown> = Record<string, 
     }
 
     return payload;
-  } catch (error) {
+  } catch {
     return TokenError.CantParse;
   }
 }
@@ -156,7 +156,7 @@ export async function decode<T extends Record<string, unknown> = Record<string, 
       raw: `${headerB64}.${payloadB64}`,
       signature: sigature.buffer,
     };
-  } catch (error) {
+  } catch {
     return {
       raw: encoded,
       error: TokenError.CantParse

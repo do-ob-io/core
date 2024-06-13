@@ -12,7 +12,7 @@ export async function generate() {
       length: 256,
     },
     true,
-    ['encrypt', 'decrypt'],
+    [ 'encrypt', 'decrypt' ],
   );
   return key;
 }
@@ -95,7 +95,7 @@ export async function decrypt(
     const data = new TextDecoder().decode(decrypted);
 
     return data;
-  } catch (error) {
+  } catch {
     return undefined;
   }
 }

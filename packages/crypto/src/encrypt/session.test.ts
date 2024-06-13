@@ -13,16 +13,16 @@ const dateNumeric = (date?: Date | string) => {
       return new Date().getTime();
     }
     switch (unit) {
-    case 's':
-      return new Date(Date.now() + value * 1000).getTime();
-    case 'm':
-      return new Date(Date.now() + value * 60000).getTime();
-    case 'h':
-      return new Date(Date.now() + value * 3600000).getTime();
-    case 'd':
-      return new Date(Date.now() + value * 86400000).getTime();
-    default:
-      return new Date().getTime();
+      case 's':
+        return new Date(Date.now() + value * 1000).getTime();
+      case 'm':
+        return new Date(Date.now() + value * 60000).getTime();
+      case 'h':
+        return new Date(Date.now() + value * 3600000).getTime();
+      case 'd':
+        return new Date(Date.now() + value * 86400000).getTime();
+      default:
+        return new Date().getTime();
     }
   }
   return (date?.getTime() ?? new Date().getTime());

@@ -90,7 +90,7 @@ export const decodeJson = <T = any>(encoded: string): T | undefined => {
   try {
     const json = JSON.parse(textDecoder.decode(decode(encoded)));
     return json as T | undefined;
-  } catch (e) {
+  } catch {
     console.error('Error when decoding json data.');
     return undefined;
   }

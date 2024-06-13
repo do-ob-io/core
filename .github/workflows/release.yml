@@ -10,6 +10,6 @@ permissions:
   pull-requests: write
 
 jobs:
-  release-please:
+  release:
     uses: do-ob-io/shared/.github/workflows/release-please.yml@main
     secrets: inherit

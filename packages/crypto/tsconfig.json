@@ -2,6 +2,7 @@
     "extends": "@do-ob/ts-config",
     "compilerOptions": {
       "baseUrl": ".",
+      "lib": ["ESNext", "DOM"],
       "paths": {
         "@do-ob/crypto": ["src/index.ts"],
         "@do-ob/crypto/*": ["src/*.ts"]

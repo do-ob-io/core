@@ -38,7 +38,7 @@ export async function decrypt<T extends Session = Session>(
       return SessionError.DecryptionFailed;
     }
 
-    const json = base64.decodeJson<T>(decypted);
+    const json = base64.decodeJson<T>(decypted) as T;
 
     const session = {
       ...json,
@@ -54,7 +54,7 @@ export async function decrypt<T extends Session = Session>(
     }
 
     return session;
-  } catch (error) {
+  } catch {
     return SessionError.CantParse;
   }
 }

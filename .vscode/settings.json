@@ -4,7 +4,7 @@
     "editor.detectIndentation": false,
     "editor.formatOnSave": false,
     "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": "explicit"
+      "source.fixAll.eslint": "always"
     },
     "editor.defaultFormatter": "dbaeumer.vscode-eslint",
     "editor.quickSuggestions": {

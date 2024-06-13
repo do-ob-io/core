@@ -19,11 +19,11 @@ export async function generate(type: CryptoAsymType, extractable = true): Promis
       {
         name: 'RSA-OAEP',
         modulusLength: 4096,
-        publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+        publicExponent: new Uint8Array([ 0x01, 0x00, 0x01 ]),
         hash: 'SHA-256',
       },
       extractable,
-      ['encrypt', 'decrypt'],
+      [ 'encrypt', 'decrypt' ],
     );
 
     return {
@@ -39,7 +39,7 @@ export async function generate(type: CryptoAsymType, extractable = true): Promis
       hash: { name: 'SHA-256' },
     },
     extractable,
-    ['sign', 'verify'],
+    [ 'sign', 'verify' ],
   );
 
   return {
@@ -115,7 +115,7 @@ export async function decrypt(
       encryption,
     );
     return new TextDecoder().decode(decrypt);
-  } catch (error) {
+  } catch {
     return undefined;
   }
 }
@@ -157,7 +157,7 @@ export async function verify(
       unit8,
     );
     return result;
-  } catch (error) {
+  } catch {
     return false;
   }
 }
@@ -191,7 +191,7 @@ export async function verifyWebauthn(
     );
 
     return result;
-  } catch (error) {
+  } catch {
     return false;
   }
 }

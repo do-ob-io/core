@@ -14,7 +14,7 @@ export async function encrypt(password: string, salt: Uint8Array) {
     passEncoded,
     'PBKDF2',
     false,
-    ['deriveBits', 'deriveKey'],
+    [ 'deriveBits', 'deriveKey' ],
   );
 
   const derivedBits = await wc.subtle.deriveBits(

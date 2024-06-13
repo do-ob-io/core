@@ -11,7 +11,7 @@ const keyImportPassword = async (wc: Crypto, password: string): Promise<CryptoKe
     enc.encode(password),
     { name: 'PBKDF2' },
     false,
-    ['deriveBits', 'deriveKey'],
+    [ 'deriveBits', 'deriveKey' ],
   );
   return passwordKey;
 };
@@ -48,7 +48,7 @@ export async function wrap(
     passwordKey,
     { name: 'AES-GCM', length: 256 },
     true,
-    ['wrapKey', 'unwrapKey'],
+    [ 'wrapKey', 'unwrapKey' ],
   );
 
   const keyWrapped = await wc.subtle.wrapKey('jwk', key, wrappingKey, { name: 'AES-GCM', iv });
@@ -64,7 +64,7 @@ export async function wrap(
    * 1 = asym signer
    * 2 = sym encryptor
    */
-  combined.set([keyTypeMap[type]]);
+  combined.set([ keyTypeMap[type] ]);
   combined.set(salt, 1);
   combined.set(iv, salt.length + 1);
   combined.set(derived, salt.length + iv.length + 1);
@@ -91,32 +91,32 @@ export async function unwrap(
 
     const result = ((t) => {
       switch (t) {
-      case 0:
-        return [
+        case 0:
+          return [
             {
               name: 'RSA-OAEP',
               modulusLength: 4096,
-              publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+              publicExponent: new Uint8Array([ 0x01, 0x00, 0x01 ]),
               hash: 'SHA-256',
             } as RsaHashedImportParams,
-            ['decrypt'] as ['decrypt'],
-        ];
-      case 1:
-        return [
+            [ 'decrypt' ] as ['decrypt'],
+          ];
+        case 1:
+          return [
             {
               name: 'ECDSA',
               namedCurve: 'P-256',
             } as EcKeyImportParams,
-            ['sign'] as ['sign'],
-        ];
-      default:
-        return [
-          {
-            name: 'AES-GCM',
-            length: 256,
-          },
-            ['encrypt', 'decrypt'] as ['encrypt', 'decrypt'],
-        ];
+            [ 'sign' ] as ['sign'],
+          ];
+        default:
+          return [
+            {
+              name: 'AES-GCM',
+              length: 256,
+            },
+            [ 'encrypt', 'decrypt' ] as ['encrypt', 'decrypt'],
+          ];
       }
     })(type);
 
@@ -133,7 +133,7 @@ export async function unwrap(
       passwordKey,
       { name: 'AES-GCM', length: 256 },
       true,
-      ['wrapKey', 'unwrapKey'],
+      [ 'wrapKey', 'unwrapKey' ],
     );
 
     const keyUnwrapped = await wc.subtle.unwrapKey(
@@ -147,7 +147,7 @@ export async function unwrap(
     );
 
     return keyUnwrapped;
-  } catch (e) {
+  } catch {
     return undefined;
   }
 }
@@ -171,7 +171,7 @@ export async function exporter(
    * 1 = asym signer
    * 2 = sym encryptor
    */
-  combined.set([keyTypeMap[type]]);
+  combined.set([ keyTypeMap[type] ]);
   combined.set(keyEncoded, 1);
 
   return base64.encode(combined);
@@ -196,32 +196,32 @@ export async function importer(
 
     const result = ((t) => {
       switch (t) {
-      case 0:
-        return [
+        case 0:
+          return [
             {
               name: 'RSA-OAEP',
               modulusLength: 4096,
-              publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+              publicExponent: new Uint8Array([ 0x01, 0x00, 0x01 ]),
               hash: 'SHA-256',
             } as RsaHashedImportParams,
-            ['encrypt'] as ['encrypt'],
-        ];
-      case 1:
-        return [
+            [ 'encrypt' ] as ['encrypt'],
+          ];
+        case 1:
+          return [
             {
               name: 'ECDSA',
               namedCurve: 'P-256',
             } as EcKeyImportParams,
-            ['verify'] as ['verify'],
-        ];
-      default:
-        return [
-          {
-            name: 'AES-GCM',
-            length: 256,
-          },
-            ['encrypt', 'decrypt'] as ['encrypt', 'decrypt'],
-        ];
+            [ 'verify' ] as ['verify'],
+          ];
+        default:
+          return [
+            {
+              name: 'AES-GCM',
+              length: 256,
+            },
+            [ 'encrypt', 'decrypt' ] as ['encrypt', 'decrypt'],
+          ];
       }
     })(type);
 
@@ -237,7 +237,7 @@ export async function importer(
     );
 
     return key;
-  } catch (e) {
+  } catch {
     return undefined;
   }
 }
@@ -280,18 +280,18 @@ export async function importerWebauthn(
    */
   const algorithmParams = ((a) => {
     switch (a) {
-    case -257:
-      return {
-        name: 'RSASSA-PKCS1-v1_5',
-        hash: 'SHA-256',
-      } as RsaHashedImportParams;
-    case -7:
-    default:
-      return {
-        name: 'ECDSA',
-        namedCurve: 'P-256',
-        hash: 'SHA-256',
-      } as EcKeyImportParams;
+      case -257:
+        return {
+          name: 'RSASSA-PKCS1-v1_5',
+          hash: 'SHA-256',
+        } as RsaHashedImportParams;
+      case -7:
+      default:
+        return {
+          name: 'ECDSA',
+          namedCurve: 'P-256',
+          hash: 'SHA-256',
+        } as EcKeyImportParams;
     }
   })(algorithm);
 
@@ -300,7 +300,7 @@ export async function importerWebauthn(
     exported,
     algorithmParams,
     true,
-    ['verify'],
+    [ 'verify' ],
   );
 
   return key;
