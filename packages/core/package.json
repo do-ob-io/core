@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "A core library for common functions to share across many applications.",
   "type": "module",
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
       "import": "./dist/index.js",
