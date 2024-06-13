@@ -267,7 +267,7 @@ const unwrappedAsymSignerKey = await smith.unwrap(wrappedAsymSignerKey, 'MyPassw
 
 ### JWT Tokens
 
-This module can be used to create and verify JWT tokens.
+This module can be used to create and verify asymetric JWT tokens.
 
 ```typescript
 import { token } from '@do-ob/crypto';
