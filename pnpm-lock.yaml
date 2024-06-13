@@ -35,6 +35,12 @@ importers:
 
   packages/core: {}
 
+  packages/crypto:
+    dependencies:
+      '@do-ob/crypto':
+        specifier: workspace:*
+        version: 'link:'
+
 packages:
 
   '@alloc/quick-lru@5.2.0':
