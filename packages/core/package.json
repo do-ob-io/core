@@ -1,6 +1,6 @@
 {
   "name": "@do-ob/core",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A core library for common functions to share across many applications.",
   "type": "module",
   "files": [
