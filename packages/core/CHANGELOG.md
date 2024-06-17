@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.0](https://github.com/do-ob-io/core/compare/core-v1.0.0...core-v1.1.0) (2024-06-17)
+
+
+### Features
+
+* Added the clmg class merge function to ensure unique class names ([b81e62d](https://github.com/do-ob-io/core/commit/b81e62d37e98dde11eb34966793dd298696ff449))
+* Publicly exposed nanoid api ([9e0f840](https://github.com/do-ob-io/core/commit/9e0f84071e7bed46831ba72d48517d7035f0169a))
+
 ## 1.0.0 (2024-06-13)
 
 
