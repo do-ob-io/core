@@ -129,5 +129,8 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# Generated
+_*
+
 # OSX
 .DS_Store

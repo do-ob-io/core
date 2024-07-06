@@ -1,0 +1,33 @@
+{
+  "name": "@do-ob/data",
+  "version": "0.0.0",
+  "description": "A common data library for applications.",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./*": {
+      "import": "./dist/*.js",
+      "types": "./dist/*.d.ts"
+    },
+    "./index": null
+  },
+  "keywords": [
+    "library",
+    "core",
+    "common"
+  ],
+  "author": "Eric Crowell <eric@do-ob.io> (https://do-ob.io)",
+  "license": "MIT",
+  "scripts": {
+    "build": "vite build --mode production",
+    "test": "vitest --run",
+    "generate": "drizzle-kit generate",
+    "push": "drizzle-kit push"
+  }
+}

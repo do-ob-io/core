@@ -1,0 +1,11 @@
+{
+  "extends": "@do-ob/ts-config",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+        "@do-ob/data": ["src/index.ts"],
+        "@do-ob/data/*": ["src/*.ts"]
+      }
+  },
+  "include": ["src"]
+}
