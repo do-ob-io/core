@@ -4,20 +4,20 @@ import {
   beforeAll,
 } from 'vitest';
 import { database, Database } from '@do-ob/data/database';
-import { action } from '@do-ob/data/schema';
+import { schema } from '@do-ob/data/schema';
 
 let db: Database;
 
 beforeAll(async () => {
   db = await database();
   // Ensure all rows in the action table are deleted.
-  await db.delete(action);
+  await db.delete(schema.action);
 });
 
 // Should insert a new action into the database.
 test('should insert action', async () => {
 
-  const resultInsert = await db.insert(action).values({
+  const resultInsert = await db.insert(schema.action).values({
     $id: 'Query_Entity',
   }).returning();
 

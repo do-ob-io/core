@@ -1,6 +1,6 @@
 // import postgres from 'postgres';
 import type { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
-import * as schema from '@do-ob/data/schema';
+import { schema } from '@do-ob/data/schema';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 

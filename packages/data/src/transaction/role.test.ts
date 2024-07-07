@@ -5,7 +5,7 @@ import {
   beforeAll,
 } from 'vitest';
 import { database, Database } from '@do-ob/data/database';
-import { role } from '@do-ob/data/schema';
+import { schema } from '@do-ob/data/schema';
 import { transact, roleInsert } from '@do-ob/data/transaction';
 
 let db: Database;
@@ -13,11 +13,11 @@ let db: Database;
 beforeAll(async () => {
   db = await database();
   // Ensure all rows in the role table are deleted.
-  await db.delete(role);
+  await db.delete(schema.role);
 });
 
 // Should insert a new role into the database.
-test('should insert role', async () => {
+test('should execuate a role insertion transaction', async () => {
   // Should batch the creation of a new entity and role.
   const roleRecord = await transact(roleInsert({ name: 'Administrator' }));
 
