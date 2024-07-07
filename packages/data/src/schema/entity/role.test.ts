@@ -5,7 +5,8 @@ import {
   beforeAll,
 } from 'vitest';
 import { database, Database } from '@do-ob/data/database';
-import { role, entity } from '@do-ob/data/schema';
+import { role } from '@do-ob/data/schema';
+import { transact, roleInsert } from '@do-ob/data/transaction';
 
 let db: Database;
 
@@ -17,27 +18,12 @@ beforeAll(async () => {
 
 // Should insert a new role into the database.
 test('should insert role', async () => {
-  // Insert a new entity into the database.
-  // This is necessary to create a role.
-  const resultInsertEntity0 = (await db.insert(entity).values({
-    type: 'role',
-  }).returning())[0];
-  expect(resultInsertEntity0.$id).toMatch(/^[0-9a-f-]{36}$/);
-
-  const resultInsert = await db.insert(role).values({
-    $id: resultInsertEntity0.$id,
-    name: 'Administrator',
-  }).returning();
-
-  // The result should be an array with a single object.
-  expect(resultInsert).toHaveLength(1);
-
-  // The object should be the role that was inserted.
-  const resultInsertRole0 = resultInsert[0];
+  // Should batch the creation of a new entity and role.
+  const roleRecord = await transact(roleInsert({ name: 'Administrator' }));
 
   // Expect that a proper role was inserted correctly.
-  expect(resultInsertRole0).toMatchObject({
-    $id: resultInsertEntity0.$id,
+  expect(roleRecord).toMatchObject({
+    $id: roleRecord.$id,
     name: 'Administrator',
     description: null,
     color: null,
@@ -69,8 +55,8 @@ test('should query for the first role with the entity relation', async () => {
       created: resultSelect.entity.created,
       updated: resultSelect.entity.updated,
       deleted: false,
-      ownerId: null,
-      creatorId: null,
+      $owner: null,
+      $creator: null,
     },
   });
 });

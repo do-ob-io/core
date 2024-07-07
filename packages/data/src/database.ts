@@ -4,30 +4,40 @@ import * as schema from '@do-ob/data/schema';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-const POSTGRES_URL = process.env.POSTGRES_URL || 'memory://local';
+const DATABASE_CONNECTION = process.env.DATABASE_CONNECTION || 'memory://local';
 
 export type Database = PostgresJsDatabase<typeof schema>;
 
-let dbInstance: Database;
+declare global {
+  // eslint-disable-next-line no-var
+  var doob_database_instance: Database;
+}
 
-export async function database(): Promise<Database> {
-  if (dbInstance) {
-    return dbInstance;
+/**
+ * Singleton database instance to prevent multiple connections.
+ */
+globalThis.doob_database_instance = globalThis.doob_database_instance || null;
+
+export async function database(connection?: string): Promise<Database> {
+  if (globalThis.doob_database_instance) {
+    return globalThis.doob_database_instance;
   }
 
   if (process.env.NODE_ENV === 'production') {
     const { drizzle } = await import('drizzle-orm/postgres-js');
     const { default: postgres } = await import('postgres');
-    const sql = postgres(POSTGRES_URL);
-    return drizzle(sql, { schema });
+    const sql = postgres(connection ?? DATABASE_CONNECTION);
+    globalThis.doob_database_instance =  drizzle(sql, { schema });
   } else {
     const { drizzle } = await import('drizzle-orm/pglite');
     const { PGlite } = await import('@electric-sql/pglite');
-    const sql = new PGlite(POSTGRES_URL);
+    const sql = new PGlite(connection ?? DATABASE_CONNECTION);
     const sqlFile = readFileSync(resolve(import.meta.dirname, '../scripts/data.sql'), 'utf8');
     sql.exec(sqlFile);
-    return drizzle(sql, { schema }) as unknown as Database;
+    globalThis.doob_database_instance =  drizzle(sql, { schema }) as unknown as Database;
   }
+
+  return globalThis.doob_database_instance;
 };
 
 export {
