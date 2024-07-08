@@ -1,7 +1,10 @@
 import { core, core_entity, CoreInsert, CoreEntityInsert, CoreEntitySelect } from '@do-ob/data/schema';
 import { Transaction } from './transaction.types';
+import type { Database } from '@do-ob/data/database';
 
 export type EntityInsertValue<T extends keyof CoreEntityInsert> = Omit<CoreEntityInsert[T], '$id'>;
+
+export type EntityQuery<T extends keyof CoreEntityInsert> = Parameters<Database['query'][T]['findMany']>[0];
 
 export type EntityInsertMeta = Pick<CoreInsert['entity'], '$owner' | '$creator'>;
 
@@ -30,16 +33,3 @@ export function entityInsert<T extends keyof CoreEntityInsert>(
     };
   };
 }
-
-/**
- * Query for an entity.
- */
-// export function entityQuery<T extends keyof CoreEntitySelect>(
-//   type: T,
-// ) {
-//   return async (tx: Transaction) => {
-//     const record = await tx.query[type].findMany();
-
-//     return record as CoreEntitySelect[T];
-//   };
-// }
