@@ -3,12 +3,12 @@ import {
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
-import { entity } from './entity.ts';
+import { table as entity } from './entity.ts';
 
 /**
  * Passkey to be used for authentication and authorization of subjects
  */
-export const credential = pgTable('credential', {
+export const table = pgTable('credential', {
   $id: uuid('id').primaryKey().references(() => entity.$id, { onDelete: 'cascade' }),
   $client: varchar('client_id', { length: 64 }).notNull(), // The credential identifier provided by the client.
   aaguid: varchar('aaguid', { length: 128 }), // The Authenticator Attestation Globally Unique Identifier https://fidoalliance.org/metadata/
@@ -20,17 +20,17 @@ export const credential = pgTable('credential', {
   credentialClientIdIdx: index('credential_client_id_idx').on(table.$client),
 }));
 
-export type Credential = typeof credential.$inferSelect;
-export type CredentialInsert = typeof credential.$inferInsert;
+export type Credential = typeof table.$inferSelect;
+export type CredentialInsert = typeof table.$inferInsert;
 
-export const credentialRelations = relations(credential, ({ one }) => ({
+export const relates = relations(table, ({ one }) => ({
   entity: one(entity, {
-    fields: [ credential.$id ],
+    fields: [ table.$id ],
     references: [ entity.$id ],
     relationName: 'entity',
   }),
   subject: one(entity, {
-    fields: [ credential.$subject ],
+    fields: [ table.$subject ],
     references: [ entity.$id ],
     relationName: 'subject',
   }),

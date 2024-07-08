@@ -3,12 +3,12 @@ import {
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
-import { entity } from '../entity.ts';
+import { table as entity } from '../entity.ts';
 
 /**
  * Information about files that can be uploaded.
  */
-export const file = pgTable('file', {
+export const table = pgTable('file', {
   $id: uuid('id').primaryKey().references(() => entity.$id, { onDelete: 'cascade' }),
   name: varchar('name', { length: 32 }).unique().notNull(), // A human readable name for the file.
   description: varchar('description', { length: 1024 }), // A description of the file.
@@ -20,12 +20,12 @@ export const file = pgTable('file', {
   filePathIdx: index('file_path_idx').on(table.path),
 }));
 
-export type File = typeof file.$inferSelect;
-export type FileInsert = typeof file.$inferInsert;
+export type File = typeof table.$inferSelect;
+export type FileInsert = typeof table.$inferInsert;
 
-export const fileRelations = relations(file, ({ one }) => ({
+export const relates = relations(table, ({ one }) => ({
   entity: one(entity, {
-    fields: [ file.$id ],
+    fields: [ table.$id ],
     references: [ entity.$id ],
     relationName: 'entity',
   }),

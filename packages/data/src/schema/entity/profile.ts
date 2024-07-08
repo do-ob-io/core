@@ -3,14 +3,14 @@ import {
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
-import { entity } from './entity.ts';
-import { image } from './file/image.ts';
-import { user } from './user.ts';
+import { table as entity } from './entity.ts';
+import { table as image } from './file/image.ts';
+import { table as user } from './user.ts';
 
 /**
  * Profile about a particular person.
  */
-export const profile = pgTable('profile', {
+export const table = pgTable('profile', {
   $id: uuid('id').primaryKey().references(() => entity.$id, { onDelete: 'cascade' }),
   $user: uuid('user_id').references(() => user.$id), // The user ID that owns the profile.
   givenName: varchar('given_name', { length: 128 }), // The first name of the person.
@@ -30,27 +30,27 @@ export const profile = pgTable('profile', {
   profileFamilyNameIdx: index('profile_family_name_idx').on(table.familyName)
 }));
 
-export type Profile = typeof profile.$inferSelect;
-export type ProfileInsert = typeof profile.$inferInsert;
+export type Profile = typeof table.$inferSelect;
+export type ProfileInsert = typeof table.$inferInsert;
 
-export const profileRelations = relations(profile, ({ one }) => ({
+export const relates = relations(table, ({ one }) => ({
   entity: one(entity, {
-    fields: [ profile.$id ],
+    fields: [ table.$id ],
     references: [ entity.$id ],
     relationName: 'entity',
   }),
   user: one(user, {
-    fields: [ profile.$user ],
+    fields: [ table.$user ],
     references: [ user.$id ],
     relationName: 'user',
   }),
   picture: one(image, {
-    fields: [ profile.$picture ],
+    fields: [ table.$picture ],
     references: [ image.$id ],
     relationName: 'picture',
   }),
   cover: one(image, {
-    fields: [ profile.$cover ],
+    fields: [ table.$cover ],
     references: [ image.$id ],
     relationName: 'cover',
   }),

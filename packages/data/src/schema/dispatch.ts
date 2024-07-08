@@ -9,9 +9,9 @@ import {
   varchar,
 } from 'drizzle-orm/pg-core';
 
-import { mutate } from './mutate.ts';
-import { entity } from './entity/entity.ts';
-import { action } from './action.ts';
+import { table as mutate } from './mutate.ts';
+import { table as entity } from './entity/entity.ts';
+import { table as action } from './action.ts';
 
 /**
  * The possible data types for a dispatch status.
@@ -22,7 +22,7 @@ export const dispatchStatus = pgEnum('dispatch_status', [ 'success', 'rejected',
  * Whenever a subject performs an action, a dispatch is created to apply the action.
  * Dispatches can happen instantly or be scheduled for a future time.
  */
-export const dispatch = pgTable('dispatch', {
+export const table = pgTable('dispatch', {
   $id: uuid('id').primaryKey().defaultRandom(), // Unique dispatch identifier.
   $subject: uuid('subject_id').notNull().references(() => entity.$id), // The subject ID that is responsible for the dispatch.
   $action: varchar('action_id', { length: 64 }).notNull().references(() => action.$id), // The action that was/will be dispatched.
@@ -34,19 +34,19 @@ export const dispatch = pgTable('dispatch', {
   message: text('message'), // A message to describe the dispatch.
 });
 
-export type Dispatch = typeof dispatch.$inferSelect;
-export type DispatchInsert = typeof dispatch.$inferInsert;
+export type Dispatch = typeof table.$inferSelect;
+export type DispatchInsert = typeof table.$inferInsert;
 
-export const dispatchRelations = relations(dispatch, ({ one, many }) => ({
+export const relates = relations(table, ({ one, many }) => ({
 
   subject: one(entity, {
-    fields: [ dispatch.$subject ],
+    fields: [ table.$subject ],
     references: [ entity.$id ],
     relationName: 'subject',
   }),
   
   action: one(action, {
-    fields: [ dispatch.$action ],
+    fields: [ table.$action ],
     references: [ action.$id ],
     relationName: 'action',
   }),

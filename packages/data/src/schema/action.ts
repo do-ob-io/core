@@ -8,7 +8,7 @@ import {
  * Records of available actions that can be performed.
  * Subjects that can perform actions are controlled in the authorization layer.
  */
-export const action = pgTable('action', {
+export const table = pgTable('action', {
   /**
    * A unique key for the action.
    * 
@@ -29,5 +29,5 @@ export const action = pgTable('action', {
   description: varchar('description', { length: 1024 }),
 });
 
-export type Action = typeof action.$inferSelect;
-export type ActionInsert = typeof action.$inferInsert;
+export type Action = typeof table.$inferSelect;
+export type ActionInsert = typeof table.$inferInsert;

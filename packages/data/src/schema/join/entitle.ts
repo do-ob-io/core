@@ -1,13 +1,13 @@
 import { relations } from 'drizzle-orm';
 import { pgTable, uuid, primaryKey, varchar } from 'drizzle-orm/pg-core';
 
-import { entity } from '../entity/entity.ts';
-import { action } from '../action.ts';
+import { table as entity } from '../entity/entity.ts';
+import { table as action } from '../action.ts';
 
 /**
  * Entitles grant entities the ability to perform actions on specific entities.
  */
-export const entitle = pgTable('entitle', {
+export const table = pgTable('entitle', {
   $entity: uuid('entity_id').notNull().references(() => entity.$id),
   $target: uuid('target_id').notNull().references(() => entity.$id),
   $action: varchar('action_id', { length: 64 }).notNull().references(() => action.$id),
@@ -15,22 +15,22 @@ export const entitle = pgTable('entitle', {
   pk: primaryKey({ columns: [ table.$entity, table.$target, table.$action ] }),
 }));
 
-export type Entitle = typeof entitle.$inferSelect;
-export type EntitleInsert = typeof entitle.$inferInsert;
+export type Entitle = typeof table.$inferSelect;
+export type EntitleInsert = typeof table.$inferInsert;
 
-export const entitleRelations = relations(entitle, ({ one }) => ({
+export const relates = relations(table, ({ one }) => ({
   entity: one(entity, {
-    fields: [ entitle.$entity ],
+    fields: [ table.$entity ],
     references: [ entity.$id ],
     relationName: 'entity',
   }),
   target: one(entity, {
-    fields: [ entitle.$target ],
+    fields: [ table.$target ],
     references: [ entity.$id ],
     relationName: 'target',
   }),
   action: one(action, {
-    fields: [ entitle.$action ],
+    fields: [ table.$action ],
     references: [ action.$id ],
     relationName: 'action',
   }),

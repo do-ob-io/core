@@ -3,17 +3,17 @@ import {
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
-import { entity } from './entity.ts';
-import { email } from './email.ts';
-import { phone } from './phone.ts';
-import { image } from './file/image.ts';
-import { dispatch } from '../dispatch.ts';
-import { profile } from './profile.ts';
+import { table as entity } from './entity.ts';
+import { table as email } from './email.ts';
+import { table as phone } from './phone.ts';
+import { table as image } from './file/image.ts';
+import { table as dispatch } from '../dispatch.ts';
+import { table as profile } from './profile.ts';
 
 /**
  * A user that can be authenticated and authorized using the name.
  */
-export const user = pgTable('user', {
+export const table = pgTable('user', {
   $id: uuid('id').primaryKey().references(() => entity.$id, { onDelete: 'cascade' }),
   name: varchar('name', { length: 32 }).unique().notNull(), // Unique handle for the user.
   locked: boolean('locked').notNull().default(false), // Flag indicating if the user account is locked. Locked accounts cannot establish a session (login).
@@ -23,18 +23,18 @@ export const user = pgTable('user', {
   userNameIdx: index('user_name_idx').on(table.name),
 }));
 
-export type User = typeof user.$inferSelect;
-export type UserInsert = typeof user.$inferInsert;
+export type User = typeof table.$inferSelect;
+export type UserInsert = typeof table.$inferInsert;
 
-export const userRelations = relations(user, ({ one, many }) => ({
+export const relates = relations(table, ({ one, many }) => ({
   entity: one(entity, {
-    fields: [ user.$id ],
+    fields: [ table.$id ],
     references: [ entity.$id ],
     relationName: 'entity',
   }),
 
   avatar: one(image, {
-    fields: [ user.$avatar ],
+    fields: [ table.$avatar ],
     references: [ image.$id ],
     relationName: 'avatar',
   }),

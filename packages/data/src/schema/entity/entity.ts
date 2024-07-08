@@ -3,17 +3,17 @@ import {
   pgTable, timestamp, boolean, uuid, varchar
 } from 'drizzle-orm/pg-core';
 
-import { mutate } from '../mutate.ts';
+import { table as mutate } from '../mutate.ts';
 
-import { assignment } from '../join/assignment.ts';
-import { permit } from '../join/permit.ts';
-import { entitle } from '../join/entitle.ts';
-import { credential } from './credential.ts';
+import { table as assignment } from '../join/assignment.ts';
+import { table as permit } from '../join/permit.ts';
+import { table as entitle } from '../join/entitle.ts';
+import { table as credential } from './credential.ts';
 
 /**
  * Entity table for resting data meta information.
  */
-export const entity = pgTable('entity', {
+export const table = pgTable('entity', {
   $id: uuid('id').primaryKey().defaultRandom(),
   type: varchar('type', { length: 64 }), // The type of entity. Should always be the table name connected with this entity.
   created: timestamp('created').defaultNow().notNull(), // The time this entity was created.
@@ -23,25 +23,25 @@ export const entity = pgTable('entity', {
   $creator: uuid('creator_id'), // The possible entity that created this entity (null would indicate it was system created).
 });
 
-export type Entity = typeof entity.$inferSelect;
-export type EntityInsert = typeof entity.$inferInsert;
+export type Entity = typeof table.$inferSelect;
+export type EntityInsert = typeof table.$inferInsert;
 
-export const entityRelations = relations(entity, ({ one, many }) => ({
+export const relates = relations(table, ({ one, many }) => ({
   /**
    * The entity that owns this entity.
    */
-  owner: one(entity, {
-    fields: [ entity.$owner ],
-    references: [ entity.$id ],
+  owner: one(table, {
+    fields: [ table.$owner ],
+    references: [ table.$id ],
     relationName: 'owner',
   }),
 
   /**
    * The entity that created this entity.
    */
-  creator: one(entity, {
-    fields: [ entity.$creator ],
-    references: [ entity.$id ],
+  creator: one(table, {
+    fields: [ table.$creator ],
+    references: [ table.$id ],
     relationName: 'creator',
   }),
 

@@ -3,12 +3,12 @@ import {
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
-import { file } from './file.ts';
+import { table as file } from './file.ts';
 
 /**
  * Information about images that can be uploaded.
  */
-export const image = pgTable('image', {
+export const table = pgTable('image', {
   $id: uuid('id').primaryKey().references(() => file.$id, { onDelete: 'cascade' }),
   height: smallint('height').notNull(),
   width: smallint('width').notNull(),
@@ -16,12 +16,12 @@ export const image = pgTable('image', {
   frames: smallint('frames'),
 });
 
-export type Image = typeof image.$inferSelect;
-export type ImageInsert = typeof image.$inferInsert;
+export type Image = typeof table.$inferSelect;
+export type ImageInsert = typeof table.$inferInsert;
 
-export const imageRelations = relations(image, ({ one }) => ({
+export const relates = relations(table, ({ one }) => ({
   file: one(file, {
-    fields: [ image.$id ],
+    fields: [ table.$id ],
     references: [ file.$id ],
     relationName: 'file',
   }),
