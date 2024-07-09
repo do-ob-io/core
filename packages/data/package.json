@@ -29,5 +29,11 @@
     "test": "vitest --run",
     "generate": "drizzle-kit generate",
     "push": "drizzle-kit push"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "^0.1.5",
+    "drizzle-kit": "^0.22.8",
+    "drizzle-orm": "^0.31.2",
+    "postgres": "^3.4.4"
   }
 }

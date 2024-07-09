@@ -106,7 +106,7 @@ export const core = {
   storage,
   system,
   entity,
-} as const;
+};
 
 export type CoreInsert = {
   [K in keyof typeof core]: typeof core[K] extends SchemaItem
@@ -132,7 +132,7 @@ export const core_entity = {
   role,
   user,
   file,
-} as const;
+};
 
 export type CoreEntityInsert = {
   [K in keyof typeof core_entity]: typeof core_entity[K] extends SchemaItem
@@ -184,4 +184,16 @@ export const schema = {
   ...schemaGroupFlatten(core_entity),
   ...schemaGroupFlatten(core_entity_file),
   ...schemaGroupFlatten(join),
+};
+
+export type SchemaInsert = {
+  [K in keyof typeof schema]: typeof schema[K] extends SchemaItem['table']
+    ? typeof schema[K]['$inferInsert']
+    : never;
+};
+
+export type SchemaSelect = {
+  [K in keyof typeof schema]: typeof schema[K] extends SchemaItem['table']
+    ? typeof schema[K]['$inferSelect']
+    : never;
 };

@@ -1,5 +1,12 @@
 {
     "extends": "./tsconfig.json",
+    "compilerOptions": {
+      "baseUrl": ".",
+      "paths": {
+        "@do-ob/data": ["src/index.ts"],
+        "@do-ob/data/*": ["src/*.ts"]
+      }
+    },
     "include": ["src"],
     "exclude": ["src/**/*.test.ts", "vite.config.ts"]
 }
