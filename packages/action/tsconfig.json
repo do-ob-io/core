@@ -7,5 +7,6 @@
       "@do-ob/action/*": ["src/*.ts"]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "files": ["generate.ts"]
 }

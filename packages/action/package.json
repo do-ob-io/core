@@ -30,6 +30,6 @@
   "scripts": {
     "build": "vite build --mode production",
     "test": "vitest --run",
-    "generate": "ts-json-schema-generator --path 'src/action/*.types.ts'"
+    "generate": "tsx ./generate.ts"
   }
 }

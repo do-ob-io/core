@@ -1,7 +1,7 @@
 /**
  * Register an account with the server.
  */
-export type Register = {
+export interface Register {
   /**
    * The type of registeration.
    */
@@ -34,14 +34,4 @@ export type Register = {
    * @format base64
    */
   authenticator: string;
-} | {
-  /**
-   * The type of registeration.
-   */
-  type: 'microsoft_entra',
-
-  /**
-   * A unique name to identify the account.
-   */
-  challenge: string;
 };
