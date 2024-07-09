@@ -1,5 +1,6 @@
 {
     "packages": {
+      "packages/action": {},
       "packages/core": {},
       "packages/crypto": {},
       "packages/data": {}

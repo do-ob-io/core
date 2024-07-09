@@ -1,0 +1,35 @@
+{
+  "name": "@do-ob/action",
+  "version": "0.0.0",
+  "description": "A collection of actions for event dispatching.",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./*": {
+      "import": "./dist/*.js",
+      "types": "./dist/*.d.ts"
+    },
+    "./index": null
+  },
+  "keywords": [
+    "library",
+    "core",
+    "actions",
+    "state",
+    "reducer",
+    "event"
+  ],
+  "author": "Eric Crowell <eric@do-ob.io> (https://do-ob.io)",
+  "license": "MIT",
+  "scripts": {
+    "build": "vite build --mode production",
+    "test": "vitest --run",
+    "generate": "ts-json-schema-generator --path 'src/action/*.types.ts'"
+  }
+}
