@@ -132,5 +132,9 @@ dist
 # Generated
 _*
 
+# Action Artifact Exports
+packages/action/src/schema.ts
+packages/action/src/validate.js
+
 # OSX
 .DS_Store

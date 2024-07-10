@@ -1,5 +1,8 @@
 import type { Register } from './register.types';
 
-export function register(registration: Register) {
+/**
+ * The action function.
+ */
+export function action(registration: Register) {
   return registration;
 }

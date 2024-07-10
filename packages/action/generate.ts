@@ -1,10 +1,27 @@
 import { createGenerator, type Config } from 'ts-json-schema-generator';
 import { glob } from 'glob';
 import fs from 'fs';
+// import Ajv, { Schema } from 'ajv';
+// import formats from 'ajv-formats';
+// import standalone from 'ajv/dist/standalone';
 
 const typeFiles = glob.sync('./src/action/*.types.ts');
+const outputDir = './src/_schema';
 
-const schemas: Array<string> = [];
+// const schemas: Array<Schema> = [];
+const schemaNames: Array<string> = [];
+
+if (!fs.existsSync(outputDir)) {
+  fs.mkdirSync(outputDir, { recursive: true });
+}
+
+// Delete all files in outputDir
+// fs.readdirSync(outputDir).forEach((file) => {
+//   const filePath = `${outputDir}/${file}`;
+//   fs.unlinkSync(filePath);
+// });
+
+// const schemas: Array<string> = [];
 
 typeFiles.forEach((file) => {
 
@@ -16,36 +33,58 @@ typeFiles.forEach((file) => {
 
   const config: Config = {
     path: file,
-    schemaId: `action/${fileName}`,
+    schemaId: `${fileName}`,
     topRef: false,
-    minify: false,
+    minify: true,
     type: '*',
   };
 
   const generator = createGenerator(config);
   const schema = generator.createSchema(config.type);
 
-  delete schema.$schema;
-
   const code = `export default ${JSON.stringify(schema, null, 2)}`;
   const filePath = `src/_schema/${fileName}.ts`;
-  const directoryPath = filePath.split('/').slice(0, -1).join('/');
-
-  if (!fs.existsSync(directoryPath)) {
-    fs.mkdirSync(directoryPath, { recursive: true });
-  }
 
   fs.writeFileSync(filePath, code);
 
-  schemas.push(`export { default as ${fileName} } from './${fileName}';`);
+  // schemas.push(schema);
+  schemaNames.push(fileName);
   
 });
 
-const code = `${schemas.join('\n')}`;
+/**
+ * Write the entry point schema module.
+ */
+const code = 
+`${schemaNames.map((s) => (`import { default as ${s} } from './_schema/${s}';`)).join('\n')}
 
-const filePath = 'src/_schema/index.ts';
+export {
+  ${schemaNames.join(',\n')}
+};
+`;
+
+const filePath = 'src/schema.ts';
 const directoryPath = filePath.split('/').slice(0, -1).join('/');
 if (!fs.existsSync(directoryPath)) {
   fs.mkdirSync(directoryPath, { recursive: true });
 }
 fs.writeFileSync(filePath, code);
+
+/**
+ * Write the standalone validator code.
+ */
+// const ajv = new Ajv({
+//   schemas,
+//   code: {
+//     source: true,
+//     esm: true,
+//   },
+// });
+
+// formats(ajv, [ 'uuid', 'hostname', 'email', 'password', 'ipv4', 'ipv6', 'binary', 'byte' ]);
+// ajv.addFormat('handle', /^[a-zA-Z][a-zA-Z0-9_]{0,19}$/);
+
+// const validatorCode = standalone(ajv);
+
+// fs.writeFileSync('src/validate.js', validatorCode);
+// fs.writeFileSync('dist/validate.js', validatorCode);
