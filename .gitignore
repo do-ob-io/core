@@ -134,7 +134,7 @@ _*
 
 # Action Artifact Exports
 packages/action/src/schema.ts
-packages/action/src/validate.js
+packages/action/src/dictionary.js
 
 # OSX
 .DS_Store

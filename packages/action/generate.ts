@@ -1,4 +1,4 @@
-import { createGenerator, type Config } from 'ts-json-schema-generator';
+import { createGenerator, Schema, type Config } from 'ts-json-schema-generator';
 import { glob } from 'glob';
 import fs from 'fs';
 // import Ajv, { Schema } from 'ajv';
@@ -10,6 +10,7 @@ const outputDir = './src/_schema';
 
 // const schemas: Array<Schema> = [];
 const schemaNames: Array<string> = [];
+const dictionary: Record<string, string> = {};
 
 if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir, { recursive: true });
@@ -25,15 +26,15 @@ if (!fs.existsSync(outputDir)) {
 
 typeFiles.forEach((file) => {
 
-  const fileName = file.split('/').pop()?.replace('.types.ts', '');
+  const actionName = file.split('/').pop()?.replace('.types.ts', '');
 
-  if (!fileName) {
+  if (!actionName) {
     return;
   }
 
   const config: Config = {
     path: file,
-    schemaId: `${fileName}`,
+    schemaId: `${actionName}`,
     topRef: false,
     minify: true,
     type: '*',
@@ -42,13 +43,36 @@ typeFiles.forEach((file) => {
   const generator = createGenerator(config);
   const schema = generator.createSchema(config.type);
 
+  const { properties } = schema;
+  if(properties) {
+    Object.keys(properties).forEach((key) => {
+      const property = properties[key] as Schema;
+      const titleKey = `action.${actionName}.${key}.title`;
+      if(property.title) {
+        const title = property.title;
+        property.title = '%' + titleKey;
+        dictionary[titleKey] = title;
+      } else {
+        const title = key.replace(/([A-Z])/g, ' $1').trim();
+        property.title = '%' + titleKey;
+        dictionary[titleKey] = title;
+      }
+      if(property.description) {
+        const descriptionKey = `action.${actionName}.${key}.description`;
+        const description = property.description;
+        property.description = '%' + descriptionKey;
+        dictionary[descriptionKey] = description;
+      }
+    });
+  }
+
   const code = `export default ${JSON.stringify(schema, null, 2)}`;
-  const filePath = `src/_schema/${fileName}.ts`;
+  const filePath = `src/_schema/${actionName}.ts`;
 
   fs.writeFileSync(filePath, code);
 
   // schemas.push(schema);
-  schemaNames.push(fileName);
+  schemaNames.push(actionName);
   
 });
 
@@ -69,6 +93,13 @@ if (!fs.existsSync(directoryPath)) {
   fs.mkdirSync(directoryPath, { recursive: true });
 }
 fs.writeFileSync(filePath, code);
+
+/**
+ * Write the dictionary file.
+ */
+const dictionaryCode = `export default ${JSON.stringify(dictionary, null, 2)}`;
+const dictionaryFilePath = 'src/dictionary.ts';
+fs.writeFileSync(dictionaryFilePath, dictionaryCode);
 
 /**
  * Write the standalone validator code.

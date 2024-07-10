@@ -3,7 +3,7 @@
  */
 export interface Register {
   /**
-   * The type of registeration.
+   * The type of registration.
    */
   type: 'webauthn';
 

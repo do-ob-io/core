@@ -28,7 +28,7 @@
   "author": "Eric Crowell <eric@do-ob.io> (https://do-ob.io)",
   "license": "MIT",
   "scripts": {
-    "build": "pnpm generate && vite build --mode production",
+    "build": "pnpm generate && eslint src/dictionary.ts --fix && vite build --mode production",
     "test": "vitest --run",
     "generate": "tsx ./generate.ts"
   }
