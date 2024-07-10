@@ -31,6 +31,7 @@
     "push": "drizzle-kit push"
   },
   "dependencies": {
+    "@do-ob/action": "workspace:*",
     "@electric-sql/pglite": "^0.1.5",
     "drizzle-kit": "^0.22.8",
     "drizzle-orm": "^0.31.2",

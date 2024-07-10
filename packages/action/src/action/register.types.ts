@@ -18,6 +18,7 @@ export interface Register {
    * The public key credential to associate with the account.
    * 
    * @format byte
+   * @writeOnly
    */
   credential: string;
 
@@ -26,6 +27,7 @@ export interface Register {
    * Information about the client application including the origin and challenge code.
    * 
    * @format byte
+   * @writeOnly
    */
   client: string;
   
@@ -33,6 +35,7 @@ export interface Register {
    * Information about the authenticator used to register the account.
    * 
    * @format byte
+   * @writeOnly
    */
   authenticator: string;
 };

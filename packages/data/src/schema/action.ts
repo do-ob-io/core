@@ -21,7 +21,7 @@ export const table = pgTable('action', {
    * 
    * @example { "type": "object", "properties": { "name": { "type": "string" } }, "required": ["name"] }
    */
-  definition: jsonb('definition'),
+  definition: jsonb('definition').notNull(),
 
   /**
    * A description of what the actions does.

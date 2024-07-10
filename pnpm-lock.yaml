@@ -75,6 +75,9 @@ importers:
 
   packages/data:
     dependencies:
+      '@do-ob/action':
+        specifier: workspace:*
+        version: link:../action
       '@electric-sql/pglite':
         specifier: ^0.1.5
         version: 0.1.5

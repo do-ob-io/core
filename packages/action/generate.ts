@@ -43,6 +43,25 @@ typeFiles.forEach((file) => {
   const generator = createGenerator(config);
   const schema = generator.createSchema(config.type);
 
+  if(schema.title) {
+    const titleKey = `action.${actionName}.title`;
+    const title = schema.title;
+    schema.title = '%' + titleKey;
+    dictionary[titleKey] = title;
+  } else {
+    const titleKey = `action.${actionName}.title`;
+    const title = actionName.replace(/([A-Z])/g, ' $1').trim();
+    schema.title = '%' + titleKey;
+    dictionary[titleKey] = title;
+  }
+
+  if(schema.description) {
+    const descriptionKey = `action.${actionName}.description`;
+    const description = schema.description;
+    schema.description = '%' + descriptionKey;
+    dictionary[descriptionKey] = description;
+  }
+
   const { properties } = schema;
   if(properties) {
     Object.keys(properties).forEach((key) => {
