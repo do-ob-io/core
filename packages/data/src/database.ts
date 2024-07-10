@@ -19,7 +19,7 @@ declare global {
 globalThis.doob_database_instance = globalThis.doob_database_instance || null;
 
 export async function database(connection?: string): Promise<Database> {
-  if (globalThis.doob_database_instance) {
+  if (globalThis.doob_database_instance !== null) {
     return globalThis.doob_database_instance;
   }
 
@@ -38,8 +38,4 @@ export async function database(connection?: string): Promise<Database> {
   }
 
   return globalThis.doob_database_instance;
-};
-
-export {
-  schema,
 };

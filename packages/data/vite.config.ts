@@ -6,7 +6,12 @@ export default mergeConfig(
   viteLibConfig(),
   defineConfig({
     test: {
-      include: [ '**/*.{test,spec}.?(c|m)[jt]s?(x)' ]
+      include: [ '**/*.{test,spec}.?(c|m)[jt]s?(x)' ],
+      // poolOptions: {
+      //   threads: {
+      //     singleThread: true,
+      //   }
+      // }
     },
   })
 );

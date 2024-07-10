@@ -4,32 +4,18 @@ import {
   beforeAll,
 } from 'vitest';
 import { database, Database } from '@do-ob/data/database';
-import { schema } from '@do-ob/data/schema';
+// import { schema } from '@do-ob/data/schema';
+import { collection, seed } from '@do-ob/data/seed';
 
 let db: Database;
 
 beforeAll(async () => {
   db = await database();
-  // Ensure all rows in the action table are deleted.
-  await db.delete(schema.action);
+  await seed();
 });
 
-// Should insert a new action into the database.
-test('should insert action', async () => {
-
-  const resultInsert = await db.insert(schema.action).values({
-    $id: 'Query_Entity',
-  }).returning();
-
-  // The result should be an array with a single object.
-  expect(resultInsert).toHaveLength(1);
-
-  // The object should be the action that was inserted.
-  const resultInsertAction0 = resultInsert[0];
-
-  // Expect that a proper action was inserted correctly.
-  expect(resultInsertAction0).toMatchObject({
-    $id: 'Query_Entity',
-    description: null,
-  });
+// Should already have the seeded collection of action records in the database.
+test('should have existing action records', async () => {
+  const actions = await db.query.action.findMany();
+  expect(actions).toHaveLength(collection.action.length);
 });

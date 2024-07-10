@@ -20,6 +20,12 @@ export const records: Array<SchemaInsert['system']> = [
     description: 'The current version of this web application deployment.',
   },
   {
+    $id: 'SEEDED',
+    type: 'boolean',
+    value: 'true',
+    description: 'Flag to indicate if the system has been seeded with initial data.',
+  },
+  {
     $id: 'REGISTRATION_OPEN',
     type: 'boolean',
     value: 'false',
