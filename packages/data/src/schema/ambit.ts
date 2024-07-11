@@ -6,7 +6,7 @@ import {
  * A record of bounding ambits that a subject can act within.
  * 
  * Example: In authorization...
- * An abit defines the bounds of an ambit that can be performed by a subject. For instance, 
+ * An ambit defines the bounds an action can be performed by a subject. For instance, 
  * a subject can only edit their own profile, but not another subject's profile.
  */
 export const table = pgTable('ambit', {

@@ -17,7 +17,6 @@ export async function seed() {
 
   if (systemValue && systemValue.value === 'true') {
     throw new Error('Database already seeded.');
-    return;
   }
 
   db.transaction(async (tx) => {
