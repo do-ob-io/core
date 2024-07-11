@@ -1,4 +1,7 @@
 {
   "extends": "@do-ob/ts-config",
+  "compilerOptions": {
+    "rootDir": "src"
+  },
   "include": ["src"]
 }

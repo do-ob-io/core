@@ -31,5 +31,8 @@
     "build": "pnpm generate && eslint src/dictionary.ts --fix && vite build --mode production",
     "test": "vitest --run",
     "generate": "tsx ./generate.ts"
+  },
+  "dependencies": {
+    "@do-ob/core": "workspace:*"
   }
 }

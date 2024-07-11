@@ -1,12 +1,13 @@
-import type { Action } from '@do-ob/action/types';
+import { type Action, Ambit, Rate } from '@do-ob/core/io';
 import type { Register } from './register.types';
 
-/**
- * The action function.
- */
-export function action(registration: Register): Action<'register', Register> {
+export function action(register: Register): Action<'register', Register> {
   return {
     type: 'register',
-    payload: registration
+    payload: register
   };
-}
+};
+
+export const ambit: Ambit = Ambit.Global;
+
+export const rate: Rate = Rate.Slow;

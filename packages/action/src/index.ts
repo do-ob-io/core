@@ -1,4 +1,10 @@
-import type { Action } from './types';
+import type {
+  Action,
+  ActionObject,
+  Ambit,
+  AmbitError,
+  AmbitResult
+} from './types';
 import type { Register } from './action/register.types';
 import * as register from './action/register';
 
@@ -16,6 +22,10 @@ export async function schema($id: string = 'action.json') {
 
 export {
   Action,
+  ActionObject,
+  Ambit,
+  AmbitError,
+  AmbitResult,
   Register,
   register
 };
