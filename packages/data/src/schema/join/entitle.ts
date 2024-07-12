@@ -5,7 +5,7 @@ import { table as entity } from '../entity/entity.ts';
 import { table as action } from '../action.ts';
 
 /**
- * Entitles grant entities the ability to perform actions on specific entities.
+ * Allows permits to customize scopes to include specific entities
  */
 export const table = pgTable('entitle', {
   $entity: uuid('entity_id').notNull().references(() => entity.$id),

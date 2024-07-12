@@ -1,23 +1,25 @@
 import { relations } from 'drizzle-orm';
-import { pgTable, uuid, primaryKey, varchar } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, primaryKey, varchar, smallint } from 'drizzle-orm/pg-core';
 
 import { table as entity } from '../entity/entity.ts';
 import { table as action } from '../action.ts';
-import { table as ambit } from '../ambit.ts';
 
 /**
  * Permits grant entities the ability to perform actions.
  *
  * Example: In authorization...
  * If the entity is the auth subject and has a permit to perform the action,
- * then the entity is authorized to perform that action in the logic layer.
+ * then the entity is authorized to perform that action in the logic layer
+ * within the ambit and rate constraints.
  */
 export const table = pgTable('permit', {
+  $id: uuid('id').primaryKey().references(() => entity.$id, { onDelete: 'cascade' }),
   $entity: uuid('entity_id').notNull().references(() => entity.$id, { onDelete: 'cascade' }), // The entity that is granted the permit.
   $action: varchar('action_id', { length: 64 }).notNull().references(() => action.$id, { onDelete: 'cascade' }), // The action that the entity is permitted to perform.
-  $ambit: varchar('ambit_id', { length: 64 }).notNull().references(() => ambit.$id, { onDelete: 'cascade' }), // The ambit that the entity is bound to perform the action within.
+  ambit: smallint('ambit').default(0), // The ambits that the permit allows the action to be performed within.
+  rate: smallint('rate').default(0), // The rate level at which the permit allows the action to be performed.
 }, (table) => ({
-  pk: primaryKey({ columns: [ table.$entity, table.$action, table.$ambit ] }),
+  pk: primaryKey({ columns: [ table.$entity, table.$action ] }),
 }));
 
 export type Permit = typeof table.$inferSelect;
@@ -33,10 +35,5 @@ export const relates = relations(table, ({ one }) => ({
     fields: [ table.$action ],
     references: [ action.$id ],
     relationName: 'action',
-  }),
-  ambit: one(ambit, {
-    fields: [ table.$ambit ],
-    references: [ ambit.$id ],
-    relationName: 'ambit',
-  }),
+  })
 }));
