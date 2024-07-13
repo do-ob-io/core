@@ -6,7 +6,7 @@ export type EntityInsertValue<T extends keyof CoreEntityInsert> = Omit<CoreEntit
 
 // export type EntityQuery<T extends keyof CoreEntityInsert> = Parameters<Database['query'][T]['findMany']>[0];
 
-export type EntityInsertMeta = Pick<CoreInsert['entity'], '$owner' | '$creator'>;
+export type EntityInsertMeta = Partial<Pick<CoreInsert['entity'], '$owner' | '$creator'>>;
 
 /**
  * Inserts a new role into the database.

@@ -29,7 +29,7 @@
   "license": "MIT",
   "scripts": {
     "build": "pnpm generate && eslint src/dictionary.ts --fix && vite build --mode production",
-    "test": "vitest --run",
+    "test": "echo 'No tests yet.'",
     "generate": "tsx ./generate.ts"
   },
   "dependencies": {

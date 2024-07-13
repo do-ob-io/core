@@ -28,7 +28,37 @@ import * as assignment from './schema/join/assignment.ts';
 import * as entitle from './schema/join/entitle.ts';
 import * as permit from './schema/join/permit.ts';
 
-export {
+/**
+ * Flattens a schema item group into a table and relates object.
+ */
+export type SchemaFlat<G extends Record<string, { table: unknown; relates?: unknown }>> = {
+  [K in keyof G as `${Extract<K, string>}`]: G[K]['table'];
+} & {
+  [K in keyof G as `${Extract<K, string>}Relates`]: G[K]['relates'];
+};
+
+/**
+ * Flattens a schema item group into a table and relates object.
+ */
+function schemaFlatten<G extends Record<string, { table: unknown; relates?: unknown }>>(
+  group: G
+): SchemaFlat<G> {
+  return Object.keys(group).reduce(
+    (acc, key) => {
+      const value = group[key as keyof typeof group];
+      if(value.table) {
+        acc[key] = value.table;
+      }
+      if('relates' in value) {
+        acc[`${key}Relates`] = value.relates;
+      }
+      return acc;
+    },
+    {} as Record<string, unknown>
+  ) as SchemaFlat<G>;
+}
+
+export const schema = schemaFlatten({
   action,
   amit,
   dispatch,
@@ -51,48 +81,30 @@ export {
   assignment,
   entitle,
   permit,
-};
+});
 
 /**
  * A schema item module.
  */
-type SchemaItem = {
+export type SchemaItem = {
   table: {
     $inferInsert: unknown;
     $inferSelect: unknown;
   };
-  relates: unknown;
+  relates?: unknown;
 };
 
-/**
- * Flattens a schema item group into a table and relates object.
- */
-export type SchemaGroupFlat<G extends Record<string, { table: unknown; relates?: unknown }>> = {
-  [K in keyof G as `${Extract<K, string>}`]: G[K]['table'];
-} & {
-  [K in keyof G as `${Extract<K, string>}Relates`]: G[K]['relates'];
+export type SchemaInsert = {
+  [K in keyof typeof schema]: typeof schema[K] extends SchemaItem['table']
+    ? typeof schema[K]['$inferInsert']
+    : never;
 };
 
-/**
- * Flattens a schema item group into a table and relates object.
- */
-function schemaGroupFlatten<G extends Record<string, { table: unknown; relates?: unknown }>>(
-  group: G
-): SchemaGroupFlat<G> {
-  return Object.keys(group).reduce(
-    (acc, key) => {
-      const value = group[key as keyof typeof group];
-      if(value.table) {
-        acc[key] = value.table;
-      }
-      if('relates' in value) {
-        acc[`${key}Relates`] = value.relates;
-      }
-      return acc;
-    },
-    {} as Record<string, unknown>
-  ) as SchemaGroupFlat<G>;
-}
+export type SchemaSelect = {
+  [K in keyof typeof schema]: typeof schema[K] extends SchemaItem['table']
+    ? typeof schema[K]['$inferSelect']
+    : never;
+};
 
 /**
  * Core tables
@@ -176,24 +188,4 @@ export const join = {
   permit,
 };
 
-/**
- * All schema definitions.
- */
-export const schema = {
-  ...schemaGroupFlatten(core),
-  ...schemaGroupFlatten(core_entity),
-  ...schemaGroupFlatten(core_entity_file),
-  ...schemaGroupFlatten(join),
-};
-
-export type SchemaInsert = {
-  [K in keyof typeof schema]: typeof schema[K] extends SchemaItem['table']
-    ? typeof schema[K]['$inferInsert']
-    : never;
-};
-
-export type SchemaSelect = {
-  [K in keyof typeof schema]: typeof schema[K] extends SchemaItem['table']
-    ? typeof schema[K]['$inferSelect']
-    : never;
-};
+export default schema;

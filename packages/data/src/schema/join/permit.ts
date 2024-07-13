@@ -13,10 +13,10 @@ import { table as action } from '../action.ts';
  * within the ambit and rate constraints.
  */
 export const table = pgTable('permit', {
-  $id: uuid('id').primaryKey().references(() => entity.$id, { onDelete: 'cascade' }),
+  $id: uuid('id').primaryKey().references(() => entity.$id, { onDelete: 'cascade' }), // Owner of the permit.
   $entity: uuid('entity_id').notNull().references(() => entity.$id, { onDelete: 'cascade' }), // The entity that is granted the permit.
   $action: varchar('action_id', { length: 64 }).notNull().references(() => action.$id, { onDelete: 'cascade' }), // The action that the entity is permitted to perform.
-  ambit: smallint('ambit').default(0), // The ambits that the permit allows the action to be performed within.
+  ambit: smallint('ambit').default(0), // The ambits restricts the action to be performed within certain scopes.
   rate: smallint('rate').default(0), // The rate level at which the permit allows the action to be performed.
 }, (table) => ({
   pk: primaryKey({ columns: [ table.$entity, table.$action ] }),
