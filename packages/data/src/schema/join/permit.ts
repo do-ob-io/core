@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm';
-import { pgTable, uuid, primaryKey, varchar, smallint } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, unique, varchar, smallint } from 'drizzle-orm/pg-core';
 
 import { table as entity } from '../entity/entity.ts';
 import { table as action } from '../action.ts';
@@ -19,7 +19,7 @@ export const table = pgTable('permit', {
   ambit: smallint('ambit').default(0), // The ambits restricts the action to be performed within certain scopes.
   rate: smallint('rate').default(0), // The rate level at which the permit allows the action to be performed.
 }, (table) => ({
-  pk: primaryKey({ columns: [ table.$entity, table.$action ] }),
+  pk: unique().on(table.$entity, table.$action),
 }));
 
 export type Permit = typeof table.$inferSelect;
