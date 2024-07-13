@@ -170,7 +170,7 @@ CREATE TABLE IF NOT EXISTS "permit" (
 	"action_id" varchar(64) NOT NULL,
 	"ambit" smallint DEFAULT 0,
 	"rate" smallint DEFAULT 0,
-	CONSTRAINT "permit_entity_id_action_id_pk" PRIMARY KEY("entity_id","action_id")
+	CONSTRAINT "permit_entity_id_action_id_unique" UNIQUE("entity_id","action_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "mutate" (
