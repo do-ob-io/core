@@ -1,0 +1,32 @@
+{
+  "name": "@do-ob/logic",
+  "version": "0.0.0",
+  "description": "Logic for processing, mutating, and providing data.",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./*": {
+      "import": "./dist/*.js",
+      "types": "./dist/*.d.ts"
+    },
+    "./index": null
+  },
+  "keywords": [
+    "library",
+    "logic",
+    "processing",
+    "common"
+  ],
+  "author": "Eric Crowell <eric@do-ob.io> (https://do-ob.io)",
+  "license": "MIT",
+  "scripts": {
+    "build": "vite build --mode production",
+    "test": "vitest --run"
+  }
+}

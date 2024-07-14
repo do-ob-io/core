@@ -3,6 +3,7 @@
       "packages/action": {},
       "packages/core": {},
       "packages/crypto": {},
-      "packages/data": {}
+      "packages/data": {},
+      "packages/logic": {}
     }
 }
