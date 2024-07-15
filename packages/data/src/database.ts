@@ -34,7 +34,7 @@ export async function database(connection?: string): Promise<Database> {
     const sql = new PGlite(connection ?? DATABASE_CONNECTION);
     const sqlFile = readFileSync(resolve(import.meta.dirname, '../scripts/data.sql'), 'utf8');
     sql.exec(sqlFile);
-    globalThis.doob_database_instance =  drizzle(sql, { schema }) as unknown as Database;
+    globalThis.doob_database_instance = drizzle(sql, { schema }) as unknown as Database;
   }
 
   return globalThis.doob_database_instance;

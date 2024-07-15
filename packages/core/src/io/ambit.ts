@@ -27,3 +27,10 @@ export enum Ambit {
    */
   Global = 1 << 3,
 }
+
+/**
+ * Returns an ambit value based on the given scope.
+ */
+export function ambit(scope: Ambit): Ambit {
+  return scope;
+}

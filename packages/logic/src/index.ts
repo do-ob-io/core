@@ -1,3 +1,4 @@
+// import { database } from '@do-ob/data';
 
 /**
  * Configuration for the logic function wrapper generation.

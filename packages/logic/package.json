@@ -28,5 +28,8 @@
   "scripts": {
     "build": "vite build --mode production",
     "test": "vitest --run"
+  },
+  "dependencies": {
+    "@do-ob/data": "workspace:*"
   }
 }

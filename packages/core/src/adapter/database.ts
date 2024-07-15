@@ -1,6 +1,16 @@
-export interface Database {
+export interface Database<Schema extends Record<string, object> = Record<string, object>> {
   /**
-   * Performs a mutation on the database.
+   * Queries for data in the database.
    */
-  mutate: () => Promise<void>;
+  query: () => Promise<void>;
+
+  /**
+   * Performs a mutation in the database.
+   */
+  mutate: <K extends keyof Schema>(key: K, values: Schema[K]) => Promise<void>;
+
+  /**
+   * Cleanup the database.
+   */
+  cleanup: () => Promise<void>;
 }
