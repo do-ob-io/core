@@ -31,18 +31,13 @@ import * as permit from './schema/join/permit.ts';
 /**
  * Flattens a schema item group into a table and relates object.
  */
-export type SchemaFlat<G extends Record<string, { table: unknown; relates?: unknown }>> = {
+export function schemaFlatten<G extends Record<string, { table: unknown; relates?: unknown }>>(
+  group: G
+): {
   [K in keyof G as `${Extract<K, string>}`]: G[K]['table'];
 } & {
   [K in keyof G as `${Extract<K, string>}Relates`]: G[K]['relates'];
-};
-
-/**
- * Flattens a schema item group into a table and relates object.
- */
-function schemaFlatten<G extends Record<string, { table: unknown; relates?: unknown }>>(
-  group: G
-): SchemaFlat<G> {
+} {
   return Object.keys(group).reduce(
     (acc, key) => {
       const value = group[key as keyof typeof group];
@@ -55,10 +50,14 @@ function schemaFlatten<G extends Record<string, { table: unknown; relates?: unkn
       return acc;
     },
     {} as Record<string, unknown>
-  ) as SchemaFlat<G>;
+  ) as {
+    [K in keyof G as `${Extract<K, string>}`]: G[K]['table'];
+  } & {
+    [K in keyof G as `${Extract<K, string>}Relates`]: G[K]['relates'];
+  };
 }
 
-export const schema = schemaFlatten({
+export const schema = () => schemaFlatten({
   action,
   amit,
   dispatch,
@@ -83,6 +82,33 @@ export const schema = schemaFlatten({
   permit,
 });
 
+export {
+  action,
+  amit,
+  dispatch,
+  mutate,
+  session,
+  storage,
+  system,
+  entity,
+  credential,
+  email,
+  locale,
+  phone,
+  profile,
+  role,
+  user,
+  file,
+  audio,
+  image,
+  video,
+  assignment,
+  entitle,
+  permit,
+};
+
+export type Schema = ReturnType<typeof schema>;
+
 /**
  * A schema item module.
  */
@@ -95,14 +121,14 @@ export type SchemaItem = {
 };
 
 export type SchemaInsert = {
-  [K in keyof typeof schema]: typeof schema[K] extends SchemaItem['table']
-    ? typeof schema[K]['$inferInsert']
+  [K in keyof Schema]: Schema[K] extends SchemaItem['table']
+    ? Schema[K]['$inferInsert']
     : never;
 };
 
 export type SchemaSelect = {
-  [K in keyof typeof schema]: typeof schema[K] extends SchemaItem['table']
-    ? typeof schema[K]['$inferSelect']
+  [K in keyof Schema]: Schema[K] extends SchemaItem['table']
+    ? Schema[K]['$inferSelect']
     : never;
 };
 
@@ -187,5 +213,3 @@ export const join = {
   entitle,
   permit,
 };
-
-export default schema;

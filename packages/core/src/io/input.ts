@@ -3,6 +3,7 @@ import { Ambit } from './ambit';
 import { Rate } from './rate';
 
 export type Input<
+  A extends Action<string, unknown> = Action<string, unknown>,
   Session extends object = object,
   Access extends object = object
 > = {
@@ -10,15 +11,15 @@ export type Input<
   /**
    * The action to perform.
    */
-  action?: Action<string, unknown>;
+  action: A;
 
   /**
-   * Ambits applied to the action processing.
+   * Ambits applied to the logic processing.
    */
   ambit: Ambit;
 
   /**
-   * The rate at which the action can be performed.
+   * The rate at which the processing can be performed.
    */
   rate: Rate;
 
@@ -35,17 +36,27 @@ export type Input<
   /**
    * Language code.
    */
-  language: string;
+  language?: string;
 
   /**
-   * Session details.
+   * An encoded access token.
    */
-  session?: Session;
+  _access?: Access;
 
   /**
-   * Access token.
+   * An access object.
    */
   access?: Access;
+
+  /**
+   * Session identifier.
+   */
+  $session?: string;
+
+  /**
+   * A session object.
+   */
+  session?: Session;
 
   /**
    * The subject identifier.

@@ -98,6 +98,19 @@ importers:
         specifier: ^3.4.4
         version: 3.4.4
 
+  packages/logic:
+    dependencies:
+      '@do-ob/core':
+        specifier: workspace:*
+        version: link:../core
+      '@do-ob/data':
+        specifier: workspace:*
+        version: link:../data
+    devDependencies:
+      '@do-ob/action':
+        specifier: workspace:*
+        version: link:../action
+
 packages:
 
   '@alloc/quick-lru@5.2.0':

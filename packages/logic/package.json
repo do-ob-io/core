@@ -30,6 +30,10 @@
     "test": "vitest --run"
   },
   "dependencies": {
+    "@do-ob/core": "workspace:*",
     "@do-ob/data": "workspace:*"
+  },
+  "devDependencies": {
+    "@do-ob/action": "workspace:*"
   }
 }

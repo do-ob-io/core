@@ -10,7 +10,7 @@ import { collection, seed } from '@do-ob/data/seed';
 let db: Database;
 
 beforeAll(async () => {
-  db = await database();
+  db = database();
   await seed();
 });
 

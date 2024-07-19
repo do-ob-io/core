@@ -2,7 +2,7 @@ import {
   test, expect, beforeAll, describe
 } from 'vitest';
 import { database, Database } from '@do-ob/data/database';
-import { schema } from '@do-ob/data/schema';
+import { entity } from '@do-ob/data/schema';
 
 let db: Database;
 let $owner: string;
@@ -10,16 +10,16 @@ let $creator: string;
 
 describe.sequential('create entity with owner', () => {
   beforeAll(async () => {
-    db = await database();
+    db = database();
     // Ensure all rows in the entity table are deleted.
-    await db.delete(schema.entity);
+    await db.delete(entity.table);
   });
 
   /**
  * Should insert a new entity into the database.
  */
   test('should insert entity', async () => {
-    const resultInsert = await db.insert(schema.entity).values({}).returning();
+    const resultInsert = await db.insert(entity.table).values({}).returning();
 
     // The result should be an array with a single object.
     expect(resultInsert).toHaveLength(1);
@@ -52,7 +52,7 @@ describe.sequential('create entity with owner', () => {
  * Should insert a new entity with an owner and creator into the database.
  */
   test('should insert new entity with previous entity as owner', async () => {
-    const resultInsert = await db.insert(schema.entity).values({ $owner, $creator }).returning();
+    const resultInsert = await db.insert(entity.table).values({ $owner, $creator }).returning();
 
     // The result should be an array with a single object.
     expect(resultInsert).toHaveLength(1);

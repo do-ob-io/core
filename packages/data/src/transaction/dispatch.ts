@@ -1,4 +1,4 @@
-import type { Transaction } from './transaction.types';
+// import type { Transaction } from './transaction.types';
 
 /**
  * Dispatch options.
@@ -15,26 +15,26 @@ export interface DispatchStartOptions {
   message?: string;
 }
 
-/**
- * Performs the database transaction associated with action dispatching.
- */
-export function dispatchStart(
-  /**
-   * The id of the action to dispatch.
-   */
-  type: string,
+// /**
+//  * Performs the database transaction associated with action dispatching.
+//  */
+// export function dispatchStart(
+//   /**
+//    * The id of the action to dispatch.
+//    */
+//   type: string,
 
-  /**
-   * The desired payload of the action to dispatch.
-   */
-  payload: Record<string, unknown> = {},
+//   /**
+//    * The desired payload of the action to dispatch.
+//    */
+//   payload: Record<string, unknown> = {},
 
-  /**
-   * The options for the dispatch.
-   */
-  options?: DispatchStartOptions = {},
-) {
-  return async (tx: Transaction) => {
+//   /**
+//    * The options for the dispatch.
+//    */
+//   options?: DispatchStartOptions = {},
+// ) {
+//   return async (tx: Transaction) => {
     
-  };
-}
+//   };
+// }

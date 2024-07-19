@@ -1,7 +1,11 @@
 {
   "extends": "@do-ob/ts-config",
   "compilerOptions": {
-    "rootDir": "src"
+    "baseUrl": ".",
+    "paths": {
+      "@do-ob/logic": ["src/index.ts"],
+      "@do-ob/logic/*": ["src/*.ts"]
+    }
   },
   "include": ["src"]
 }
