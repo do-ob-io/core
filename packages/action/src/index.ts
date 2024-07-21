@@ -1,3 +1,4 @@
+// import type { ActionModule } from '@do-ob/core/io';
 import type { Register } from './action/register.types';
 import * as register from './action/register';
 

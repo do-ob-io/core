@@ -1,6 +1,6 @@
 export enum OutputStatus {
-  Success,
-  Failure,
+  Success = 1,
+  Failure = 0,
 }
 
 export enum OutputFailureType {

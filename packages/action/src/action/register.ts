@@ -8,9 +8,11 @@ export type RegisterReduction = {
   username: string;
 };
 
-export function action(register: Register): Action<'register', Register, RegisterReduction> {
+export const type = 'register';
+
+export function action(register: Register): Action<typeof type, Register, RegisterReduction> {
   return {
-    type: 'register',
+    type,
     payload: register
   };
 };
