@@ -18,7 +18,7 @@ export function entityInsert<T extends keyof CoreEntityInsert>(
 ) {
   return async (tx: Transaction) => {
     const [ entityRecord ] = await tx.insert(core.entity.table).values({
-      type: 'role',
+      type,
       ...entity
     }).returning();
 

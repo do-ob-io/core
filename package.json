@@ -14,7 +14,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@do-ob/eslint-config": "^2.3.0",
+    "@do-ob/eslint-config": "^2.5.1",
     "@do-ob/ts-config": "^2.0.0",
     "@do-ob/vite-lib-config": "^3.0.1",
     "@electric-sql/pglite": "^0.1.5",
