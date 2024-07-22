@@ -6,6 +6,9 @@ export default mergeConfig(
   viteLibConfig(),
   defineConfig({
     test: {
+      typecheck: {
+        enabled: true,
+      },
       include: [ '**/*.{test,spec}.?(c|m)[jt]s?(x)' ]
     },
   })

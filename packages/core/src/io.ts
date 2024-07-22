@@ -3,7 +3,7 @@ import { Output, OutputStatus, OutputFailure } from './io/output';
 import { Action, Act, ActionResult, ActionModule } from './io/action';
 import { Ambit } from './io/ambit';
 import { Rate } from './io/rate';
-import { Context } from './io/context';
+import { Context, contextlet, contextify } from './io/context';
 
 export type {
   Context,
@@ -19,5 +19,7 @@ export type {
 
 export {
   Ambit,
-  Rate
+  Rate,
+  contextlet,
+  contextify,
 };

@@ -1,36 +1,68 @@
- 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Ambit } from './ambit';
 
-export interface Context<
-  Database = unknown,
-  SchemaInsert extends Record<string, unknown> = Record<string, unknown>,
-  Scope = unknown,
-> {
-  database: Database;
-  insert: <K extends keyof SchemaInsert>(table: K, values: SchemaInsert[K][], scope: Scope) => Promise<SchemaInsert[K][]>;
-  scoper: Record<Ambit, Scope>;
+// type Arguments<F extends (...args: any) => any> = F extends (...args: infer A) => any ? A : never;
+
+// const sample = (first: string, second: number, third: boolean) => [ first, second, third ] as const;
+// type SampleArgs = Arguments<typeof sample>;
+
+// type Sample2 = SampleArgs extends [any, ...infer R] ? R : never;
+
+// const sample2: Sample2 = [ 2, true ];
+export interface ContextInner<Scope> {
+  scope: Scope;
 }
 
-const scoperInitial: Record<Ambit, boolean> = {
-  [Ambit.None]: false,
-  [Ambit.Owned]: false,
-  [Ambit.Created]: false,
-  [Ambit.Member]: false,
-  [Ambit.Global]: false,
-};
+export interface Context<
+  Scope = boolean,
+  Insert extends (...args: any[]) => Promise<unknown> = (...args: any[]) => Promise<unknown>,
+  Query extends (...args: any[]) => Promise<unknown> = (...args: any[]) => Promise<unknown>,
+  Update extends (...args: any[]) => Promise<unknown> = (...args: any[]) => Promise<unknown>,
+  Remove extends (...args: any[]) => Promise<unknown> = (...args: any[]) => Promise<unknown>,
+> {
+  insert: (context: ContextInner<Scope>) => Insert;
+  query: (context: ContextInner<Scope>) => Query;
+  update: (context: ContextInner<Scope>) => Update;
+  remove: (context: ContextInner<Scope>) => Remove;
+  scoper: (ambit: Ambit) => Scope;
+}
 
-export function context<
-  Database = unknown,
-  SchemaInsert extends Record<string, unknown> = Record<string, unknown>,
-  Scope = typeof scoperInitial,
+// const scoperInitial = () => false;
+
+/**
+ * Constructs a partial context object.
+ */
+export function contextlet<
+  Scope,
+  Insert extends (...args: any[]) => Promise<unknown>,
+  Query extends (...args: any[]) => Promise<unknown>,
+  Update extends (...args: any[]) => Promise<unknown>,
+  Remove extends (...args: any[]) => Promise<unknown>,
+>(options: Partial<Context<Scope, Insert, Query, Update, Remove>>) {
+  return options;
+}
+
+/**
+ * Constructs a full context object with placeholder values.
+ */
+export function contextify<
+  Scope,
+  Insert extends (...args: any[]) => Promise<unknown>,
+  Query extends (...args: any[]) => Promise<unknown>,
+  Update extends (...args: any[]) => Promise<unknown>,
+  Remove extends (...args: any[]) => Promise<unknown>,
 >({
-  database = {} as Database,
-  insert = async () => [] as SchemaInsert[keyof SchemaInsert][],
-  scoper = scoperInitial,
-}: Partial<Context>): Context<Database, SchemaInsert, Scope> {
+  insert = () => (async () => []) as Insert,
+  query = () => (async () => []) as Query,
+  update = () => (async () => []) as Update,
+  remove = () => (async () => []) as Remove,
+  scoper = () => false as Scope,
+}: Partial<Context<Scope, Insert, Query, Update, Remove>>) {
   return {
-    database,
-    insert: insert as <K extends keyof SchemaInsert>(table: K, values: SchemaInsert[K][], scope: Scope) => Promise<SchemaInsert[K][]>,
+    insert,
+    query,
+    update,
+    remove,
     scoper,
-  } as Context<Database, SchemaInsert, Scope>;
+  };
 }
