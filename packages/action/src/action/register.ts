@@ -10,7 +10,7 @@ export type RegisterReduction = {
 
 export const type = 'register';
 
-export function action(register: Register): Action<typeof type, Register, RegisterReduction> {
+export function act(register: Register): Action<typeof type, Register, RegisterReduction> {
   return {
     type,
     payload: register

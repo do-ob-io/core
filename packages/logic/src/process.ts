@@ -4,7 +4,7 @@ import type { Action, ActionResult, Output, Context, ActionModule } from '@do-ob
 
 // export type ProcessHandlers = Record<string, Process<Context>>;
 
-export type ProcessHandler<C extends Context, M extends ActionModule> = (context: C, payload: ReturnType<M['action']>['payload']) => Promise<Output<ActionResult<ReturnType<M['action']>>>>;
+export type ProcessHandler<C extends Context, M extends ActionModule> = (context: C, payload: ReturnType<M['act']>['payload']) => Promise<Output<ActionResult<ReturnType<M['act']>>>>;
 
 export interface Process<K extends string, C extends Context> {
   key: K;
@@ -19,6 +19,10 @@ export function setup<
   K extends string,
   C extends Context
 >(
+  /**
+   * The key name of the process.
+   * This is used to identify the process in the logic system.
+   */
   key: K,
   context: C,
 ): Process<K, C> {
