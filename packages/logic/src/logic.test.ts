@@ -15,7 +15,7 @@ test('should be able to use a custom process', async () => {
   const context = contextify({});
 
   const processTest = processify(
-    'test',
+    'account',
     context,
     [ register, async () => {
       console.log('HANDLING REGISTER ACTION');
@@ -39,15 +39,13 @@ test('should be able to use a custom process', async () => {
     client: '',
     authenticator: ''
   }));
+  data.account;
 
   const data2 = await dispatch({
     type: 'something else',
     payload: {},
   });
-
-  data.test;
-
-  data2.test;
+  data2.account;
 
   expect(dispatch).toBeDefined();
 });
