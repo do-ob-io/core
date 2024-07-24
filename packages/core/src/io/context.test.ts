@@ -33,13 +33,15 @@ const databaseMocked = {
 
 test('should create a context', () => {
   const context = contextify({
-    insert: ({ scope }) => async <K extends keyof SchemaInsert, S extends SchemaInsert>(table: K, values: S[K][]) => {
+    meta: async () => ({
+      scope: 'none',
+    }),
+    insert: (_, { scope }) => async <K extends keyof SchemaInsert, S extends SchemaInsert>(table: K, values: S[K][]) => {
       if (scope === 'none') {
         return [] as S[K][];
       }
       return databaseMocked.insert(table, values);
-    },
-    scoper: () => 'none',
+    }
   });
 
   expect(context).toBeDefined();

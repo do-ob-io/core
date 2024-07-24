@@ -1,5 +1,5 @@
 import { contextlet } from '@do-ob/core';
-import { entity, mutate } from '@do-ob/data/schema';
+import { type dispatch, entity, mutate } from '@do-ob/data/schema';
 import { Database } from '@do-ob/data/database';
 import { PgTableWithColumns, TableConfig } from 'drizzle-orm/pg-core';
 
@@ -12,13 +12,15 @@ export function databaseContextlet<
     /**
      * Safely inserts a new entity into the database with authorization controls and audits.
      */
-    insert: async <
+    insert: () => async <
       T extends PgTableWithColumns<TableConfig>,
     >(
-      $dispatch: string,
+      /**
+       * The dispatch invoking the insert.
+       */
+      dispatch: dispatch.Dispatch,
       table: T,
       value: T['$inferInsert'],
-      meta: { $owner?: string, $creator?: string } = {}
     ) => {
       const db = await database;
       
@@ -39,7 +41,8 @@ export function databaseContextlet<
          */
         const [ entityRecord ] = await tx.insert(entity.table).values({
           type: tableName.replace('entity_', ''),
-          ...meta
+          $owner: dispatch.$subject,
+          $creator: dispatch.$subject,
         }).returning();
   
         /**
@@ -54,7 +57,7 @@ export function databaseContextlet<
          * Create a mutation record.
          */
         tx.insert(mutate.table).values({
-          $dispatch,
+          $dispatch: dispatch.$id,
           $entity: entityRecord.$id,
           operation: 'create',
           mutation: {
