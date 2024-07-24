@@ -1,32 +1,56 @@
 import { test, expect, assert } from 'vitest';
-import { setup } from '@do-ob/logic/process';
-import { Database, database } from '@do-ob/data';
+import { processify } from '@do-ob/logic/process';
+import { database, adapter as dataAdapter } from '@do-ob/data';
 import { register } from '@do-ob/action';
-import { Context, OutputStatus } from '@do-ob/core/io';
+import { inputify, OutputStatus } from '@do-ob/core/io';
+import { contextify } from '@do-ob/core';
 
-const context: Context<Database> = {
-  database: database(),
-};
+const context = contextify({
+  adapter: {
+    db: dataAdapter(database()),
+  }
+});
 
 test('should create a process, add a handler, and execute', async () => {
-  const process = setup('test', context);
-  process.handle(register, async (_, payload) => {
-    console.log('PAYLOAD', payload);
-    return {
-      status: OutputStatus.Success,
-      payload: {
-        username: 'test'
-      }
-    };
+  const process = processify(
+    'test',
+    context,
+    [ register, async ( input ) => {
+      const { action } = input;
+      const { payload } = action;
+      console.log('PAYLOAD', payload);
+      return {
+        status: OutputStatus.Success,
+        payload: {
+          username: 'test'
+        }
+      };
+    } ],
+  );
+
+  // process.handle(register, async ( input ) => {
+  //   const { action } = input;
+  //   const { payload } = action;
+  //   console.log('PAYLOAD', payload);
+  //   return {
+  //     status: OutputStatus.Success,
+  //     payload: {
+  //       username: 'test'
+  //     }
+  //   };
+  // });
+
+  const input = inputify({
+    action: register.act({
+      type: 'webauthn',
+      handle: '',
+      credential: '',
+      client: '',
+      authenticator: ''
+    }),
   });
 
-  const result = await process.execute(register.act({
-    type: 'webauthn',
-    handle: '',
-    credential: '',
-    client: '',
-    authenticator: ''
-  }));
+  const result = await process.execute(input);
 
   assert(result);
 

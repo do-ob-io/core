@@ -1,4 +1,5 @@
 import { test, expect } from 'vitest';
+import { adaptify } from './adapter';
 import { contextify } from './context';
 
 type User = {
@@ -32,15 +33,22 @@ const databaseMocked = {
 };
 
 test('should create a context', () => {
+  const databaseAdapter = adaptify({
+    driver: () => () => databaseMocked,
+    insert: ({ ambit }) => async <K extends keyof SchemaInsert, S extends SchemaInsert>(table: K, values: S[K][]) => {
+      if (ambit === 0) {
+        return [] as S[K][];
+      }
+      return databaseMocked.insert(table, values);
+    }
+  });
+  
   const context = contextify({
     meta: async () => ({
       scope: 'none',
     }),
-    insert: (_, { scope }) => async <K extends keyof SchemaInsert, S extends SchemaInsert>(table: K, values: S[K][]) => {
-      if (scope === 'none') {
-        return [] as S[K][];
-      }
-      return databaseMocked.insert(table, values);
+    adapter: {
+      db: databaseAdapter
     }
   });
 

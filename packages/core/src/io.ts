@@ -1,15 +1,16 @@
-import { Input } from './io/input';
-import { Output, OutputStatus, OutputFailure } from './io/output';
+import { Input, inputify } from './io/input';
+import { Output, OutputStatus, OutputFailure, OutputFailureType } from './io/output';
 import { Action, Act, ActionResult, ActionModule } from './io/action';
 import { Ambit } from './io/ambit';
 import { Rate } from './io/rate';
-import { Contextify, contextlet, contextify } from './io/context';
+import { Adapter, adaptify } from './io/adapter';
+import { Context, contextify } from './io/context';
 
 export type {
-  Contextify as Context,
+  Context,
+  Adapter,
   Input,
   Output,
-  OutputStatus,
   OutputFailure,
   Action,
   Act,
@@ -20,6 +21,9 @@ export type {
 export {
   Ambit,
   Rate,
-  contextlet,
+  OutputStatus,
+  OutputFailureType,
+  adaptify,
   contextify,
+  inputify,
 };

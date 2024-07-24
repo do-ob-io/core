@@ -1,60 +1,32 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Action } from './action';
+ 
+import type { Action } from './action';
 // import { Ambit } from './ambit';
-import { Input } from './input';
+import type { Input } from './input';
+import type { Adapter } from './adapter';
 
-export interface Contextify<
+export interface Context<
   Meta extends Record<string, unknown> = Record<string, unknown>,
-  Insert extends (...args: any[]) => Promise<unknown> = (...args: any[]) => Promise<unknown>,
-  Query extends (...args: any[]) => Promise<unknown> = (...args: any[]) => Promise<unknown>,
-  Update extends (...args: any[]) => Promise<unknown> = (...args: any[]) => Promise<unknown>,
-  Remove extends (...args: any[]) => Promise<unknown> = (...args: any[]) => Promise<unknown>,
+  A extends Adapter = Adapter,
+  AL extends Record<string, A> = Record<string, A>,
   I = Input<Action<string, unknown>>,
 > {
   meta: (input: I) => Promise<Meta>;
-  insert: (input: I, meta: Meta) => Insert;
-  query: (input: I, meta: Meta) => Query;
-  update: (input: I, meta: Meta) => Update;
-  remove: (input: I, meta: Meta) => Remove;
-}
-
-// const scoperInitial = () => false;
-
-/**
- * Constructs a partial context object.
- */
-export function contextlet<
-  Meta extends Record<string, unknown>,
-  Insert extends (...args: any[]) => Promise<unknown>,
-  Query extends (...args: any[]) => Promise<unknown>,
-  Update extends (...args: any[]) => Promise<unknown>,
-  Remove extends (...args: any[]) => Promise<unknown>,
->(options: Partial<Contextify<Meta, Insert, Query, Update, Remove>>) {
-  return options;
+  adapter: AL;
 }
 
 /**
  * Constructs a full context object with placeholder values.
  */
 export function contextify<
-  Meta extends Record<string, unknown>,
-  Insert extends (...args: any[]) => Promise<unknown>,
-  Query extends (...args: any[]) => Promise<unknown>,
-  Update extends (...args: any[]) => Promise<unknown>,
-  Remove extends (...args: any[]) => Promise<unknown>,
+  M extends Record<string, unknown>,
+  A extends Adapter = Adapter,
+  AL extends Record<string, A> = Record<string, A>,
 >({
-  meta = async () => ({} as Meta),
-
-  insert = () => (async () => []) as Insert,
-  query = () => (async () => []) as Query,
-  update = () => (async () => []) as Update,
-  remove = () => (async () => []) as Remove,
-}: Partial<Contextify<Meta, Insert, Query, Update, Remove>>) {
+  meta = async () => ({} as M),
+  adapter = {} as AL,
+}: Partial<Context<M, A, AL>>) {
   return {
     meta,
-    insert,
-    query,
-    update,
-    remove,
+    adapter,
   };
 }

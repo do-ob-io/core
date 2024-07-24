@@ -1,3 +1,4 @@
+import { nanoid } from '@do-ob/core/utility';
 import type { Action } from './action';
 import { Ambit } from './ambit';
 import { Rate } from './rate';
@@ -7,6 +8,11 @@ export type Input<
   Session extends object = object,
   Access extends object = object
 > = {
+
+  /**
+   * The identifier of this dispatch. This is unique for every input.
+   */
+  $dispatch: string;
 
   /**
    * The action to perform.
@@ -69,3 +75,21 @@ export type Input<
   ip?: string;
 
 };
+
+/**
+ * Constructs a new input object with placeholder values.
+ */
+export function inputify<
+  A extends Action<string, unknown>,
+>(
+  input: Partial<Input<A>>,
+): Input<A> {
+  return {
+    $dispatch: input.$dispatch || nanoid(),
+    action: input.action as A,
+    ambit: Ambit.None,
+    rate: Rate.None,
+    query: {},
+    pathname: '/',
+  };
+}

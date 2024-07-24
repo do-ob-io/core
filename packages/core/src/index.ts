@@ -1,16 +1,19 @@
-import { nop } from './utility/nop';
-import { nanoid } from './utility/nanoid';
-import { memoize } from './utility/memoize';
-import { clsx } from './utility/clsx';
-import { clmg } from './utility/clmg';
+import {
+  clsx,
+  clmg,
+  memoize,
+  nop,
+  nanoid,
+} from '@do-ob/core/utility';
 
 import type {
   Arguments,
 } from '@do-ob/core/types';
 
 import {
+  Adapter,
+  adaptify,
   Context,
-  contextlet,
   contextify,
 } from '@do-ob/core/io';
 
@@ -23,6 +26,8 @@ export type {
   Action,
   Ambit,
   Rate,
+  
+  Adapter,
   Context,
 };
 
@@ -34,6 +39,6 @@ export {
   nop,
   nanoid,
 
-  contextlet,
+  adaptify,
   contextify,
 };

@@ -41,7 +41,9 @@ export function memoize<
     const key = JSON.stringify(args);
 
     if (cache.has(key)) {
-      const { value, set } = cache.get(key) ?? {};
+      const goods = cache.get(key) ?? {} as MemoizedCache<T>;
+      const set = goods?.set;
+      const value = goods?.value;
       if (set && set < Date.now()) {
         cache.delete(key);
       } else {

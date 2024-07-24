@@ -1,13 +1,15 @@
-import { contextlet } from '@do-ob/core';
+import { adaptify } from '@do-ob/core';
 import { type dispatch, entity, mutate } from '@do-ob/data/schema';
 import { Database } from '@do-ob/data/database';
 import { PgTableWithColumns, TableConfig } from 'drizzle-orm/pg-core';
 
-export function databaseContextlet<
+export function adapter<
   D extends Database,
->(database: Promise<D>) {
+>(database: D | Promise<D>) {
 
-  return contextlet({
+  return adaptify({
+
+    driver: () => async () => await database,
 
     /**
      * Safely inserts a new entity into the database with authorization controls and audits.
