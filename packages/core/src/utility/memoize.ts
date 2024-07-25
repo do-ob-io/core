@@ -7,11 +7,6 @@ type MemoizedCache<T extends (...args: any[]) => any> = {
   set: number;
 };
 
-// TypeScript implementation of a memoization function
-type MemoizedFunction<T extends (...args: any[]) => any> = T & {
-  cache: Map<string, MemoizedCache<T>>;
-};
-
 /**
  * Options for the memoize function.
  */
@@ -33,10 +28,10 @@ export function memoize<
     // Default time to live is 5 minutes.
     ttl = 5 * 60 * 1000,
   }: MemoizeOptions = {},
-): MemoizedFunction<T> {
+) {
   const cache = new Map<string, MemoizedCache<T>>();
 
-  const memoizedFn: MemoizedFunction<T> = function (...args: Parameters<T>): ReturnType<T> {
+  const memoizedFn = (...args: Parameters<T>): ReturnType<T> => {
 
     const key = JSON.stringify(args);
 
@@ -55,9 +50,7 @@ export function memoize<
     cache.set(key, { value, set: Date.now() + ttl });
     
     return value;
-  } as MemoizedFunction<T>;
-
-  memoizedFn.cache = cache;
+  };
 
   return memoizedFn;
 }

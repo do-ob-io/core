@@ -106,13 +106,13 @@ importers:
       '@do-ob/core':
         specifier: workspace:*
         version: link:../core
-      '@do-ob/data':
-        specifier: workspace:*
-        version: link:../data
     devDependencies:
       '@do-ob/action':
         specifier: workspace:*
         version: link:../action
+      '@do-ob/data':
+        specifier: workspace:*
+        version: link:../data
 
 packages:
 
