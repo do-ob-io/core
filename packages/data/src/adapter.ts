@@ -1,5 +1,5 @@
 import { adaptify } from '@do-ob/core';
-import { type dispatch, entity, mutate } from '@do-ob/data/schema';
+import { entity, mutate } from '@do-ob/data/schema';
 import { Database } from '@do-ob/data/database';
 import { PgTableWithColumns, TableConfig } from 'drizzle-orm/pg-core';
 
@@ -14,13 +14,9 @@ export function adapter<
     /**
      * Safely inserts a new entity into the database with authorization controls and audits.
      */
-    insert: () => async <
+    insert: ({ $dispatch, $subject }) => async <
       T extends PgTableWithColumns<TableConfig>,
     >(
-      /**
-       * The dispatch invoking the insert.
-       */
-      dispatch: dispatch.Dispatch,
       table: T,
       value: T['$inferInsert'],
     ) => {
@@ -43,8 +39,8 @@ export function adapter<
          */
         const [ entityRecord ] = await tx.insert(entity.table).values({
           type: tableName.replace('entity_', ''),
-          $owner: dispatch.$subject,
-          $creator: dispatch.$subject,
+          $owner: $subject,
+          $creator: $subject,
         }).returning();
   
         /**
@@ -59,7 +55,7 @@ export function adapter<
          * Create a mutation record.
          */
         tx.insert(mutate.table).values({
-          $dispatch: dispatch.$id,
+          $dispatch: $dispatch,
           $entity: entityRecord.$id,
           operation: 'create',
           mutation: {
