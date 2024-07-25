@@ -8,6 +8,10 @@ export type Input<
   Session extends object = object,
   Access extends object = object
 > = {
+  /**
+   * Hashed client number for identification.
+   */
+  client: number;
 
   /**
    * The identifier of this dispatch. This is unique for every input.
@@ -35,6 +39,11 @@ export type Input<
   query: Record<string, string | undefined>;
 
   /**
+   * Headers
+   */
+  headers: Record<string, string>;
+
+  /**
    * Pathname. (e.g. /api/v1/users)
    */
   pathname: string;
@@ -45,19 +54,9 @@ export type Input<
   language?: string;
 
   /**
-   * An encoded access token.
-   */
-  _access?: Access;
-
-  /**
    * An access object.
    */
   access?: Access;
-
-  /**
-   * Session identifier.
-   */
-  $session?: string;
 
   /**
    * A session object.
@@ -85,11 +84,14 @@ export function inputify<
   input: Partial<Input<A>>,
 ): Input<A> {
   return {
+    client: input.client || 0,
     $dispatch: input.$dispatch || nanoid(),
     action: input.action as A,
     ambit: Ambit.None,
     rate: Rate.None,
     query: {},
+    headers: {},
     pathname: '/',
+    ...input,
   };
 }

@@ -4,6 +4,7 @@ import {
   memoize,
   nop,
   nanoid,
+  fasthash,
 } from '@do-ob/core/utility';
 
 import type {
@@ -38,6 +39,7 @@ export {
   memoize,
   nop,
   nanoid,
+  fasthash,
 
   adaptify,
   contextify,
