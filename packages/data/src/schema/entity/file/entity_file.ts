@@ -8,7 +8,7 @@ import { table as entity } from '../entity.ts';
 /**
  * Information about files that can be uploaded.
  */
-export const table = pgTable('file', {
+export const table = pgTable('entity_file', {
   $id: uuid('id').primaryKey().references(() => entity.$id, { onDelete: 'cascade' }),
   name: varchar('name', { length: 32 }).unique().notNull(), // A human readable name for the file.
   description: varchar('description', { length: 1024 }), // A description of the file.

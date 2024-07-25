@@ -4,12 +4,12 @@ import {
 import { relations, sql } from 'drizzle-orm';
 
 import { table as entity } from './entity.ts';
-import { table as user } from './user.ts';
+import { table as user } from './entity_user.ts';
 
 /**
  * Email addresses
  */
-export const table = pgTable('email', {
+export const table = pgTable('entity_email', {
   $id: uuid('id').primaryKey().references(() => entity.$id, { onDelete: 'cascade' }),
   $user: uuid('user_id').references(() => user.$id),
   address: varchar('address', { length: 255 }).unique().notNull(),

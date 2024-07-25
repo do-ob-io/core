@@ -8,23 +8,23 @@ import * as storage from './schema/storage.ts';
 import * as system from './schema/system.ts';
 
 // Entities
-import * as credential from './schema/entity/credential.ts';
+import * as credential from './schema/entity/entity_credential.ts';
 import * as entity from './schema/entity/entity.ts';
-import * as email from './schema/entity/email.ts';
-import * as locale from './schema/entity/locale.ts';
-import * as phone from './schema/entity/phone.ts';
-import * as profile from './schema/entity/profile.ts';
-import * as role from './schema/entity/role.ts';
-import * as user from './schema/entity/user.ts';
+import * as email from './schema/entity/entity_email.ts';
+import * as locale from './schema/entity/entity_locale.ts';
+import * as phone from './schema/entity/entity_phone.ts';
+import * as profile from './schema/entity/entity_profile.ts';
+import * as role from './schema/entity/entity_role.ts';
+import * as user from './schema/entity/entity_user.ts';
 
 // Entity -> Files
-import * as audio from './schema/entity/file/audio.ts';
-import * as file from './schema/entity/file/file.ts';
-import * as image from './schema/entity/file/image.ts';
-import * as video from './schema/entity/file/video.ts';
+import * as audio from './schema/entity/file/entity_file_audio.ts';
+import * as file from './schema/entity/file/entity_file.ts';
+import * as image from './schema/entity/file/entity_file_image.ts';
+import * as video from './schema/entity/file/entity_file_video.ts';
 
 // Join Tables
-import * as assignment from './schema/join/assignment.ts';
+import * as assignment from './schema/join/join_assignment.ts';
 import * as entitle from './schema/join/entitle.ts';
 import * as permit from './schema/join/permit.ts';
 

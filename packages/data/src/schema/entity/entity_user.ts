@@ -4,16 +4,16 @@ import {
 import { relations } from 'drizzle-orm';
 
 import { table as entity } from './entity.ts';
-import { table as email } from './email.ts';
-import { table as phone } from './phone.ts';
-import { table as image } from './file/image.ts';
+import { table as email } from './entity_email.ts';
+import { table as phone } from './entity_phone.ts';
+import { table as image } from './file/entity_file_image.ts';
 import { table as dispatch } from '../dispatch.ts';
-import { table as profile } from './profile.ts';
+import { table as profile } from './entity_profile.ts';
 
 /**
  * A user that can be authenticated and authorized using the name.
  */
-export const table = pgTable('user', {
+export const table = pgTable('entity_user', {
   $id: uuid('id').primaryKey().references(() => entity.$id, { onDelete: 'cascade' }),
   name: varchar('name', { length: 32 }).unique().notNull(), // Unique handle for the user.
   locked: boolean('locked').notNull().default(false), // Flag indicating if the user account is locked. Locked accounts cannot establish a session (login).

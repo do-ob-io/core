@@ -3,12 +3,12 @@ import {
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
-import { table as file } from './file.ts';
+import { table as file } from './entity_file.ts';
 
 /**
  * Information about tables that can be uploaded.
  */
-export const table = pgTable('video', {
+export const table = pgTable('entity_file_video', {
   $id: uuid('id').primaryKey().references(() => file.$id, { onDelete: 'cascade' }),
   height: smallint('height').notNull(), // Original height of the video.
   width: smallint('width').notNull(), // Original width of the video.

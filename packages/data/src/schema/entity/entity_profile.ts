@@ -4,13 +4,13 @@ import {
 import { relations } from 'drizzle-orm';
 
 import { table as entity } from './entity.ts';
-import { table as image } from './file/image.ts';
-import { table as user } from './user.ts';
+import { table as image } from './file/entity_file_image.ts';
+import { table as user } from './entity_user.ts';
 
 /**
  * Profile about a particular person.
  */
-export const table = pgTable('profile', {
+export const table = pgTable('entity_profile', {
   $id: uuid('id').primaryKey().references(() => entity.$id, { onDelete: 'cascade' }),
   $user: uuid('user_id').references(() => user.$id), // The user ID that owns the profile.
   givenName: varchar('given_name', { length: 128 }), // The first name of the person.

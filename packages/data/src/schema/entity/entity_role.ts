@@ -4,12 +4,12 @@ import {
 import { sql, relations } from 'drizzle-orm';
 
 import { table as entity } from './entity.ts';
-import { table as image } from './file/image.ts';
+import { table as image } from './file/entity_file_image.ts';
 
 /**
  * Roles for grouping actions together for authorization.
  */
-export const table = pgTable('role', {
+export const table = pgTable('entity_role', {
   $id: uuid('id').primaryKey().references(() => entity.$id, { onDelete: 'cascade' }),
   name: varchar('name', { length: 32 }).unique().notNull(), // A human readable name for the role.
   description: varchar('description', { length: 1024 }), // A description of the role.

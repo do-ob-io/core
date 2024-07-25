@@ -5,10 +5,10 @@ import {
 
 import { table as mutate } from '../mutate.ts';
 
-import { table as assignment } from '../join/assignment.ts';
+import { table as assignment } from '../join/join_assignment.ts';
 import { table as permit } from '../join/permit.ts';
 import { table as entitle } from '../join/entitle.ts';
-import { table as credential } from './credential.ts';
+import { table as credential } from './entity_credential.ts';
 
 /**
  * Entity table for resting data meta information.
