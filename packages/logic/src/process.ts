@@ -9,7 +9,7 @@ export type ProcessHandler<
   M extends ActionModule,
   C extends Context,
   R
-> = (input: Input<ReturnType<M['act']>>, context: C) => Promise<Output<R>>;
+> = (input: Input<ReturnType<M['act']>>, adapter: C['adapter']) => Promise<Output<R>>;
 
 export interface Process<
   K extends string = string,
@@ -54,7 +54,7 @@ export function processify<
         return undefined as any;
       }
 
-      return handler(input as Input<ReturnType<M['act']>>, context) as Promise<Output<ActionResult<A>>> as any;
+      return handler(input as Input<ReturnType<M['act']>>, context.adapter) as Promise<Output<ActionResult<A>>> as any;
     },
   } as Process<K, M, R>;
 

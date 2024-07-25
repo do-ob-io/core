@@ -15,7 +15,7 @@ test('should create a process, add a handler, and execute', async () => {
   const process = processify(
     'test',
     context,
-    [ register, async ( ) => {
+    [ register, async (_) => {
       return {
         status: OutputStatus.Success,
         payload: {
