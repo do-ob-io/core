@@ -1,16 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Action } from '@do-ob/core/io';
-import { Process } from './process';
+ 
+import { inputify, type Action } from '@do-ob/core/io';
+import type { Process } from './process';
+
+export interface LogicDispatchOptions {
+  client?: () => number;
+  headers?: () => Record<string, string>;
+}
 
 export interface Logic<P extends Process> {
-  dispatch: <A extends Action<string, unknown>>(action: A) => Promise<boolean>;
-  _infer: Record<P['key'], P['_infer']>;
+  dispatch: <A extends Action<string, unknown>, I extends keyof P['_infer_output']>(
+    action: A,
+    options?: LogicDispatchOptions,
+  ) => Promise<
+    { [K in P['key']]: A['type'] extends I ? P['_infer_output'][I] : never }
+  >;
 }
 
 export type LogicHandlerKeys<
   A extends Action<string, unknown>,
   P extends Process
-> = { [K in keyof P['_infer']]: K extends A['type'] ? true : never };
+> = { [K in keyof P['_infer_output']]: K extends A['type'] ? true : never };
 
 /**
  * Configuration for the logic function wrapper generation.
@@ -18,6 +28,9 @@ export type LogicHandlerKeys<
 export interface LogicOptions<
   P extends Process,
 > {
+  /**
+   * List processes used to hande action dispatches.
+   */
   processes?: P[];
 }
 
@@ -26,26 +39,43 @@ export interface LogicOptions<
  */
 export function logic<
   P extends Process,
->(options: LogicOptions<P> = {}) {
+>(options: LogicOptions<P> = {}): Logic<P> {
 
   const {
     processes = [],
   } = options;
 
+  const processKeys = processes.map((process) => process.key);
+
   return {
     dispatch: async <
       A extends Action<string, unknown>,
-      I extends keyof P['_infer']
+      I extends keyof P['_infer_output']
     >(
-      action: A
+      action: A,
+      options: LogicDispatchOptions = {},
     ): Promise<
-      { [K in P['key']]: A['type'] extends I ? Awaited<ReturnType<P['_infer'][I]>> : never }
+      { [K in P['key']]: A['type'] extends I ? P['_infer_output'][I] : never }
     > => {
-      console.log('DISPATCHING', action);
-      for (const process of processes) {
-        console.log('TO PROCESS', process.key);
-      }
-      return true as any;
+
+      const input = inputify({
+        action: action,
+        client: options.client?.() ?? 0,
+        headers: options.headers?.() ?? {},
+      });
+      
+      const processPromises = processes.map(
+        async (process) => process.execute(input)
+      );
+
+      const results = await Promise.all(processPromises);
+      return results.reduce((acc, result, index) => {
+        if (!result) {
+          return acc;
+        }
+        acc[processKeys[index] as P['key']] = result;
+        return acc;
+      }, {} as Record<P['key'], any>);
     }
   };
 

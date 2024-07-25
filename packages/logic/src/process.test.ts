@@ -15,10 +15,7 @@ test('should create a process, add a handler, and execute', async () => {
   const process = processify(
     'test',
     context,
-    [ register, async ( input ) => {
-      const { action } = input;
-      const { payload } = action;
-      console.log('PAYLOAD', payload);
+    [ register, async ( ) => {
       return {
         status: OutputStatus.Success,
         payload: {
@@ -27,18 +24,6 @@ test('should create a process, add a handler, and execute', async () => {
       };
     } ],
   );
-
-  // process.handle(register, async ( input ) => {
-  //   const { action } = input;
-  //   const { payload } = action;
-  //   console.log('PAYLOAD', payload);
-  //   return {
-  //     status: OutputStatus.Success,
-  //     payload: {
-  //       username: 'test'
-  //     }
-  //   };
-  // });
 
   const input = inputify({
     action: register.act({

@@ -13,12 +13,12 @@ export type ProcessHandler<
 
 export interface Process<
   K extends string = string,
-  C extends Context = Context,
+  // C extends Context = Context,
   M extends ActionModule = ActionModule,
   R = unknown
 > {
   key: K;
-  _infer: Record<M['type'], ProcessHandler<M, C, R>>;
+  _infer_output: Record<M['type'], Output<R>>;
   execute: <A extends Action<string, unknown>>(input: Input<A>) => Promise<A['type'] extends M['type'] ? Output<ActionResult<A>> : undefined>;
 }
 
@@ -38,7 +38,7 @@ export function processify<
   key: K,
   context: C,
   ...handler: [M, ProcessHandler<M, C, R>][]
-): Process<K, C, M, R> {
+): Process<K, M, R> {
   const handlers: Record<M['type'], ProcessHandler<M, C, R>> = handler.reduce((acc, [ module, handler ]) => {
     acc[module.type as M['type']] = handler;
     return acc;
@@ -56,7 +56,6 @@ export function processify<
 
       return handler(input as Input<ReturnType<M['act']>>, context) as Promise<Output<ActionResult<A>>> as any;
     },
-    _infer: handlers,
-  };
+  } as Process<K, M, R>;
 
 }

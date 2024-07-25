@@ -18,7 +18,6 @@ test('should be able to use a custom process', async () => {
     'account',
     context,
     [ register, async () => {
-      console.log('HANDLING REGISTER ACTION');
       return {
         status: 1,
         payload: {
@@ -32,6 +31,8 @@ test('should be able to use a custom process', async () => {
     processes: [ processTest ]
   });
 
+  expect(dispatch).toBeDefined();
+
   const data = await dispatch(register.act({
     type: 'webauthn',
     handle: '',
@@ -39,15 +40,16 @@ test('should be able to use a custom process', async () => {
     client: '',
     authenticator: ''
   }));
-  data.account;
 
-  const data2 = await dispatch({
-    type: 'something else',
-    payload: {},
+  expect(data).toBeDefined();
+  expect(data.account).toBeDefined();
+  expect(data.account).toEqual({
+    status: 1,
+    payload: {
+      username: 'test'
+    }
   });
-  data2.account;
 
-  expect(dispatch).toBeDefined();
 });
 
 test('should dispatch an action to the logic for processing', async () => {
