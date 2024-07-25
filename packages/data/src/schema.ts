@@ -57,7 +57,7 @@ export function schemaFlatten<G extends Record<string, { table: unknown; relates
   };
 }
 
-export const schema = () => schemaFlatten({
+export const schema = schemaFlatten({
   action,
   amit,
   dispatch,
@@ -107,7 +107,7 @@ export {
   permit,
 };
 
-export type Schema = ReturnType<typeof schema>;
+export type Schema = typeof schema;
 
 /**
  * A schema item module.

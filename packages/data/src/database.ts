@@ -2,7 +2,7 @@ import postgres from 'postgres';
 import { PGlite } from '@electric-sql/pglite';
 import { drizzle as drizzlePostgres, type PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import { drizzle as drizzlePGlite } from 'drizzle-orm/pglite';
-import { schema, type Schema } from '@do-ob/data/schema';
+import { schema, Schema } from '@do-ob/data/schema';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -27,12 +27,12 @@ export function database(connection?: string): Database {
 
   if (process.env.NODE_ENV === 'production') {
     const sql = postgres(connection ?? DATABASE_CONNECTION);
-    globalThis.doob_database_instance =  drizzlePostgres(sql, { schema: schema() });
+    globalThis.doob_database_instance =  drizzlePostgres(sql, { schema });
   } else {
     const sql = new PGlite(connection ?? DATABASE_CONNECTION);
     const sqlFile = readFileSync(resolve(import.meta.dirname, '../scripts/data.sql'), 'utf8');
     sql.exec(sqlFile);
-    globalThis.doob_database_instance = drizzlePGlite(sql, { schema: schema() }) as unknown as Database;
+    globalThis.doob_database_instance = drizzlePGlite(sql, { schema }) as unknown as Database;
   }
 
   return globalThis.doob_database_instance;

@@ -9,14 +9,14 @@ importers:
   .:
     devDependencies:
       '@do-ob/eslint-config':
-        specifier: ^2.5.1
-        version: 2.5.1(eslint@9.4.0)(tailwindcss@3.4.4)(typescript@5.4.5)
+        specifier: ^2.6.0
+        version: 2.6.0(eslint@9.4.0)(tailwindcss@3.4.4)(typescript@5.4.5)
       '@do-ob/ts-config':
         specifier: ^2.0.0
         version: 2.0.0(typescript@5.4.5)
       '@do-ob/vite-lib-config':
-        specifier: ^3.0.1
-        version: 3.0.1(@types/node@20.14.2)(rollup@4.18.0)(typescript@5.4.5)(vite@5.2.13(@types/node@20.14.2))
+        specifier: ^3.1.0
+        version: 3.1.0(@types/node@20.14.2)(rollup@4.18.0)(typescript@5.4.5)(vite@5.2.13(@types/node@20.14.2))
       '@electric-sql/pglite':
         specifier: ^0.1.5
         version: 0.1.5
@@ -263,8 +263,8 @@ packages:
     resolution: {integrity: sha512-xm8XrMKz0IlUdocVbYJe0Z9xEgidU7msskG8BbhnTPK/HZ2z/7FP7ykqPgrUH+C+r414mNfNWam1f2vqOjqjYQ==}
     engines: {node: '>=6.9.0'}
 
-  '@do-ob/eslint-config@2.5.1':
-    resolution: {integrity: sha512-uv3+ReKPC1dv2CptHw9Pgkz7NlS8tytKEkFcE+HAF9Xtob6M5DvFhyGveHJftl/XegNqPFaNY28qyYeaZotGUg==}
+  '@do-ob/eslint-config@2.6.0':
+    resolution: {integrity: sha512-JjEQwsYUdMECa8IFxg9wpAGNWb9aYP6uO95VBNdfyKDbGqeEwf4usrAyUE89V0SdJuujAGZpc8U58yzmlmDiww==}
     engines: {node: '>=20'}
     peerDependencies:
       eslint: ^9
@@ -274,8 +274,8 @@ packages:
     peerDependencies:
       typescript: ^5
 
-  '@do-ob/vite-lib-config@3.0.1':
-    resolution: {integrity: sha512-zX1UUcQSbAEoa5qvxj20iiuuLCZ9X70Y5Iwp6rDrXp4md1H2rEjDvZhYi2oDgaTG+dJyXk0gkTjMURcxEUI07Q==}
+  '@do-ob/vite-lib-config@3.1.0':
+    resolution: {integrity: sha512-oKtOpgsc0dooKDdQ9RfVLYwJmPJO5DsGwHgBRgCFjZJrjGYYy5TW+FkTVBesFcuyVcZ/++r8KljK46a9vkM7uA==}
     peerDependencies:
       vite: ^5
 
@@ -2473,8 +2473,8 @@ packages:
     resolution: {integrity: sha512-Wglpdk03BSfXkHoQa3b/oulrotAkwrlLDRSOb9D0bN86FdRyE9lppSp33aHNPgBa0JKCoB+drFLZkQoRRYae5A==}
     engines: {node: ^10 || ^12 || >=14}
 
-  postcss@8.4.39:
-    resolution: {integrity: sha512-0vzE+lAiG7hZl1/9I8yzKLx3aR9Xbof3fBHKunvMfOCYAtMhrsnccJY2iTURb9EZd5+pLuiNV9/c/GZJOHsgIw==}
+  postcss@8.4.40:
+    resolution: {integrity: sha512-YF2kKIUzAofPMpfH6hOi2cGnv/HrUlfucspc7pDyvv7kGdqXrfj8SCl/t8owkEgKEuu8ZcRjSOxFxVLqwChZ2Q==}
     engines: {node: ^10 || ^12 || >=14}
 
   postgres@3.4.4:
@@ -2967,8 +2967,8 @@ packages:
   yallist@4.0.0:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
 
-  yaml@2.4.5:
-    resolution: {integrity: sha512-aBx2bnqDzVOyNKfsysjA2ms5ZlnjSAW2eG3/L5G/CSujfjLJTJsEw1bGw8kCf04KodQWk1pxlGnZ56CRxiawmg==}
+  yaml@2.5.0:
+    resolution: {integrity: sha512-2wWLbGbYDiSqqIKoPjar3MPgB94ErzCtrNE1FdqGuaO0pi2JGjmE8aW8TDZwzU7vuxcGRdL/4gPQwQ7hD5AMSw==}
     engines: {node: '>= 14'}
     hasBin: true
 
@@ -3204,7 +3204,7 @@ snapshots:
       '@babel/helper-validator-identifier': 7.24.7
       to-fast-properties: 2.0.0
 
-  '@do-ob/eslint-config@2.5.1(eslint@9.4.0)(tailwindcss@3.4.4)(typescript@5.4.5)':
+  '@do-ob/eslint-config@2.6.0(eslint@9.4.0)(tailwindcss@3.4.4)(typescript@5.4.5)':
     dependencies:
       '@eslint/compat': 1.1.1
       '@eslint/js': 9.4.0
@@ -3225,7 +3225,7 @@ snapshots:
     dependencies:
       typescript: 5.4.5
 
-  '@do-ob/vite-lib-config@3.0.1(@types/node@20.14.2)(rollup@4.18.0)(typescript@5.4.5)(vite@5.2.13(@types/node@20.14.2))':
+  '@do-ob/vite-lib-config@3.1.0(@types/node@20.14.2)(rollup@4.18.0)(typescript@5.4.5)(vite@5.2.13(@types/node@20.14.2))':
     dependencies:
       vite: 5.2.13(@types/node@20.14.2)
       vite-plugin-dts: 3.9.1(@types/node@20.14.2)(rollup@4.18.0)(typescript@5.4.5)(vite@5.2.13(@types/node@20.14.2))
@@ -5337,28 +5337,28 @@ snapshots:
 
   possible-typed-array-names@1.0.0: {}
 
-  postcss-import@15.1.0(postcss@8.4.39):
+  postcss-import@15.1.0(postcss@8.4.40):
     dependencies:
-      postcss: 8.4.39
+      postcss: 8.4.40
       postcss-value-parser: 4.2.0
       read-cache: 1.0.0
       resolve: 1.22.8
 
-  postcss-js@4.0.1(postcss@8.4.39):
+  postcss-js@4.0.1(postcss@8.4.40):
     dependencies:
       camelcase-css: 2.0.1
-      postcss: 8.4.39
+      postcss: 8.4.40
 
-  postcss-load-config@4.0.2(postcss@8.4.39):
+  postcss-load-config@4.0.2(postcss@8.4.40):
     dependencies:
       lilconfig: 3.1.2
-      yaml: 2.4.5
+      yaml: 2.5.0
     optionalDependencies:
-      postcss: 8.4.39
+      postcss: 8.4.40
 
-  postcss-nested@6.2.0(postcss@8.4.39):
+  postcss-nested@6.2.0(postcss@8.4.40):
     dependencies:
-      postcss: 8.4.39
+      postcss: 8.4.40
       postcss-selector-parser: 6.1.1
 
   postcss-selector-parser@6.1.1:
@@ -5374,7 +5374,7 @@ snapshots:
       picocolors: 1.0.1
       source-map-js: 1.2.0
 
-  postcss@8.4.39:
+  postcss@8.4.40:
     dependencies:
       nanoid: 3.3.7
       picocolors: 1.0.1
@@ -5662,11 +5662,11 @@ snapshots:
       normalize-path: 3.0.0
       object-hash: 3.0.0
       picocolors: 1.0.1
-      postcss: 8.4.39
-      postcss-import: 15.1.0(postcss@8.4.39)
-      postcss-js: 4.0.1(postcss@8.4.39)
-      postcss-load-config: 4.0.2(postcss@8.4.39)
-      postcss-nested: 6.2.0(postcss@8.4.39)
+      postcss: 8.4.40
+      postcss-import: 15.1.0(postcss@8.4.40)
+      postcss-js: 4.0.1(postcss@8.4.40)
+      postcss-load-config: 4.0.2(postcss@8.4.40)
+      postcss-nested: 6.2.0(postcss@8.4.40)
       postcss-selector-parser: 6.1.1
       resolve: 1.22.8
       sucrase: 3.35.0
@@ -5969,7 +5969,7 @@ snapshots:
 
   yallist@4.0.0: {}
 
-  yaml@2.4.5: {}
+  yaml@2.5.0: {}
 
   yocto-queue@0.1.0: {}
 

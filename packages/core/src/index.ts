@@ -12,13 +12,18 @@ import type {
 } from '@do-ob/core/types';
 
 import {
+  Input,
+  inputify,
+  Action,
+  Ambit,
+  Rate,
   Adapter,
   adaptify,
   Context,
   contextify,
 } from '@do-ob/core/io';
 
-import { Input, Action, Ambit, Rate } from '@do-ob/core/io';
+import {  } from '@do-ob/core/io';
 
 export type {
   Arguments,
@@ -41,6 +46,7 @@ export {
   nanoid,
   fasthash,
 
+  inputify,
   adaptify,
   contextify,
 };

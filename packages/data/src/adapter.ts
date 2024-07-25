@@ -2,6 +2,7 @@ import { adaptify } from '@do-ob/core';
 import { entity, mutate } from '@do-ob/data/schema';
 import { Database } from '@do-ob/data/database';
 import { PgTableWithColumns, TableConfig } from 'drizzle-orm/pg-core';
+import { getTableName } from 'drizzle-orm';
 
 export function adapter<
   D extends Database,
@@ -15,25 +16,25 @@ export function adapter<
      * Safely inserts a new entity into the database with authorization controls and audits.
      */
     insert: ({ $dispatch, $subject }) => async <
-      T extends PgTableWithColumns<TableConfig>,
+      C extends TableConfig,
     >(
-      table: T,
-      value: T['$inferInsert'],
+      table: PgTableWithColumns<C>,
+      value: Omit<PgTableWithColumns<C>['$inferInsert'], '$id'>,
     ) => {
       const db = await database;
       
       /**
        * The table must declare itself an extension of the entity table.
        */
-      const tableName = table._.name;
-      if(!tableName.startsWith('entity_')) {
-        throw new Error('Only self-declared entity tables, prefixed with "entity_", can be logically inserted.');
-      }
+      const tableName = getTableName(table);
+      // if(!tableName.startsWith('entity_')) {
+      //   throw new Error('Only self-declared entity tables, prefixed with "entity_", can be logically inserted.');
+      // }
       
       /**
        * Begin the database transaction.
        */
-      db.transaction(async (tx) => {
+      return db.transaction(async (tx) => {
         /**
          * Create an entity record.
          */
@@ -47,7 +48,7 @@ export function adapter<
          * Create the entity type record.
          */
         const [ typeRecord ] = await tx.insert(table).values({
-          ...value,
+          ...value as PgTableWithColumns<C>['$inferInsert'],
           $id: entityRecord.$id,
         }).returning();
 
@@ -65,7 +66,7 @@ export function adapter<
         });
   
         return {
-          ...typeRecord as T['$inferInsert'],
+          ...typeRecord as PgTableWithColumns<C>['$inferInsert'],
           entity: entityRecord,
         };
       });

@@ -22,7 +22,7 @@ export function database(connection?: string) {
   }
 
   const sql = postgres(connection ?? DATABASE_CONNECTION);
-  globalThis.doob_postgres_database_instance =  drizzle(sql, { schema: schema() });
+  globalThis.doob_postgres_database_instance =  drizzle(sql, { schema });
 
   return globalThis.doob_postgres_database_instance;
 };
