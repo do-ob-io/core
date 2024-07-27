@@ -30,8 +30,6 @@ export type {
 
   Input,
   Action,
-  Ambit,
-  Rate,
   
   Adapter,
   Context,
@@ -39,6 +37,9 @@ export type {
 
 
 export {
+  Ambit,
+  Rate,
+  
   clsx,
   clmg,
   memoize,

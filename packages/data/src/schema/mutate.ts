@@ -5,6 +5,7 @@ import {
   uuid,
   timestamp,
   jsonb,
+  varchar,
 } from 'drizzle-orm/pg-core';
 
 import { table as dispatch } from './dispatch.ts';
@@ -23,6 +24,7 @@ export const table = pgTable('mutate', {
   $id: uuid('id').primaryKey().defaultRandom(), // Unique mutate identifier.
   $dispatch: uuid('dispatch_id').notNull().references(() => dispatch.$id), // The dispatch ID that was responsible for the mutation.
   $entity: uuid('record_id').notNull().references(() => entity.$id), // The record ID that was changed.
+  table: varchar('table').notNull(), // The table that was changed.
   operation: mutateOperation('operation').notNull(), // The operation performed on the record.
   occurred: timestamp('occurred').defaultNow().notNull(), // When the operation was performed.
   mutation: jsonb('mutation').notNull(), // The mutation that was performed.

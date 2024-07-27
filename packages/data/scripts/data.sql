@@ -177,6 +177,7 @@ CREATE TABLE IF NOT EXISTS "mutate" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"dispatch_id" uuid NOT NULL,
 	"record_id" uuid NOT NULL,
+	"table" varchar NOT NULL,
 	"operation" "mutate_operation" NOT NULL,
 	"occurred" timestamp DEFAULT now() NOT NULL,
 	"mutation" jsonb NOT NULL
