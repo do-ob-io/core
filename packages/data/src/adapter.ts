@@ -1,9 +1,10 @@
 import { adaptify, Ambit } from '@do-ob/core';
-import { entity, mutate } from '@do-ob/data/schema';
+import { schema } from '@do-ob/data/schema';
 import { Database } from '@do-ob/data/database';
 import { PgTableWithColumns, TableConfig } from 'drizzle-orm/pg-core';
 import { getTableName, eq, SQL, sql, and, getTableColumns } from 'drizzle-orm';
 import { RowList } from 'postgres';
+import { insert } from './transaction';
 
 /**
  * Builds an sql filter based on an ambit.
@@ -16,9 +17,9 @@ function scope(
     case Ambit.Global:
       return sql`true`;
     case Ambit.Owned:
-      return eq(entity.table.$owner, $subject);
+      return eq(schema.entity.$owner, $subject);
     case Ambit.Created:
-      return eq(entity.table.$creator, $subject);
+      return eq(schema.entity.$creator, $subject);
     case Ambit.Member:
       return sql`false`; // TODO: Implement member scope.
     case Ambit.None:
@@ -39,12 +40,16 @@ export function adapter<
     /**
      * Safely inserts a new entity into the database with authorization controls and audits.
      */
-    insert: ({ $dispatch, $subject }) => async <
+    insert: ({ $subject, $dispatch }) => async <
       C extends TableConfig,
     >(
       table: PgTableWithColumns<C>,
       value: Omit<PgTableWithColumns<C>['$inferInsert'], '$id'>,
     ) => {
+      if(!$subject) {
+        return;
+      }
+
       const db = await database;
       
       /**
@@ -55,52 +60,24 @@ export function adapter<
         throw new Error('Only self-declared entity tables, prefixed with "entity_", can be logically inserted.');
       }
       
-      /**
-       * Begin the database transaction.
-       */
-      return db.transaction(async (tx) => {
-        /**
-         * Create an entity record.
-         */
-        const [ entityRecord ] = await tx.insert(entity.table).values({
-          type: tableName.replace('entity_', ''),
-          $owner: $subject,
-          $creator: $subject,
-        }).returning();
-  
-        /**
-         * Create the entity type record.
-         */
-        const [ typeRecord ] = await tx.insert(table).values({
-          ...value as PgTableWithColumns<C>['$inferInsert'],
-          $id: entityRecord.$id,
-        }).returning();
-
-        /**
-         * Create a mutation record of the insert.
-         */
-        tx.insert(mutate.table).values([
+      const [ result, entity ] = await db.transaction(
+        insert(
+          table,
+          value,
           {
-            $dispatch: $dispatch,
-            $entity: entityRecord.$id,
-            table: tableName,
-            operation: 'create',
-            mutation: typeRecord,
+            $owner: $subject,
+            $creator: $subject
           },
           {
             $dispatch: $dispatch,
-            $entity: entityRecord.$id,
-            table: getTableName(entity.table),
-            operation: 'create',
-            mutation: entityRecord,
           }
-        ]);
-  
-        return {
-          ...typeRecord as PgTableWithColumns<C>['$inferInsert'],
-          entity: entityRecord,
-        };
-      });
+        ),
+      );
+
+      return {
+        ...result,
+        entity,
+      };
     },
 
     /**
@@ -140,10 +117,10 @@ export function adapter<
          */
         const updateChunks: SQL[] = [];
         updateChunks.push(tx.update(table).set(next as object).getSQL());
-        updateChunks.push(sql`from ${entity.table}`);
+        updateChunks.push(sql`from ${schema.entity}`);
         updateChunks.push(sql`where ${and(
           eq(table.$id, $id),
-          eq(table.$id, entity.table.$id),
+          eq(table.$id, schema.entity.$id),
           scope($subject, ambit),
         )}`);
         updateChunks.push(sql`returning ${
@@ -176,7 +153,7 @@ export function adapter<
         /**
          * Create the mutation record.
          */
-        tx.insert(mutate.table).values({
+        tx.insert(schema.mutate).values({
           $dispatch: $dispatch,
           $entity: $id,
           table: tableName,

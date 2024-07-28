@@ -1,22 +1,34 @@
 import { test, expect, assert } from 'vitest';
-import { adapter, database, schema } from '@do-ob/data';
-import { Ambit, inputify } from '@do-ob/core';
-import { randomUUID } from 'node:crypto';
+import { adapter, Database, database, schema } from '@do-ob/data';
+import { inputify } from '@do-ob/core';
+import { seed } from './seed';
+
+async function prepareInput(db: Database) {
+  seed();
+  const [ subject ] = await db.insert(schema.entity).values({}).returning({ $id: schema.entity.$id });
+  const [ dispatch ] = await db.insert(schema.dispatch).values({
+    $subject: subject.$id,
+    $action: 'register',
+  }).returning({ $id: schema.dispatch.$id });
+
+  return inputify({
+    $dispatch: dispatch.$id,
+    $subject: subject.$id,
+  });
+}
 
 test('should insert a new entity into the database', async () => {
   const db = database();
   const dbAdapter = adapter(db);
 
-  const input = inputify({
-    $dispatch: randomUUID(),
-    $subject: randomUUID(),
-  });
+  const input = await prepareInput(db);
+
   const result = await dbAdapter.insert(input)(schema.locale, {
     name: 'my_locale',
     code: 'en-US'
   });
 
-  expect(result).toBeDefined();
+  assert(result);
   expect(result).toMatchObject({
     name: 'my_locale',
     code: 'en-US',
@@ -53,11 +65,8 @@ test('should update an entity in the database', async () => {
   const db = database();
   const dbAdapter = adapter(db);
 
-  const input = inputify({
-    $dispatch: randomUUID(),
-    $subject: randomUUID(),
-    ambit: Ambit.Global,
-  });
+  const input = await prepareInput(db);
+
   const inserted = await dbAdapter.insert(input)(schema.locale, {
     name: 'my_locale_to_update',
     code: 'en-US',
@@ -78,5 +87,13 @@ test('should update an entity in the database', async () => {
     content: 'this is the updated content'
   });
 
-});
+  const mutations = await db.query.mutate.findMany({
+    where: (table, { and, eq }) => and(
+      eq(table.$entity, result.$id),
+      eq(table.operation, 'update'),
+    ),
+  });
 
+  expect(mutations).toHaveLength(1);
+
+});
