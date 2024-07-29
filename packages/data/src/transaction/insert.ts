@@ -2,21 +2,19 @@ import type { Transaction } from './transaction.types';
 import { getTableName, type TableConfig } from 'drizzle-orm';
 import type { PgTableWithColumns } from 'drizzle-orm/pg-core';
 import { schema } from '@do-ob/data/schema';
+import { auditMutation } from './audit';
+import { Input } from '@do-ob/core';
 
 export function insert<
   C extends TableConfig,
 > (
+  input: Input,
   table: PgTableWithColumns<C>,
   value: Omit<PgTableWithColumns<C>['$inferInsert'], '$id'>,
-  meta: {
-    $owner?: string,
-    $creator?: string,
-  } = {},
-  audit?: {
-    $dispatch: string,
-  },
 ) {
   return async (tx: Transaction): Promise<[PgTableWithColumns<C>['$inferSelect'], typeof schema.entity.$inferSelect]> => {
+    const { $subject, $dispatch } = input;
+
     const tableName = getTableName(table);
 
     /**
@@ -24,7 +22,8 @@ export function insert<
          */
     const [ entityRecord ] = await tx.insert(schema.entity).values({
       type: tableName.replace('entity_', ''),
-      ...meta
+      $owner: $subject,
+      $creator: $subject,
     }).returning();
 
     /**
@@ -33,33 +32,29 @@ export function insert<
     const [ typeRecord ] = await tx.insert(table).values({
       ...value as PgTableWithColumns<C>['$inferInsert'],
       $id: entityRecord.$id,
-    }).returning();
+    }).returning() as (PgTableWithColumns<C>['$inferSelect'] & { $id: string })[];
 
     if (!typeRecord) {
       tx.rollback();
     }
 
-    if (audit) {
-      tx.insert(schema.mutate).values([
+    if ($dispatch) {
+      tx.transaction(auditMutation($dispatch, [
         {
-          $dispatch: audit.$dispatch,
-          $entity: entityRecord.$id,
-          table: tableName,
-          operation: 'create',
-          mutation: typeRecord,
+          type: 'create',
+          table,
+          value: typeRecord,
         },
         {
-          $dispatch: audit.$dispatch,
-          $entity: entityRecord.$id,
-          table: tableName,
-          operation: 'create',
-          mutation: entityRecord,
+          type: 'create',
+          table: schema.entity,
+          value: entityRecord,
         }
-      ]);
+      ]));
     }
 
     return [
-      typeRecord as PgTableWithColumns<C>['$inferSelect'],
+      typeRecord,
       entityRecord,
     ];
   };

@@ -6,13 +6,13 @@ import { seed } from './seed';
 async function prepareInput(db: Database) {
   seed();
   const [ subject ] = await db.insert(schema.entity).values({}).returning({ $id: schema.entity.$id });
-  const [ dispatch ] = await db.insert(schema.dispatch).values({
-    $subject: subject.$id,
-    $action: 'register',
-  }).returning({ $id: schema.dispatch.$id });
+  // const [ dispatch ] = await db.insert(schema.dispatch).values({
+  //   $subject: subject.$id,
+  //   $action: 'register',
+  // }).returning({ $id: schema.dispatch.$id });
 
   return inputify({
-    $dispatch: dispatch.$id,
+    // $dispatch: dispatch.$id,
     $subject: subject.$id,
   });
 }

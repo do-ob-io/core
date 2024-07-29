@@ -1,19 +1,17 @@
 import type { Transaction } from './transaction.types';
-import { getTableName, type TableConfig } from 'drizzle-orm';
-import type { PgTableWithColumns } from 'drizzle-orm/pg-core';
+import { getTableName, Table, type TableConfig } from 'drizzle-orm';
+// import type { PgTableWithColumns } from 'drizzle-orm/pg-core';
 import { schema } from '@do-ob/data/schema';
 
-export interface AuditMutationChanges<C extends TableConfig> {
+export interface AuditMutationChanges<C extends TableConfig = TableConfig> {
   type: 'create' | 'update' | 'delete';
-  table: PgTableWithColumns<C>,
-  value: PgTableWithColumns<C>['$inferSelect'] & { $id: string },
+  table: Table<C>,
+  value: { $id: string, [key: string]: unknown },
 }
 
-export function auditMutation<
-  C extends TableConfig,
->(
+export function auditMutation(
   $dispatch: string,
-  mutations: AuditMutationChanges<C>[],
+  mutations: AuditMutationChanges[],
 ) {
   return async (tx: Transaction) => {
     /**
