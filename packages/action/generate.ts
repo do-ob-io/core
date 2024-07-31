@@ -1,11 +1,12 @@
 import { createGenerator, Schema, type Config } from 'ts-json-schema-generator';
 import { glob } from 'glob';
+import { titleCase } from '@do-ob/core';
 import fs from 'fs';
 // import Ajv, { Schema } from 'ajv';
 // import formats from 'ajv-formats';
 // import standalone from 'ajv/dist/standalone';
 
-const typeFiles = glob.sync('./src/action/*.types.ts');
+const typeFiles = glob.sync('./src/action/*.ts');
 const outputDir = './src/_schema';
 
 // const schemas: Array<Schema> = [];
@@ -26,7 +27,7 @@ if (!fs.existsSync(outputDir)) {
 
 typeFiles.forEach((file) => {
 
-  const actionName = file.split('/').pop()?.replace('.types.ts', '');
+  const actionName = file.split('/').pop()?.replace('.ts', '');
 
   if (!actionName) {
     return;
@@ -37,7 +38,8 @@ typeFiles.forEach((file) => {
     schemaId: `${actionName}`,
     topRef: false,
     minify: true,
-    type: '*',
+    type: 'Payload',
+    skipTypeCheck: true,
   };
 
   const generator = createGenerator(config);
@@ -47,12 +49,12 @@ typeFiles.forEach((file) => {
     const titleKey = `action.${actionName}.title`;
     const title = schema.title;
     schema.title = '%' + titleKey;
-    dictionary[titleKey] = title;
+    dictionary[titleKey] = titleCase(title);
   } else {
     const titleKey = `action.${actionName}.title`;
     const title = actionName.replace(/([A-Z])/g, ' $1').trim();
     schema.title = '%' + titleKey;
-    dictionary[titleKey] = title;
+    dictionary[titleKey] = titleCase(title);
   }
 
   if(schema.description) {
@@ -102,7 +104,7 @@ const code =
 `${schemaNames.map((s) => (`import { default as ${s} } from './_schema/${s}';`)).join('\n')}
 
 export {
-  ${schemaNames.join(',\n')}
+  ${schemaNames.join(',\n  ')}
 };
 `;
 

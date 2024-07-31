@@ -1,24 +1,15 @@
-import { test, expect, assert } from 'vitest';
+import { test, expect, assert, beforeAll } from 'vitest';
 import { adapter, Database, database, schema } from '@do-ob/data';
-import { inputify } from '@do-ob/core';
 import { seed } from './seed';
+import { prepareInput } from '@/test/utility';
 
-async function prepareInput(db: Database) {
-  seed();
-  const [ subject ] = await db.insert(schema.entity).values({}).returning({ $id: schema.entity.$id });
-  // const [ dispatch ] = await db.insert(schema.dispatch).values({
-  //   $subject: subject.$id,
-  //   $action: 'register',
-  // }).returning({ $id: schema.dispatch.$id });
+let db: Database;
 
-  return inputify({
-    // $dispatch: dispatch.$id,
-    $subject: subject.$id,
-  });
-}
+beforeAll(async () => {
+  db = await seed(database());
+});
 
 test('should insert a new entity into the database', async () => {
-  const db = database();
   const dbAdapter = adapter(db);
 
   const input = await prepareInput(db);
@@ -62,7 +53,6 @@ test('should insert a new entity into the database', async () => {
 });
 
 test('should update an entity in the database', async () => {
-  const db = database();
   const dbAdapter = adapter(db);
 
   const input = await prepareInput(db);

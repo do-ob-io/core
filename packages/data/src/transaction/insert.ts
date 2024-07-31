@@ -39,7 +39,7 @@ export function insert<
     }
 
     if ($dispatch) {
-      tx.transaction(auditMutation($dispatch, [
+      await tx.transaction(auditMutation($dispatch, [
         {
           type: 'create',
           table,

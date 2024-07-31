@@ -5,7 +5,7 @@ import {
 } from 'vitest';
 import { database, Database } from '@do-ob/data/database';
 // import { schema } from '@do-ob/data/schema';
-import { collection, seed } from '@do-ob/data/seed';
+import { modules, seed } from '@do-ob/data/seed';
 
 let db: Database;
 
@@ -17,5 +17,5 @@ beforeAll(async () => {
 // Should already have the seeded collection of action records in the database.
 test('should have existing action records', async () => {
   const actions = await db.query.action.findMany();
-  expect(actions).toHaveLength(collection.action.length);
+  expect(actions).toHaveLength(modules.action.records.length);
 });

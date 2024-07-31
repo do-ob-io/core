@@ -1,15 +1,18 @@
-import { test, expect, assert } from 'vitest';
+import { test, expect, assert, beforeAll } from 'vitest';
 import { insert } from './insert';
 import { schema } from '@do-ob/data/schema';
-import { database } from '@do-ob/data/database';
-import { inputify } from '@do-ob/core';
-import { randomUUID } from 'crypto';
+import { Database, database } from '@do-ob/data/database';
+import { seed } from '@do-ob/data/seed';
+import { prepareInput } from '@/test/utility';
+
+let db: Database;
+
+beforeAll(async () => {
+  db = await seed(database());
+});
 
 test('should insert a new entity into the database', async () => {
-  const db = database();
-  const input = inputify({
-    $subject: randomUUID(),
-  });
+  const input = await prepareInput(db);
 
   const [ locale, entity ] = await db.transaction(
     insert(
@@ -36,8 +39,8 @@ test('should insert a new entity into the database', async () => {
   assert(entityResult);
   expect(entityResult).toMatchObject({
     type: 'locale',
-    $owner: null,
-    $creator: null,
+    $owner: input.$subject,
+    $creator: input.$subject,
   });
 
   // Should read the locale from the database.

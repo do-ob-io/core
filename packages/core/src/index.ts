@@ -1,53 +1,5 @@
-import {
-  clsx,
-  clmg,
-  memoize,
-  nop,
-  nanoid,
-  fasthash,
-} from '@do-ob/core/utility';
-
-import type {
-  Arguments,
-} from '@do-ob/core/types';
-
-import {
-  Input,
-  inputify,
-  Action,
-  Ambit,
-  Rate,
-  Adapter,
-  adaptify,
-  Context,
-  contextify,
-} from '@do-ob/core/io';
-
-import {  } from '@do-ob/core/io';
-
-export type {
-  Arguments,
-
-  Input,
-  Action,
-  
-  Adapter,
-  Context,
-};
-
-
-export {
-  Ambit,
-  Rate,
-  
-  clsx,
-  clmg,
-  memoize,
-  nop,
-  nanoid,
-  fasthash,
-
-  inputify,
-  adaptify,
-  contextify,
-};
+export * from '@do-ob/core/date';
+export * from '@do-ob/core/utility';
+export * from '@do-ob/core/io';
+export * from '@do-ob/core/strings';
+export type * from '@do-ob/core/types';

@@ -1,40 +1,20 @@
-// import type { Transaction } from './transaction.types';
+import type { Transaction } from './transaction.types';
+import { schema, Schema } from '@do-ob/data/schema';
 
 /**
- * Dispatch options.
+ * Prepares a a dispatch for an action with the database.
  */
-export interface DispatchStartOptions {
-  /**
-   * The date and time to initiate the dispatch. The default is immediately.
-   */
-  initiate?: Date;
+export function dispatch(
+  options: Pick<Schema['dispatch']['$inferInsert'], '$subject' | '$action' | 'status' | 'initiate' | 'message' | 'payload'>,
+) {
+  return async (tx: Transaction): Promise<Schema['dispatch']['$inferSelect']> => {
+    /**
+     * Initialize the dispatch record.
+     */
+    const [ dispatch ] = await tx.insert(schema.dispatch).values({
+      ...options
+    }).returning();
 
-  /**
-   * The message to describe the dispatch.
-   */
-  message?: string;
+    return dispatch;
+  };
 }
-
-// /**
-//  * Performs the database transaction associated with action dispatching.
-//  */
-// export function dispatchStart(
-//   /**
-//    * The id of the action to dispatch.
-//    */
-//   type: string,
-
-//   /**
-//    * The desired payload of the action to dispatch.
-//    */
-//   payload: Record<string, unknown> = {},
-
-//   /**
-//    * The options for the dispatch.
-//    */
-//   options?: DispatchStartOptions = {},
-// ) {
-//   return async (tx: Transaction) => {
-    
-//   };
-// }

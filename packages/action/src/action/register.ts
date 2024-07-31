@@ -1,19 +1,54 @@
 import { type Action, Ambit, Rate } from '@do-ob/core/io';
-import type { Register } from './register.types';
 
 /**
- * The expected Reduction of the Action
+ * Register an account with the server.
  */
-export type RegisterReduction = {
-  username: string;
+export type Payload = {
+  /**
+   * The type of registration.
+   */
+  type: 'webauthn';
+
+  /**
+   * A unique name to identify the account.
+   * 
+   * @format handle
+   */
+  handle: string;
+  
+  /**
+   * The public key credential to associate with the account.
+   * 
+   * @format byte
+   * @writeOnly
+   */
+  credential: string;
+
+  /**
+   * 
+   * Information about the client application including the origin and challenge code.
+   * 
+   * @format byte
+   * @writeOnly
+   */
+  client: string;
+  
+  /**
+   * Information about the authenticator used to register the account.
+   * 
+   * @format byte
+   * @writeOnly
+   */
+  authenticator: string;
 };
+
 
 export const type = 'register';
 
-export function act(register: Register): Action<typeof type, Register, RegisterReduction> {
+export function act(payload: Payload): Action<typeof type, Payload> {
   return {
     type,
-    payload: register
+    payload,
   };
 };
 

@@ -1,6 +1,6 @@
-import { SchemaInsert } from '../schema';
+import type { Schema } from '@do-ob/data/schema';
 
-export const records: Array<SchemaInsert['system']> = [
+export const records: Array<Schema['system']['$inferInsert']> = [
   {
     $id: 'NAME',
     type: 'string',
@@ -10,7 +10,7 @@ export const records: Array<SchemaInsert['system']> = [
   {
     $id: 'DESCRIPTION',
     type: 'string',
-    value: 'A web application for my users.',
+    value: 'A web application for the world.',
     description: 'A description of The web application purpose or mission.',
   },
   {
@@ -18,6 +18,12 @@ export const records: Array<SchemaInsert['system']> = [
     type: 'string',
     value: '1.0.0',
     description: 'The current version of this web application deployment.',
+  },
+  {
+    $id: 'SYSTEM_SUBJECT',
+    type: 'string',
+    value: '00000000-0000-0000-0000-000000000000',
+    description: 'The subject identifier for the system to carry out unrestricted operations.',
   },
   {
     $id: 'SEEDED',

@@ -64,26 +64,29 @@ export function update<
     }`);
     const updateSql = sql.join(updateChunks, sql.raw(' '));
 
-    const { rows } = (await tx.execute(updateSql)) as unknown as { rows: RowList<(PgTableWithColumns<C>['$inferSelect'] & { $id: string })[]> };
-        
+    const { rows } = (await tx.execute(updateSql)) as unknown as { rows: RowList<object[]> };
+
     /**
-         * Rollback if the update failed or it updated more than one record somehow.
-         */
+     * Rollback if the update failed or it updated more than one record somehow.
+     */
     if(rows.length === 0 || rows.length > 1) {
       tx.rollback();
     }
 
-    const [ result ] = rows;
+    /**
+     * Remove this select statement once the `from` method is available in drizzle-orm.
+     */
+    const [ result ] = await tx.select().from(table).where(eq(table.$id, $id)) as [PgTableWithColumns<C>['$inferSelect'] & { $id: string }];
 
     /**
-         * Rollback if the updated record failed to return anything.
-         */
+     * Rollback if the updated record failed to return anything.
+     */
     if(!result) {
       tx.rollback();
     }
 
     if ($dispatch) {
-      tx.transaction(auditMutation($dispatch, [
+      await tx.transaction(auditMutation($dispatch, [
         {
           type: 'update',
           table,

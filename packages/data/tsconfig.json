@@ -2,9 +2,11 @@
   "extends": "@do-ob/ts-config",
   "compilerOptions": {
     "baseUrl": ".",
+    "types": ["vite/client"],
     "paths": {
       "@do-ob/data": ["src/index.ts"],
-      "@do-ob/data/*": ["src/*.ts"]
+      "@do-ob/data/*": ["src/*.ts"],
+      "@/*": ["./*"],
     }
   },
   "include": ["src", "test"],

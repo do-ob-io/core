@@ -1,6 +1,4 @@
-// import type { ActionModule } from '@do-ob/core/io';
-import type { Register } from './action/register.types';
-import * as register from './action/register';
+export * as actions from '@do-ob/action/actions';
 
 export async function schema($id: string = 'action.json') {
   const definitions = await import('@do-ob/action/schema');
@@ -13,8 +11,3 @@ export async function schema($id: string = 'action.json') {
     }
   };
 }
-
-export {
-  Register,
-  register
-};
