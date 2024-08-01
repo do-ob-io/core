@@ -4,7 +4,7 @@ import type { PgTableWithColumns } from 'drizzle-orm/pg-core';
 import { schema } from '@do-ob/data/schema';
 import { auditMutation } from './audit';
 import { Ambit, type Input } from '@do-ob/core';
-import type { RowList } from 'postgres';
+import { RowList } from 'postgres';
 
 /**
  * Builds an sql filter based on an ambit.
@@ -28,26 +28,20 @@ function scope(
   }
 }
 
-export function update<
+export function remove<
   C extends TableConfig,
 > (
   input: Input,
   table: PgTableWithColumns<C>,
-  value: Partial<PgTableWithColumns<C>['$inferSelect']> & { $id: string },
-
-  /**
-   * If true, deleted records will be included in the result.
-   */
-  clairvoyance: boolean = false,
+  $id: string,
 ) {
   return async (tx: Transaction): Promise<[PgTableWithColumns<C>['$inferSelect']]> => {
-    const { $id, ...next } = value;
     const { ambit, $subject, $dispatch } = input;
 
     if (!$subject) {
       throw new Error('Unauthorized. No subject provided for the update operation.');
     }
-        
+
     /**
      * Drizzle ORM does not have the `from` clause for the update builder...
      * so we have to build the SQL until then.
@@ -55,18 +49,15 @@ export function update<
      * See issue for updates: https://github.com/drizzle-team/drizzle-orm/issues/2304
      */
     const chunks: SQL[] = [];
-    chunks.push(tx.update(table).set(next as object).getSQL());
-    chunks.push(sql`from ${schema.entity}`);
+    chunks.push(tx.update(schema.entity).set({ deleted: true }).getSQL());
     chunks.push(sql`where ${and(
-      eq(table.$id, $id),
-      eq(table.$id, schema.entity.$id),
-      eq(table.deleted, clairvoyance),
+      eq(schema.entity.$id, $id),
       scope($subject, ambit),
     )}`);
     chunks.push(sql`returning *`);
-    const updateSql = sql.join(chunks, sql.raw(' '));
+    const removeSql = sql.join(chunks, sql.raw(' '));
 
-    const { rows } = (await tx.execute(updateSql)) as unknown as { rows: RowList<object[]> };
+    const { rows } = (await tx.execute(removeSql)) as unknown as { rows: RowList<object[]> };
 
     /**
      * Rollback if the update failed or it updated more than one record somehow.
@@ -90,7 +81,7 @@ export function update<
     if ($dispatch) {
       await tx.transaction(auditMutation($dispatch, [
         {
-          type: 'update',
+          type: 'remove',
           table,
           value: result,
         },

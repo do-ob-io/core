@@ -14,7 +14,7 @@ import { table as entity } from './entity/entity.ts';
 /**
  * Possible operations to a historical change.
  */
-export const mutateOperation = pgEnum('mutate_operation', [ 'create', 'update', 'delete' ]);
+export const mutateOperation = pgEnum('mutate_operation', [ 'insert', 'update', 'remove' ]);
 
 /**
  * Defines a log of CUD changes to records on other tables in the database.

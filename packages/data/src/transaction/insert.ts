@@ -41,12 +41,12 @@ export function insert<
     if ($dispatch) {
       await tx.transaction(auditMutation($dispatch, [
         {
-          type: 'create',
+          type: 'insert',
           table,
           value: typeRecord,
         },
         {
-          type: 'create',
+          type: 'insert',
           table: schema.entity,
           value: entityRecord,
         }

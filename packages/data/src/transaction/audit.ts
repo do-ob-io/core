@@ -4,7 +4,7 @@ import { getTableName, Table, type TableConfig } from 'drizzle-orm';
 import { schema } from '@do-ob/data/schema';
 
 export interface AuditMutationChanges<C extends TableConfig = TableConfig> {
-  type: 'create' | 'update' | 'delete';
+  type: 'insert' | 'update' | 'remove';
   table: Table<C>,
   value: { $id: string, [key: string]: unknown },
 }
