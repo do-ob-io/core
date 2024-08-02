@@ -1,6 +1,5 @@
 // Core
 import * as action from './schema/action.ts';
-import * as amit from './schema/ambit.ts';
 import * as dispatch from './schema/dispatch.ts';
 import * as mutate from './schema/mutate.ts';
 import * as session from './schema/session.ts';
@@ -59,7 +58,6 @@ export function schemaFlatten<G extends Record<string, { table: unknown; relates
 
 export const schema = schemaFlatten({
   action,
-  amit,
   dispatch,
   mutate,
   session,
@@ -84,7 +82,6 @@ export const schema = schemaFlatten({
 
 export {
   action,
-  amit,
   dispatch,
   mutate,
   session,
@@ -137,7 +134,6 @@ export type SchemaSelect = {
  */
 export const core = {
   action,
-  amit,
   dispatch,
   mutate,
   session,

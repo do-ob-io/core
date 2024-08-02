@@ -1,5 +1,5 @@
 import type { Transaction } from './transaction.types';
-import { sql, SQL, type TableConfig } from 'drizzle-orm';
+import { getTableName, sql, SQL, type TableConfig } from 'drizzle-orm';
 import type { PgTableWithColumns } from 'drizzle-orm/pg-core';
 import { scope } from '@do-ob/data/scope';
 import { type Input } from '@do-ob/core';
@@ -36,7 +36,15 @@ export function query<
       throw new Error('Unauthorized. No subject provided for the query operation.');
     }
 
-    const result = await tx.select().from(table).fullJoin(schema.entity, dataFilter.eq(table.$id, schema.entity.$id)).limit(limit).offset(offset)
+    const tableName = getTableName(table);
+
+    const builder = tx.select().from(table);
+
+    if(tableName.startsWith('entity_')) {
+      builder.leftJoin(schema.entity, dataFilter.eq(table.$id, schema.entity.$id));
+    }
+
+    const result = await builder.limit(limit).offset(offset)
       .orderBy(...order({ table, entity: schema.entity }, dataOrder))
       .where(dataFilter.and(
         scope($subject, ambit),
