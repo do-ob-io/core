@@ -18,8 +18,8 @@ export function insert<
     const tableName = getTableName(table);
 
     /**
-         * Create an entity record.
-         */
+     * Create an entity record.
+     */
     const [ entityRecord ] = await tx.insert(schema.entity).values({
       type: tableName.replace('entity_', ''),
       $owner: $subject,

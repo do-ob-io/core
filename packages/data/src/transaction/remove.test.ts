@@ -4,6 +4,7 @@ import { seed } from '@do-ob/data/seed';
 import { schema } from '@do-ob/data/schema';
 import { prepareInput } from '@/test/utility';
 import { remove } from './remove';
+import { insert } from './insert';
 
 let db: Database;
 
@@ -13,13 +14,19 @@ beforeAll(async () => {
 
 test('remove an entity', async () => {
   const input = await prepareInput(db);
+
+  const [ user ] = await db.transaction(
+    insert(input, schema.user, { name: 'test' }),
+  );
+
   const result = await db.transaction(
-    remove(input, schema.entity, '00000000-0000-0000-0000-000000000000'),
+    remove(input, schema.user, user.$id),
   );
 
   expect(result).toEqual([
     {
-      $id: '00000000-0000-0000-0000-000000000000',
+      ...user,
+      name: 'test',
     },
   ]);
 });

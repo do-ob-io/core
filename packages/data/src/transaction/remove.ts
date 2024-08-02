@@ -39,7 +39,7 @@ export function remove<
     const { ambit, $subject, $dispatch } = input;
 
     if (!$subject) {
-      throw new Error('Unauthorized. No subject provided for the update operation.');
+      throw new Error('Unauthorized. No subject provided for the remove operation.');
     }
 
     /**

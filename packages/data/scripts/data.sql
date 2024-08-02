@@ -5,7 +5,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- CREATE TYPE "public"."mutate_operation" AS ENUM('create', 'update', 'delete');
+ CREATE TYPE "public"."mutate_operation" AS ENUM('insert', 'update', 'remove');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
