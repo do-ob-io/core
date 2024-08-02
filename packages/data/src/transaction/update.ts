@@ -60,7 +60,7 @@ export function update<
     chunks.push(sql`where ${and(
       eq(table.$id, $id),
       eq(table.$id, schema.entity.$id),
-      eq(table.deleted, clairvoyance),
+      eq(schema.entity.deleted, clairvoyance),
       scope($subject, ambit),
     )}`);
     chunks.push(sql`returning *`);

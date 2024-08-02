@@ -1,11 +1,11 @@
 import type { Transaction } from './transaction.types';
-import { getTableName, Table, type TableConfig } from 'drizzle-orm';
+import { getTableName, type Table, type TableConfig } from 'drizzle-orm';
 // import type { PgTableWithColumns } from 'drizzle-orm/pg-core';
 import { schema } from '@do-ob/data/schema';
 
-export interface AuditMutationChanges<C extends TableConfig = TableConfig> {
+export interface AuditMutationChanges {
   type: 'insert' | 'update' | 'remove';
-  table: Table<C>,
+  table: Table<TableConfig>,
   value: { $id: string, [key: string]: unknown },
 }
 

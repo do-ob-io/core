@@ -23,12 +23,11 @@ test('should insert a new entity into the database', async () => {
   expect(result).toMatchObject({
     name: 'my_locale',
     code: 'en-US',
-    entity: expect.any(Object),
   });
 
   // Should read the entity from the database.
   const entityResult = await db.query.entity.findFirst({
-    where: (table, { eq }) => eq(table.$id, result.entity.$id),
+    where: (table, { eq }) => eq(table.$id, result.$id),
   });
 
   assert(entityResult);

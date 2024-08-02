@@ -14,7 +14,7 @@ beforeAll(async () => {
 test('should insert a new entity into the database', async () => {
   const input = await prepareInput(db);
 
-  const [ locale, entity ] = await db.transaction(
+  const [ locale ] = await db.transaction(
     insert(
       input,
       schema.locale,
@@ -33,7 +33,7 @@ test('should insert a new entity into the database', async () => {
 
   // Should read the entity from the database.
   const entityResult = await db.query.entity.findFirst({
-    where: (table, { eq }) => eq(table.$id, entity.$id),
+    where: (table, { eq }) => eq(table.$id, locale.$id),
   });
 
   assert(entityResult);

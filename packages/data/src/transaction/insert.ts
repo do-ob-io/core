@@ -2,8 +2,8 @@ import type { Transaction } from './transaction.types';
 import { getTableName, type TableConfig } from 'drizzle-orm';
 import type { PgTableWithColumns } from 'drizzle-orm/pg-core';
 import { schema } from '@do-ob/data/schema';
-import { auditMutation } from './audit';
-import { Input } from '@do-ob/core';
+import { auditMutation, AuditMutationChanges } from './audit';
+import { Ambit, Input } from '@do-ob/core';
 
 export function insert<
   C extends TableConfig,
@@ -12,50 +12,74 @@ export function insert<
   table: PgTableWithColumns<C>,
   value: Omit<PgTableWithColumns<C>['$inferInsert'], '$id'>,
 ) {
-  return async (tx: Transaction): Promise<[PgTableWithColumns<C>['$inferSelect'], typeof schema.entity.$inferSelect]> => {
-    const { $subject, $dispatch } = input;
+  return async (tx: Transaction): Promise<[PgTableWithColumns<C>['$inferSelect']]> => {
+    const { $subject, $dispatch, ambit } = input;
+
+    if(!$subject) {
+      throw new Error('Unauthorized. No subject provided for the insert operation.');
+    }
+
+    if (ambit !== Ambit.Global) {
+      throw new Error('Unauthorized. Insert operation is not allowed for the provided ambit.');
+    }
 
     const tableName = getTableName(table);
+    const isEntity = tableName.startsWith('entity_');
+    const mutationItems: AuditMutationChanges[] = [];
+    let entityId: string | undefined = undefined;
 
+    if(isEntity) {
     /**
      * Create an entity record.
      */
-    const [ entityRecord ] = await tx.insert(schema.entity).values({
-      type: tableName.replace('entity_', ''),
-      $owner: $subject,
-      $creator: $subject,
-    }).returning();
+      const [ entityRecord ] = await tx.insert(schema.entity).values({
+        type: isEntity ? tableName.replace('entity_', '') : null,
+        $owner: $subject,
+        $creator: $subject,
+      }).returning({ $id: schema.entity.$id }) as { $id: string }[];
+
+      entityId = entityRecord.$id;
+
+      if (!entityRecord || !entityId) {
+        tx.rollback();
+      }
+
+      mutationItems.push({
+        type: 'insert',
+        table: schema.entity,
+        value: entityRecord,
+      });
+
+    }
 
     /**
      * Create the entity type record.
      */
-    const [ typeRecord ] = await tx.insert(table).values({
-      ...value as PgTableWithColumns<C>['$inferInsert'],
-      $id: entityRecord.$id,
-    }).returning() as (PgTableWithColumns<C>['$inferSelect'] & { $id: string })[];
+    const typeValue = { ...value as PgTableWithColumns<C>['$inferInsert'] & { $id: string } };
+    if(isEntity && entityId) {
+      typeValue.$id = entityId;
+    }
+    const [ typeRecord ] = await tx.insert(table).values(typeValue).returning() as (PgTableWithColumns<C>['$inferSelect'] & { $id: string })[];
 
     if (!typeRecord) {
       tx.rollback();
     }
 
+    mutationItems.push({
+      type: 'insert',
+      table,
+      value: typeRecord,
+    });
+
+    /**
+     * Create a mutation record of the insert.
+     */
     if ($dispatch) {
-      await tx.transaction(auditMutation($dispatch, [
-        {
-          type: 'insert',
-          table,
-          value: typeRecord,
-        },
-        {
-          type: 'insert',
-          table: schema.entity,
-          value: entityRecord,
-        }
-      ]));
+      await tx.transaction(auditMutation($dispatch, mutationItems));
     }
 
     return [
       typeRecord,
-      entityRecord,
     ];
   };
 }

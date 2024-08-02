@@ -4,6 +4,7 @@ import { seed } from '@do-ob/data/seed';
 import { schema } from '@do-ob/data/schema';
 import { prepareInput } from '@/test/utility';
 import { query } from './query';
+import { Ambit } from '@do-ob/core';
 
 let db: Database;
 
@@ -60,4 +61,19 @@ test('should query for all rows from the schema.system table in ascending order'
   const sorted = $idList.slice().sort((a, b) => a.localeCompare(b));
 
   expect($idList).toEqual(sorted);
+});
+
+test('should NOT find the row with the $id "NAME" from the schema.system table without global ambit in the input', async () => {
+  const input = await prepareInput(db);
+
+  const result = await db.transaction(
+    query({
+      ...input,
+      ambit: Ambit.Owned,
+    }, schema.system, {
+      filter: ({ table }, { eq }) => eq(table.$id, 'NAME'),
+    }),
+  );
+
+  expect(result).toEqual([]);
 });

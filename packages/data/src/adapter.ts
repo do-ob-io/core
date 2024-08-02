@@ -36,7 +36,7 @@ export function adapter<
         throw new Error('Only self-declared entity tables, prefixed with "entity_", can be logically inserted.');
       }
       
-      const [ result, entity ] = await db.transaction(
+      const [ result ] = await db.transaction(
         insert(
           input,
           table,
@@ -44,10 +44,7 @@ export function adapter<
         ),
       );
 
-      return {
-        ...result,
-        entity,
-      };
+      return result;
     },
 
     /**
@@ -58,6 +55,7 @@ export function adapter<
     >(
       table: PgTableWithColumns<C>,
       options: QueryOptions<C>,
+      clairvoyance?: boolean,
     ) => {
       if(!input.$subject) {
         return;
@@ -78,6 +76,7 @@ export function adapter<
           input,
           table,
           options,
+          clairvoyance,
         ),
       );
 
@@ -92,6 +91,7 @@ export function adapter<
     >(
       table: PgTableWithColumns<C>,
       value: Partial<PgTableWithColumns<C>['$inferSelect']> & { $id: string },
+      clairvoyance?: boolean,
     ) => {
       if(!input.$subject) {
         return;
@@ -114,6 +114,7 @@ export function adapter<
         input,
         table,
         value,
+        clairvoyance,
       ));
 
       // const [ result ] = await tx.select().from(table).limit(1).where(eq(table.$id, $id));
