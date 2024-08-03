@@ -1,11 +1,11 @@
 import { test, expect } from 'vitest';
-import { logic } from '@do-ob/logic/logic';
+import { logician } from '@do-ob/logic/logic';
 import { register, locale_define } from '@do-ob/action';
 import { contextify } from '@do-ob/core';
 import { processify } from './process';
 
 test('should initialize a logic dispatch from the logic function', () => {
-  const dispatch = logic();
+  const dispatch = logician();
 
   expect(dispatch).toBeDefined();
 });
@@ -24,7 +24,7 @@ test('should be able to use a custom process', async () => {
     [ locale_define, async () => {
       return {
         code: 'en-US'
-      };
+      } as const;
     } ]
   );
 
@@ -37,7 +37,7 @@ test('should be able to use a custom process', async () => {
     } ],
   );
 
-  const { dispatch } = logic({
+  const { dispatch } = logician({
     pool: {
       account: processAccount,
       subscription: processSubscription,
@@ -66,7 +66,7 @@ test('should be able to use a custom process', async () => {
 });
 
 test('should dispatch an action to the logic for processing', async () => {
-  const { dispatch } = logic();
+  const { dispatch } = logician();
   
   const data = await dispatch(register.act({
     type: 'webauthn',

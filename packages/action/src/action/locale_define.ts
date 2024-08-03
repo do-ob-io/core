@@ -3,7 +3,7 @@ import { type Action, Ambit, Rate } from '@do-ob/core/io';
 /**
  * Define a localization dictionary entry.
  */
-export type Payload = [{
+export type Payload = {
   /**
    * The language code the content is localized for.
    * 
@@ -24,7 +24,7 @@ export type Payload = [{
    * The localized textual content.
    */
   content: string;
-}];
+}[];
 
 
 export const type = 'locale_define';

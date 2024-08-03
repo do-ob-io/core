@@ -39,7 +39,7 @@ export interface LogicOptions<
 /**
  * Generates a logic function wrapper for the given schema.
  */
-export function logic<
+export function logician<
   P extends Process,
   T extends Record<string, P>
 >(options: LogicOptions<T> = {}) {
