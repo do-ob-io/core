@@ -1,37 +1,39 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
- 
-import { inputify, type Action } from '@do-ob/core/io';
+import { inputify, type Action } from '@do-ob/core';
 import type { Process } from './process';
+
+// type ArrayToRecord<T extends Process[]> = {
+//   [K in T[number]['key']]: Extract<T[number], { key: K }>
+// };
 
 export interface LogicDispatchOptions {
   client?: () => number;
   headers?: () => Record<string, string>;
 }
 
-export interface Logic<P extends Process> {
-  dispatch: <A extends Action<string, unknown>, I extends keyof P['_infer_output']>(
-    action: A,
-    options?: LogicDispatchOptions,
-  ) => Promise<
-    { [K in P['key']]: A['type'] extends I ? P['_infer_output'][I] : never }
-  >;
-}
+// export interface Logic<P extends Process> {
+//   dispatch: <A extends Action<string, unknown>, I extends keyof P['_']['output']>(
+//     action: A,
+//     options?: LogicDispatchOptions,
+//   ) => Promise<
+//     { [K in P['key']]: A['type'] extends I ? P['_']['output'][I] : never }
+//   >;
+// }
 
 export type LogicHandlerKeys<
   A extends Action<string, unknown>,
   P extends Process
-> = { [K in keyof P['_infer_output']]: K extends A['type'] ? true : never };
+> = { [K in keyof P['_']['output']]: K extends A['type'] ? true : never };
 
 /**
  * Configuration for the logic function wrapper generation.
  */
 export interface LogicOptions<
-  P extends Process,
+  T extends Record<string, Process>
 > {
   /**
    * List processes used to hande action dispatches.
    */
-  processes?: P[];
+  pool?: T;
 }
 
 /**
@@ -39,23 +41,25 @@ export interface LogicOptions<
  */
 export function logic<
   P extends Process,
->(options: LogicOptions<P> = {}): Logic<P> {
+  T extends Record<string, P>
+>(options: LogicOptions<T> = {}) {
 
   const {
-    processes = [],
+    pool = {},
   } = options;
 
-  const processKeys = processes.map((process) => process.key);
+  const poolKeys = Object.keys(pool) as Array<keyof T>;
+  const processes = Object.values(pool) as Array<P>;
+  
 
   return {
     dispatch: async <
       A extends Action<string, unknown>,
-      I extends keyof P['_infer_output']
     >(
       action: A,
       options: LogicDispatchOptions = {},
     ): Promise<
-      { [K in P['key']]: A['type'] extends I ? P['_infer_output'][I] : never }
+      { [K in keyof T]: A['type'] extends keyof T[K]['_']['output'] ? T[K]['_']['output'][A['type']] : never }
     > => {
 
       const input = inputify({
@@ -73,9 +77,9 @@ export function logic<
         if (!result) {
           return acc;
         }
-        acc[processKeys[index] as P['key']] = result;
+        acc[poolKeys[index] as keyof T] = result;
         return acc;
-      }, {} as Record<P['key'], any>);
+      }, {} as Record<keyof T, any>);
     }
   };
 

@@ -22,15 +22,20 @@ export type Output<
 > = {
   status: OutputStatus;
 
-  payload: never;
-} | {
-
-  status: OutputStatus.Success;
-
   payload: Payload;
-
-} | {
-  status: OutputStatus.Failure;
-
-  payload: OutputFailure;
 };
+
+/**
+ * Constructs a new output object with placeholder values.
+ */
+export function outputify<
+  P = unknown,
+>(
+  output: Partial<Output<P>>,
+) {
+  return {
+    status: OutputStatus.Success,
+    payload: undefined as P,
+    ...output,
+  } satisfies Output<P>;
+}

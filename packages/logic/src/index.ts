@@ -1,5 +1,3 @@
-import { logic } from '@do-ob/logic/logic'; 
+export * from '@do-ob/logic/process';
+export * from '@do-ob/logic/logic'; 
 
-export {
-  logic
-};

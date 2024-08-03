@@ -1,6 +1,6 @@
 import { test, expect } from 'vitest';
 import { logic } from '@do-ob/logic/logic';
-import { register } from '@do-ob/action';
+import { register, locale_define } from '@do-ob/action';
 import { contextify } from '@do-ob/core';
 import { processify } from './process';
 
@@ -14,21 +14,34 @@ test('should be able to use a custom process', async () => {
 
   const context = contextify({});
 
-  const processTest = processify(
-    'account',
+  const processAccount = processify(
     context,
     [ register, async () => {
       return {
-        status: 1,
-        payload: {
-          username: 'test'
-        }
+        username: 'test'
+      };
+    } ],
+    [ locale_define, async () => {
+      return {
+        code: 'en-US'
       };
     } ]
   );
 
+  const processSubscription = processify(
+    context,
+    [ register, async () => {
+      return {
+        subscription: 'hello_world'
+      };
+    } ],
+  );
+
   const { dispatch } = logic({
-    processes: [ processTest ]
+    pool: {
+      account: processAccount,
+      subscription: processSubscription,
+    }
   });
 
   expect(dispatch).toBeDefined();

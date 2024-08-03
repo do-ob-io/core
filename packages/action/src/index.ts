@@ -1,4 +1,4 @@
-export * as actions from '@do-ob/action/actions';
+export * from '@do-ob/action/actions';
 
 export async function schema($id: string = 'action.json') {
   const definitions = await import('@do-ob/action/schema');

@@ -82,7 +82,7 @@ export function inputify<
   A extends Action<string, unknown>,
 >(
   input: Partial<Input<A>>,
-): Input<A> {
+) {
   return {
     client: input.client || 0,
     $dispatch: input.$dispatch || nanoid(),
@@ -93,5 +93,5 @@ export function inputify<
     headers: {},
     pathname: '/',
     ...input,
-  };
+  } satisfies Input<A>;
 }
