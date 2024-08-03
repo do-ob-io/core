@@ -1,5 +1,5 @@
 import { test, expect } from 'vitest';
-import { logician } from '@do-ob/logic/logic';
+import { logician } from './logic';
 import { register, locale_define } from '@do-ob/action';
 import { contextify } from '@do-ob/core';
 import { processify } from './process';

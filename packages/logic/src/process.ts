@@ -1,6 +1,6 @@
  
 import type { Action, Context, ActionModule, Input, Output } from '@do-ob/core';
-import { outputify } from '@do-ob/core/io';
+import { outputify } from '@do-ob/core';
 // import { OutputStatus, OutputFailureType } from '@do-ob/core/io';
 // export type Process<C extends Context, A extends Action<string, unknown> = Action<string, unknown>> = (context: C, input: Input<A>) => Promise<Output>;
 

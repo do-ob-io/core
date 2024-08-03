@@ -1,5 +1,5 @@
-import { inputify, type Action } from '@do-ob/core';
-import type { Process } from './process';
+import { inputify, outputify, type Action } from '@do-ob/core';
+import type { Process } from '@do-ob/logic/process';
 
 // type ArrayToRecord<T extends Process[]> = {
 //   [K in T[number]['key']]: Extract<T[number], { key: K }>
@@ -51,7 +51,6 @@ export function logician<
   const poolKeys = Object.keys(pool) as Array<keyof T>;
   const processes = Object.values(pool) as Array<P>;
   
-
   return {
     dispatch: async <
       A extends Action<string, unknown>,
@@ -72,12 +71,20 @@ export function logician<
         async (process) => process.execute(input)
       );
 
-      const results = await Promise.all(processPromises);
+      const results = await Promise.allSettled(processPromises);
       return results.reduce((acc, result, index) => {
         if (!result) {
           return acc;
         }
-        acc[poolKeys[index] as keyof T] = result;
+        if(result.status === 'rejected') {
+          acc[poolKeys[index] as keyof T] = outputify({
+            status: 0,
+            payload: result.reason,
+          });
+          return acc;
+        }
+
+        acc[poolKeys[index] as keyof T] = result.value;
         return acc;
       }, {} as Record<keyof T, any>);
     }
