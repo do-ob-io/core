@@ -1,7 +1,7 @@
 {
-    "packages/action": "0.0.0",
-    "packages/core": "1.1.0",
+    "packages/action": "1.0.0",
+    "packages/core": "1.2.0",
     "packages/crypto": "1.0.0",
-    "packages/data": "0.0.0",
-    "packages/logic": "0.0.0"
+    "packages/data": "1.0.0",
+    "packages/logic": "1.0.0"
 }
