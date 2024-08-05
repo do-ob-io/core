@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.2.0](https://github.com/do-ob-io/core/compare/core-v1.1.0...core-v1.2.0) (2024-08-05)
+
+
+### Features
+
+* Added new fasthash utility ([45ae8fc](https://github.com/do-ob-io/core/commit/45ae8fc255ae8573313cb83fb3fa5ad3a9fef667))
+* Added ontext builders ([fabf47b](https://github.com/do-ob-io/core/commit/fabf47b29b2018102d17c6bdd5ecc59d48b32c0f))
+* Added update adapter method ([22c7f3a](https://github.com/do-ob-io/core/commit/22c7f3a3d327aed93b0f50a617a8fe77c648f566))
+* Fully featured types for logic processors ([57e1e6d](https://github.com/do-ob-io/core/commit/57e1e6df03950bf9b6995cc90f26768bb1dacbba))
+* further context updates ([d7c41ef](https://github.com/do-ob-io/core/commit/d7c41effa05c41154803dbc192eec0699cee0bec))
+* Redefinited action scopes and rates ([44feeb3](https://github.com/do-ob-io/core/commit/44feeb3ce7b1dfec03f90fe42892856d8ad6a4e7))
+
+
+### Bug Fixes
+
+* Memoize function no longer attempts to export a scoped function during the type bundle ([b94b089](https://github.com/do-ob-io/core/commit/b94b089f5be050f8616ea55b8299ffb57b013bcd))
+
 ## [1.1.0](https://github.com/do-ob-io/core/compare/core-v1.0.0...core-v1.1.0) (2024-06-17)
 
 
