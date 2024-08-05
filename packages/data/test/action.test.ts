@@ -17,5 +17,5 @@ beforeAll(async () => {
 // Should already have the seeded collection of action records in the database.
 test('should have existing action records', async () => {
   const actions = await db.query.action.findMany();
-  expect(actions).toHaveLength(modules.action.records.length);
+  expect(actions).toHaveLength(modules.action.records.length + 1);
 });

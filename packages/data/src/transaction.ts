@@ -3,6 +3,7 @@ import { database } from '@do-ob/data/database';
 
 export * from './transaction/entity.ts';
 export * from './transaction/insert.ts';
+export * from './transaction/insertMany.ts';
 export * from './transaction/query.ts';
 export * from './transaction/update.ts';
 export * from './transaction/remove.ts';
