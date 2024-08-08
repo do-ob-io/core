@@ -1,12 +1,31 @@
-import { inputify, outputify, type Action } from '@do-ob/core';
+import { inputify, nop, OutputError, outputify, OutputStatus, type Action } from '@do-ob/core';
 import type { Process } from '@do-ob/logic/process';
 
 // type ArrayToRecord<T extends Process[]> = {
 //   [K in T[number]['key']]: Extract<T[number], { key: K }>
 // };
 
+export interface LogicRejection {
+  /**
+   * The key name of the process that threw the error.
+   */
+  key: string;
+
+  /**
+   * The error that was thrown.
+   */
+  error: Error;
+}
+
 export interface LogicDispatchOptions {
+  /**
+   * Function that generates the client id for the dispatch.
+   */
   client?: () => number;
+
+  /**
+   * Function that generates the headers for the dispatch.
+   */
   headers?: () => Record<string, string>;
 }
 
@@ -34,6 +53,11 @@ export interface LogicOptions<
    * List processes used to hande action dispatches.
    */
   pool?: T;
+
+  /**
+   * Function to cope with promise rejections from processes in the logic pool.
+   */
+  cope?: (rejection: LogicRejection) => void;
 }
 
 /**
@@ -46,6 +70,7 @@ export function logician<
 
   const {
     pool = {},
+    cope = nop,
   } = options;
 
   const poolKeys = Object.keys(pool) as Array<keyof T>;
@@ -77,11 +102,15 @@ export function logician<
           return acc;
         }
         if(result.status === 'rejected') {
-          acc[poolKeys[index] as keyof T] = outputify({
-            status: 0,
-            payload: result.reason,
+          cope({
+            key: poolKeys[index] as string,
+            error: result.reason,
           });
-          return acc;
+          
+          return acc[poolKeys[index] as keyof T] = outputify({
+            status: OutputStatus.Failure,
+            payload: OutputError.InternalServerError,
+          }) as any;
         }
 
         acc[poolKeys[index] as keyof T] = result.value;

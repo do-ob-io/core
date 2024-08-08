@@ -1,4 +1,5 @@
 import { PgTableWithColumns } from 'drizzle-orm/pg-core';
+import { Ambit, inputify, Rate } from '@do-ob/core';
 import { database } from '@do-ob/data/database';
 import { schema } from '@do-ob/data/schema';
 import { insertMany } from '@do-ob/data/transaction';
@@ -6,7 +7,8 @@ import { Database } from './pglite';
 
 import * as system from './seed/system';
 import * as action from './seed/action';
-import { Ambit, inputify, Rate } from '@do-ob/core';
+import * as entity_locale from './seed/entity_locale';
+
 
 export interface SeedModule {
   records: Array<object>;
@@ -15,6 +17,7 @@ export interface SeedModule {
 export const modules = {
   system,
   action,
+  entity_locale,
 };
 
 /**

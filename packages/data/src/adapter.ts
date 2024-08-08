@@ -2,7 +2,7 @@ import { adaptify } from '@do-ob/core';
 import { Database } from '@do-ob/data/database';
 import { PgTableWithColumns, TableConfig } from 'drizzle-orm/pg-core';
 import { getTableName } from 'drizzle-orm';
-import { insert, update, query, type QueryOptions, remove } from '@do-ob/data/transaction';
+import { insert, update, query, type QueryOptions, remove, insertMany } from '@do-ob/data/transaction';
 
 
 export function adapter<
@@ -48,6 +48,40 @@ export function adapter<
     },
 
     /**
+     * Safely inserts a new entity into the database with authorization controls and audits.
+     */
+    insertMany: (input) => async <
+      C extends TableConfig,
+    >(
+      table: PgTableWithColumns<C>,
+      values: Omit<PgTableWithColumns<C>['$inferInsert'], '$id'>[],
+    ) => {
+      if(!input.$subject) {
+        return [];
+      }
+
+      const db = await database;
+      
+      /**
+       * The table must declare itself an extension of the entity table.
+       */
+      const tableName = getTableName(table);
+      if(!tableName.startsWith('entity_')) {
+        throw new Error('Only self-declared entity tables, prefixed with "entity_", can be logically inserted.');
+      }
+      
+      const result = await db.transaction(
+        insertMany(
+          input,
+          table,
+          values,
+        ),
+      );
+
+      return result;
+    },
+
+    /**
      * Safely queries entities from the database with authorization controls and audits.
      */
     query: (input) => async <
@@ -58,7 +92,7 @@ export function adapter<
       clairvoyance?: boolean,
     ) => {
       if(!input.$subject) {
-        return;
+        return [];
       }
 
       const db = await database;

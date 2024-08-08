@@ -78,3 +78,48 @@ test('should dispatch an action to the logic for processing', async () => {
 
   expect(data).toBeDefined();
 });
+
+
+
+test('should cope with a rejected promise from a thrown error in a process agent', async () => {
+
+  const context = contextify({});
+
+  const processOkay = processify(
+    context,
+    [ register, async () => {
+      return {
+        username: 'test'
+      };
+    } ]
+  );
+
+  const processThrowError = processify(
+    context,
+    [ register, async () => {
+      throw new Error('A thrown error from the "processThrowError" process agent');
+    } ]
+  );
+
+  const { dispatch } = logician({
+    cope: (rejection) => {
+      expect(rejection.key).toBe('throwError');
+      expect(rejection.error).toBeInstanceOf(Error);
+      expect(rejection.error.message).toBe('A thrown error from the "processThrowError" process agent');
+    },
+    pool: {
+      okay: processOkay,
+      throwError: processThrowError
+    }
+  });
+  
+  const data = await dispatch(register.act({
+    type: 'webauthn',
+    handle: '',
+    credential: '',
+    client: '',
+    authenticator: ''
+  }));
+
+  expect(data).toBeDefined();
+});

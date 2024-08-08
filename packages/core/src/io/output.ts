@@ -3,7 +3,7 @@ export enum OutputStatus {
   Failure = 0,
 }
 
-export enum OutputFailureType {
+export enum OutputError {
   Unauthorized,
   Forbidden,
   NotFound,
@@ -11,18 +11,28 @@ export enum OutputFailureType {
   InternalServerError,
 }
 
-export type OutputFailure = {
-  type: OutputFailureType;
-  title: string;
-  message: string;
-};
-
 export type Output<
   Payload = unknown
 > = {
-  status: OutputStatus;
+  /**
+   * Status of the output.
+   */
+  status: OutputStatus.Success;
 
+  /**
+   * Payload of the output.
+   */
   payload: Payload;
+} | {
+  /**
+   * Status of the output.
+   */
+  status: OutputStatus.Failure;
+
+  /**
+   * Payload of the output.
+   */
+  payload: OutputError;
 };
 
 /**
@@ -31,11 +41,7 @@ export type Output<
 export function outputify<
   P = unknown,
 >(
-  output: Partial<Output<P>>,
+  output: Output<P>,
 ) {
-  return {
-    status: OutputStatus.Success,
-    payload: undefined as P,
-    ...output,
-  } satisfies Output<P>;
+  return output satisfies Output<P>;
 }
