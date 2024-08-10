@@ -7,6 +7,7 @@ import { Database } from './pglite';
 
 import * as system from './seed/system';
 import * as action from './seed/action';
+import * as entity_role from './seed/entity_role';
 import * as entity_locale from './seed/entity_locale';
 
 
@@ -17,6 +18,7 @@ export interface SeedModule {
 export const modules = {
   system,
   action,
+  entity_role,
   entity_locale,
 };
 

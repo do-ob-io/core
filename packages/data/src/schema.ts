@@ -14,6 +14,7 @@ import * as locale from './schema/entity/entity_locale.ts';
 import * as phone from './schema/entity/entity_phone.ts';
 import * as profile from './schema/entity/entity_profile.ts';
 import * as role from './schema/entity/entity_role.ts';
+import * as permit from './schema/entity/entity_permit.ts';
 import * as user from './schema/entity/entity_user.ts';
 
 // Entity -> Files
@@ -24,8 +25,7 @@ import * as video from './schema/entity/file/entity_file_video.ts';
 
 // Join Tables
 import * as assignment from './schema/join/join_assignment.ts';
-import * as entitle from './schema/join/entitle.ts';
-import * as permit from './schema/join/permit.ts';
+import * as entitle from './schema/join/join_entitle.ts';
 
 /**
  * Flattens a schema item group into a table and relates object.
@@ -165,6 +165,7 @@ export const core_entity = {
   profile,
   role,
   user,
+  permit,
   file,
 };
 
@@ -207,5 +208,4 @@ export type CoreEntityFileSelect = {
 export const join = {
   assignment,
   entitle,
-  permit,
 };

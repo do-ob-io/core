@@ -38,6 +38,16 @@ function stringToMilliseconds(timeString: string): number {
 }
 
 /**
+ * Create a date instance from a time string.
+ */
+export function dateCreate(timeString?: string) {
+  if (!timeString) {
+    return new Date();
+  }
+  return new Date(Date.now() + stringToMilliseconds(timeString));
+}
+
+/**
  * Create a numeric date value. Needed typically for bearers.
  */
 export function dateNumeric(date?: Date | string) {
@@ -48,3 +58,13 @@ export function dateNumeric(date?: Date | string) {
   }
   return (date?.getTime() ?? new Date().getTime());
 };
+
+/**
+ * Alias for `dateCreate`.
+ */
+export const d = dateCreate;
+
+/**
+ * Alias for `dateNumeric`.
+ */
+export const dN = dateNumeric;

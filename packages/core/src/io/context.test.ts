@@ -44,9 +44,6 @@ test('should create a context', () => {
   });
   
   const context = contextify({
-    meta: async () => ({
-      scope: 'none',
-    }),
     adapter: {
       db: databaseAdapter
     }
