@@ -7,25 +7,26 @@ import * as storage from './schema/storage.ts';
 import * as system from './schema/system.ts';
 
 // Entities
-import * as credential from './schema/entity/entity_credential.ts';
+import * as entity_credential from './schema/entity/entity_credential.ts';
 import * as entity from './schema/entity/entity.ts';
-import * as email from './schema/entity/entity_email.ts';
-import * as locale from './schema/entity/entity_locale.ts';
-import * as phone from './schema/entity/entity_phone.ts';
-import * as profile from './schema/entity/entity_profile.ts';
-import * as role from './schema/entity/entity_role.ts';
-import * as permit from './schema/entity/entity_permit.ts';
-import * as user from './schema/entity/entity_user.ts';
+import * as entity_email from './schema/entity/entity_email.ts';
+import * as entity_document from './schema/entity/entity_document.ts';
+import * as entity_locale from './schema/entity/entity_locale.ts';
+import * as entity_phone from './schema/entity/entity_phone.ts';
+import * as entity_profile from './schema/entity/entity_profile.ts';
+import * as entity_role from './schema/entity/entity_role.ts';
+import * as entity_permit from './schema/entity/entity_permit.ts';
+import * as entity_user from './schema/entity/entity_user.ts';
 
 // Entity -> Files
-import * as audio from './schema/entity/file/entity_file_audio.ts';
-import * as file from './schema/entity/file/entity_file.ts';
-import * as image from './schema/entity/file/entity_file_image.ts';
-import * as video from './schema/entity/file/entity_file_video.ts';
+import * as entity_file_audio from './schema/entity/file/entity_file_audio.ts';
+import * as entity_file from './schema/entity/file/entity_file.ts';
+import * as entity_file_image from './schema/entity/file/entity_file_image.ts';
+import * as entity_file_video from './schema/entity/file/entity_file_video.ts';
 
 // Join Tables
-import * as assignment from './schema/join/join_assignment.ts';
-import * as entitle from './schema/join/join_entitle.ts';
+import * as join_assignment from './schema/join/join_assignment.ts';
+import * as join_entitle from './schema/join/join_entitle.ts';
 
 /**
  * Flattens a schema item group into a table and relates object.
@@ -64,20 +65,21 @@ export const schema = schemaFlatten({
   storage,
   system,
   entity,
-  credential,
-  email,
-  locale,
-  phone,
-  profile,
-  role,
-  user,
-  file,
-  audio,
-  image,
-  video,
-  assignment,
-  entitle,
-  permit,
+  entity_credential,
+  entity_email,
+  entity_document,
+  entity_locale,
+  entity_phone,
+  entity_profile,
+  entity_role,
+  entity_user,
+  entity_file,
+  entity_file_audio,
+  entity_file_image,
+  entity_file_video,
+  join_assignment,
+  join_entitle,
+  entity_permit,
 });
 
 export {
@@ -88,20 +90,21 @@ export {
   storage,
   system,
   entity,
-  credential,
-  email,
-  locale,
-  phone,
-  profile,
-  role,
-  user,
-  file,
-  audio,
-  image,
-  video,
-  assignment,
-  entitle,
-  permit,
+  entity_credential,
+  entity_email,
+  entity_document,
+  entity_locale,
+  entity_phone,
+  entity_profile,
+  entity_role,
+  entity_user,
+  entity_file,
+  entity_file_audio,
+  entity_file_image,
+  entity_file_video,
+  join_assignment,
+  join_entitle,
+  entity_permit,
 };
 
 export type Schema = typeof schema;
@@ -158,15 +161,16 @@ export type CoreSelect = {
  * Entity tables
  */
 export const core_entity = {
-  credential,
-  email,
-  locale,
-  phone,
-  profile,
-  role,
-  user,
-  permit,
-  file,
+  entity_credential,
+  entity_email,
+  entity_document,
+  entity_locale,
+  entity_phone,
+  entity_profile,
+  entity_role,
+  entity_user,
+  entity_permit,
+  entity_file,
 };
 
 export type CoreEntityInsert = {
@@ -185,9 +189,9 @@ export type CoreEntitySelect = {
  * Entity File tables
  */
 export const core_entity_file = {
-  audio,
-  image,
-  video,
+  entity_file_audio,
+  entity_file_image,
+  entity_file_video,
 };
 
 export type CoreEntityFileInsert = {
@@ -206,6 +210,6 @@ export type CoreEntityFileSelect = {
  * Join tables
  */
 export const join = {
-  assignment,
-  entitle,
+  join_assignment,
+  join_entitle,
 };

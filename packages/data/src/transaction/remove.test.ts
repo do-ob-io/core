@@ -16,11 +16,11 @@ test('remove an entity', async () => {
   const input = await prepareInput(db);
 
   const [ user ] = await db.transaction(
-    insert(input, schema.user, { name: 'test' }),
+    insert(input, schema.entity_user, { name: 'test' }),
   );
 
   const result = await db.transaction(
-    remove(input, schema.user, user.$id),
+    remove(input, schema.entity_user, user.$id),
   );
 
   expect(result).toEqual([

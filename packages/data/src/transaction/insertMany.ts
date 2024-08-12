@@ -11,6 +11,7 @@ export function insertMany<
   input: Input,
   table: PgTableWithColumns<C>,
   values: Omit<PgTableWithColumns<C>['$inferInsert'], '$id'>[],
+  meta: Pick<Schema['entity']['$inferInsert'], '$owner' | '$creator' | 'public'> = {},
 ) {
   return async (tx: Transaction): Promise<PgTableWithColumns<C>['$inferSelect'][]> => {
     const { $subject, $dispatch, ambit } = input;
@@ -36,6 +37,7 @@ export function insertMany<
         type: tableName.replace('entity_', ''),
         $owner: $subject,
         $creator: $subject,
+        ...meta,
       }))).returning() as (Schema['entity']['$inferSelect'])[];
 
       entityId.push(...entities.map(entity => entity.$id));

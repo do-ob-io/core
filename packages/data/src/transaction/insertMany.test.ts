@@ -17,7 +17,7 @@ test('should insert many new locale entities into the database', async () => {
   const [ locale1, locale2 ] = await db.transaction(
     insertMany(
       input,
-      schema.locale,
+      schema.entity_locale,
       [
         {
           name: 'my_locale_1',
@@ -56,7 +56,7 @@ test('should insert many new locale entities into the database', async () => {
   });
 
   // Should read the locale from the database.
-  const localeResult1 = await db.query.locale.findFirst({
+  const localeResult1 = await db.query.entity_locale.findFirst({
     where: (table, { eq }) => eq(table.$id, locale1.$id),
   });
 
@@ -80,7 +80,7 @@ test('should insert many new locale entities into the database', async () => {
   });
 
   // Should read the locale from the database.
-  const localeResult2 = await db.query.locale.findFirst({
+  const localeResult2 = await db.query.entity_locale.findFirst({
     where: (table, { eq }) => eq(table.$id, locale2.$id),
   });
 

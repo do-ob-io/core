@@ -44,6 +44,12 @@ CREATE TABLE IF NOT EXISTS "entity_credential" (
 	"subject_id" uuid NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "entity_document" (
+	"id" uuid PRIMARY KEY NOT NULL,
+	"author_id" uuid,
+	"content" text NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "entity_email" (
 	"id" uuid PRIMARY KEY NOT NULL,
 	"user_id" uuid,
@@ -118,6 +124,7 @@ CREATE TABLE IF NOT EXISTS "entity" (
 	"type" varchar(64),
 	"created" timestamp DEFAULT now() NOT NULL,
 	"updated" timestamp DEFAULT now() NOT NULL,
+	"public" boolean DEFAULT false NOT NULL,
 	"deleted" boolean DEFAULT false NOT NULL,
 	"owner_id" uuid,
 	"creator_id" uuid
@@ -216,6 +223,18 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "entity_credential" ADD CONSTRAINT "entity_credential_subject_id_entity_id_fk" FOREIGN KEY ("subject_id") REFERENCES "public"."entity"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "entity_document" ADD CONSTRAINT "entity_document_id_entity_id_fk" FOREIGN KEY ("id") REFERENCES "public"."entity"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "entity_document" ADD CONSTRAINT "entity_document_author_id_entity_profile_id_fk" FOREIGN KEY ("author_id") REFERENCES "public"."entity_profile"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

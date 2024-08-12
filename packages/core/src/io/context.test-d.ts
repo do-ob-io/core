@@ -43,16 +43,12 @@ test('should create a context', () => {
     }
   });
   const context = contextify({
-    meta: async () => ({
-      scope: 'none',
-    }),
     adapter: {
       db: databaseAdapter
     }
   });
 
   expectTypeOf(context).toBeObject();
-  expectTypeOf(context.meta).toBeFunction();
   expectTypeOf(context.adapter).toBeObject();
   expectTypeOf(context.adapter.db).toBeObject();
   expectTypeOf(context.adapter.db.driver).toBeFunction();

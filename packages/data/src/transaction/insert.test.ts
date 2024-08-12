@@ -17,7 +17,7 @@ test('should insert a new entity into the database', async () => {
   const [ locale ] = await db.transaction(
     insert(
       input,
-      schema.locale,
+      schema.entity_locale,
       {
         name: 'my_locale',
         code: 'en-US'
@@ -44,7 +44,7 @@ test('should insert a new entity into the database', async () => {
   });
 
   // Should read the locale from the database.
-  const localeResult = await db.query.locale.findFirst({
+  const localeResult = await db.query.entity_locale.findFirst({
     where: (table, { eq }) => eq(table.$id, locale.$id),
   });
 

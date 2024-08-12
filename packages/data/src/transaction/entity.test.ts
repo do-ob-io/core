@@ -8,7 +8,7 @@ import { transact, entityInsert } from '@do-ob/data/transaction';
 // Should insert a new role into the database.
 test('should execute an entity insertion transaction', async () => {
   // Should batch the creation of a new entity and role.å
-  const roleRecord = await transact(entityInsert('role', { name: 'Administrator' }));
+  const roleRecord = await transact(entityInsert('entity_role', { name: 'Administrator' }));
 
   // Expect that a proper role was inserted correctly.
   expect(roleRecord).toMatchObject({
@@ -19,7 +19,7 @@ test('should execute an entity insertion transaction', async () => {
     icon: null,
     entity: {
       $id: roleRecord.entity.$id,
-      type: 'role',
+      type: 'entity_role',
       $owner: null,
       $creator: null,
     },
@@ -29,7 +29,7 @@ test('should execute an entity insertion transaction', async () => {
 // Should insert a new role entity into the database with an owner and creator.
 test('should execute an entity insertion transaction with owner and creator', async () => {
   // Should batch the creation of a new entity and role.
-  const roleRecord = await transact(entityInsert('role', { name: 'Moderator' }, {
+  const roleRecord = await transact(entityInsert('entity_role', { name: 'Moderator' }, {
     $owner: '00000000-0000-0000-0000-000000000000',
     $creator: '00000000-0000-0000-0000-000000000000',
   }));
@@ -43,7 +43,7 @@ test('should execute an entity insertion transaction with owner and creator', as
     icon: null,
     entity: {
       $id: roleRecord.entity.$id,
-      type: 'role',
+      type: 'entity_role',
       $owner: '00000000-0000-0000-0000-000000000000',
       $creator: '00000000-0000-0000-0000-000000000000',
     },

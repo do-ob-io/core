@@ -14,7 +14,7 @@ test('should insert a new entity into the database', async () => {
 
   const input = await prepareInput(db);
 
-  const result = await dbAdapter.insert(input)(schema.locale, {
+  const result = await dbAdapter.insert(input)(schema.entity_locale, {
     name: 'my_locale',
     code: 'en-US'
   });
@@ -38,7 +38,7 @@ test('should insert a new entity into the database', async () => {
   });
 
   // Should read the locale from the database.
-  const localeResult = await db.query.locale.findFirst({
+  const localeResult = await db.query.entity_locale.findFirst({
     where: (table, { eq }) => eq(table.$id, result.$id),
   });
 
@@ -56,7 +56,7 @@ test('should update an entity in the database', async () => {
 
   const input = await prepareInput(db);
 
-  const inserted = await dbAdapter.insert(input)(schema.locale, {
+  const inserted = await dbAdapter.insert(input)(schema.entity_locale, {
     name: 'my_locale_to_update',
     code: 'en-US',
     content: 'this is the content',
@@ -64,7 +64,7 @@ test('should update an entity in the database', async () => {
 
   assert(inserted);
 
-  const result = await dbAdapter.update(input)(schema.locale, {
+  const result = await dbAdapter.update(input)(schema.entity_locale, {
     $id: inserted.$id,
     content: 'this is the updated content',
   });

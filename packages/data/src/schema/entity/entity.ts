@@ -18,6 +18,7 @@ export const table = pgTable('entity', {
   type: varchar('type', { length: 64 }), // The type of entity. Should always be the table name connected with this entity.
   created: timestamp('created').defaultNow().notNull(), // The time this entity was created.
   updated: timestamp('updated').defaultNow().notNull(), // The time this entity was last updated.
+  public: boolean('public').notNull().default(false), // Flag to determine if this entity is to be considered public.
   deleted: boolean('deleted').notNull().default(false), // Flag to determine if this entity is to be considered deleted.
   $owner: uuid('owner_id'), // The possible entity that owns this entity (null would indicate it is system owned).
   $creator: uuid('creator_id'), // The possible entity that created this entity (null would indicate it was system created).
