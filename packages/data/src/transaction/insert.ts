@@ -10,7 +10,7 @@ export function insert<
 > (
   input: Input,
   table: PgTableWithColumns<C>,
-  value: Omit<PgTableWithColumns<C>['$inferInsert'], '$id'>,
+  value: (Omit<PgTableWithColumns<C>['$inferInsert'], '$id'> & { $id?: string }),
 ) {
   return async (tx: Transaction): Promise<[PgTableWithColumns<C>['$inferSelect']]> => {
     const { $subject, $dispatch, ambit } = input;
@@ -36,6 +36,7 @@ export function insert<
         type: isEntity ? tableName.replace('entity_', '') : null,
         $owner: $subject,
         $creator: $subject,
+        $id: value.$id,
       }).returning();
 
       entityId = entityRecord.$id;

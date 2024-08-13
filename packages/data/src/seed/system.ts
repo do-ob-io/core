@@ -38,9 +38,15 @@ export const records: Array<Schema['system']['$inferInsert']> = [
     description: 'Convenient flag to enable clients to register new user accounts if assigned with the registration actions.',
   },
   {
-    $id: 'ANONYMOUS_ROLE',
+    $id: 'ANONYMOUS_ROLE_NAME',
     type: 'string',
     value: 'Anonymous',
     description: 'The role assigned to unauthenticated users. This allows anonymous clients to perform actions that are assigned to this role; like registering a new account.',
+  },
+  {
+    $id: 'INITIAL_ROLE_NAME',
+    type: 'string',
+    value: 'Base',
+    description: 'The role assigned to when a user account is created. This allows new users to perform actions that are assigned to this role; like updating their own profile.',
   }
 ];

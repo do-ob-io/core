@@ -10,7 +10,7 @@ export function insertMany<
 > (
   input: Input,
   table: PgTableWithColumns<C>,
-  values: Omit<PgTableWithColumns<C>['$inferInsert'], '$id'>[],
+  values: (Omit<PgTableWithColumns<C>['$inferInsert'], '$id'> & { $id?: string })[],
   meta: Pick<Schema['entity']['$inferInsert'], '$owner' | '$creator' | 'public'> = {},
 ) {
   return async (tx: Transaction): Promise<PgTableWithColumns<C>['$inferSelect'][]> => {
@@ -33,11 +33,12 @@ export function insertMany<
     /**
      * Create an entity record.
      */
-      const entities = await tx.insert(schema.entity).values(values.map(() => ({
+      const entities = await tx.insert(schema.entity).values(values.map((value) => ({
         type: tableName.replace('entity_', ''),
         $owner: $subject,
         $creator: $subject,
         ...meta,
+        $id: value.$id,
       }))).returning() as (Schema['entity']['$inferSelect'])[];
 
       entityId.push(...entities.map(entity => entity.$id));
@@ -59,7 +60,7 @@ export function insertMany<
      */
     const typeValues = values.map((value, index) => ({
       ...value,
-      $id: isEntity ? entityId[index] : (value as object & { $id?: string })?.$id ?? undefined,
+      $id: isEntity ? entityId[index] : value.$id,
     }));
     const typeRecords = await tx.insert(table).values(typeValues as any).returning() as (PgTableWithColumns<C>['$inferSelect'] & { $id: string })[];
 

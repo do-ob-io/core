@@ -9,6 +9,8 @@ import * as system from './seed/system';
 import * as action from './seed/action';
 import * as entity_role from './seed/entity_role';
 import * as entity_locale from './seed/entity_locale';
+import * as entity_user from './seed/entity_user';
+import * as join_assignment from './seed/join_assignment';
 
 
 export interface SeedModule {
@@ -20,6 +22,8 @@ export const modules = {
   action,
   entity_role,
   entity_locale,
+  entity_user,
+  join_assignment,
 };
 
 /**
@@ -87,24 +91,26 @@ export async function seed(db?: Database) {
       rate: Rate.Unlimited,
     });
 
+    const moduleKeys = Object.keys(modules);
+
     /**
      * Insert the core data.
      */
-    const promises = Object.keys(modules).map((key) => {
+    for (const key of moduleKeys) {
       if(!(key in schema)) {
         console.warn(`No schema found for ${key}`);
-        return Promise.resolve();
+        continue;
       }
       const table = schema[key as keyof typeof schema] as PgTableWithColumns<any>;
       const records = modules[key as keyof typeof modules].records;
 
       if(key.startsWith('entity_')) {
-        return tx.transaction(insertMany(input, table, records));
+        await tx.transaction(insertMany(input, table, records));
+        continue;
       }
 
-      return tx.insert(table).values(records);
-    });
-    await Promise.all(promises);
+      await tx.insert(table).values(records);
+    };
   });
 
   return db;

@@ -2,7 +2,7 @@ import dictionaryAction from '@do-ob/action/dictionary';
 import { uuidv4 } from '@do-ob/core';
 import type { Schema } from '@do-ob/data/schema';
 
-export const records: Array<Schema['entity_locale']['$inferInsert']> = Object.keys(dictionaryAction).map((key) => {
+const actionDictionary = Object.keys(dictionaryAction).map((key) => {
   return {
     $id: uuidv4(),
     code: 'en-US',
@@ -10,3 +10,5 @@ export const records: Array<Schema['entity_locale']['$inferInsert']> = Object.ke
     content: dictionaryAction[key as keyof typeof dictionaryAction]
   };
 });
+
+export const records: Array<Schema['entity_locale']['$inferInsert']> = actionDictionary;
