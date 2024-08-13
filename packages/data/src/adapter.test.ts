@@ -1,5 +1,5 @@
 import { test, expect, assert, beforeAll } from 'vitest';
-import { adapter, Database, database, schema } from '@do-ob/data';
+import { adapter, Database, database, schemaCore } from '@do-ob/data';
 import { seed } from './seed';
 import { prepareInput } from '@/test/utility';
 
@@ -14,7 +14,7 @@ test('should insert a new entity into the database', async () => {
 
   const input = await prepareInput(db);
 
-  const result = await dbAdapter.insert(input)(schema.entity_locale, {
+  const result = await dbAdapter.insert(input)(schemaCore.entity_locale, {
     name: 'my_locale',
     code: 'en-US'
   });
@@ -56,7 +56,7 @@ test('should update an entity in the database', async () => {
 
   const input = await prepareInput(db);
 
-  const inserted = await dbAdapter.insert(input)(schema.entity_locale, {
+  const inserted = await dbAdapter.insert(input)(schemaCore.entity_locale, {
     name: 'my_locale_to_update',
     code: 'en-US',
     content: 'this is the content',
@@ -64,7 +64,7 @@ test('should update an entity in the database', async () => {
 
   assert(inserted);
 
-  const result = await dbAdapter.update(input)(schema.entity_locale, {
+  const result = await dbAdapter.update(input)(schemaCore.entity_locale, {
     $id: inserted.$id,
     content: 'this is the updated content',
   });
