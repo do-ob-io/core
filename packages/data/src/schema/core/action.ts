@@ -28,6 +28,3 @@ export const table = pgTable('action', {
    */
   description: varchar('description', { length: 1024 }),
 });
-
-export type Action = typeof table.$inferSelect;
-export type ActionInsert = typeof table.$inferInsert;

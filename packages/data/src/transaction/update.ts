@@ -1,7 +1,7 @@
 import type { Transaction } from './transaction.types';
 import { and, eq, SQL, sql, type TableConfig } from 'drizzle-orm';
 import type { PgTableWithColumns } from 'drizzle-orm/pg-core';
-import { schema } from '@do-ob/data/schema';
+import { schemaCore } from '@do-ob/data/schema';
 import { auditMutation } from './audit';
 import { Ambit, type Input } from '@do-ob/core';
 import type { RowList } from 'postgres';
@@ -17,9 +17,9 @@ function scope(
     case Ambit.Global:
       return sql`true`;
     case Ambit.Owned:
-      return eq(schema.entity.$owner, $subject);
+      return eq(schemaCore.entity.$owner, $subject);
     case Ambit.Created:
-      return eq(schema.entity.$creator, $subject);
+      return eq(schemaCore.entity.$creator, $subject);
     case Ambit.Member:
       return sql`false`; // TODO: Implement member scope.
     case Ambit.None:
@@ -56,11 +56,11 @@ export function update<
      */
     const chunks: SQL[] = [];
     chunks.push(tx.update(table).set(next as object).getSQL());
-    chunks.push(sql`from ${schema.entity}`);
+    chunks.push(sql`from ${schemaCore.entity}`);
     chunks.push(sql`where ${and(
       eq(table.$id, $id),
-      eq(table.$id, schema.entity.$id),
-      eq(schema.entity.deleted, clairvoyance),
+      eq(table.$id, schemaCore.entity.$id),
+      eq(schemaCore.entity.deleted, clairvoyance),
       scope($subject, ambit),
     )}`);
     chunks.push(sql`returning *`);

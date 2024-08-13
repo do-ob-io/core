@@ -9,7 +9,7 @@ import {
 } from 'drizzle-orm/pg-core';
 
 import { table as dispatch } from './dispatch.ts';
-import { table as entity } from './entity/entity.ts';
+import { table as entity } from './entity.ts';
 
 /**
  * Possible operations to a historical change.

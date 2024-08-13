@@ -1,6 +1,6 @@
 import { test, expect, assert, beforeAll } from 'vitest';
 import { insert } from './insert';
-import { schema } from '@do-ob/data/schema';
+import { schemaCore } from '@do-ob/data/schema';
 import { Database, database } from '@do-ob/data/database';
 import { seed } from '@do-ob/data/seed';
 import { prepareInput } from '@/test/utility';
@@ -17,7 +17,7 @@ test('should insert a new entity into the database', async () => {
   const [ locale ] = await db.transaction(
     insert(
       input,
-      schema.entity_locale,
+      schemaCore.entity_locale,
       {
         name: 'my_locale',
         code: 'en-US'

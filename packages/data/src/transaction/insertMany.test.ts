@@ -1,6 +1,6 @@
 import { test, expect, assert, beforeAll } from 'vitest';
 import { insertMany } from './insertMany';
-import { schema } from '@do-ob/data/schema';
+import { schemaCore } from '@do-ob/data/schema';
 import { Database, database } from '@do-ob/data/database';
 import { seed } from '@do-ob/data/seed';
 import { prepareInput } from '@/test/utility';
@@ -17,7 +17,7 @@ test('should insert many new locale entities into the database', async () => {
   const [ locale1, locale2 ] = await db.transaction(
     insertMany(
       input,
-      schema.entity_locale,
+      schemaCore.entity_locale,
       [
         {
           name: 'my_locale_1',

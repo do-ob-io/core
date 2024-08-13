@@ -1,7 +1,7 @@
 import type { Transaction } from './transaction.types';
 import { getTableName, type TableConfig } from 'drizzle-orm';
 import type { PgTableWithColumns } from 'drizzle-orm/pg-core';
-import { schema } from '@do-ob/data/schema';
+import { schemaCore } from '@do-ob/data/schema';
 import { auditMutation, AuditMutationChanges } from './audit';
 import { Ambit, Input } from '@do-ob/core';
 
@@ -32,7 +32,7 @@ export function insert<
     /**
      * Create an entity record.
      */
-      const [ entityRecord ] = await tx.insert(schema.entity).values({
+      const [ entityRecord ] = await tx.insert(schemaCore.entity).values({
         type: isEntity ? tableName.replace('entity_', '') : null,
         $owner: $subject,
         $creator: $subject,
@@ -47,7 +47,7 @@ export function insert<
 
       mutationItems.push({
         type: 'insert',
-        table: schema.entity,
+        table: schemaCore.entity,
         value: entityRecord,
       });
 

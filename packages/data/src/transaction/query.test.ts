@@ -1,7 +1,7 @@
 import { test, expect, beforeAll } from 'vitest';
 import { Database, database } from '@do-ob/data/database';
 import { seed } from '@do-ob/data/seed';
-import { schema } from '@do-ob/data/schema';
+import { schemaCore } from '@do-ob/data/schema';
 import { prepareInput } from '@/test/utility';
 import { query } from './query';
 import { Ambit } from '@do-ob/core';
@@ -16,7 +16,7 @@ test('should query for the row with the $id "NAME" from the schema.system table'
   const input = await prepareInput(db);
 
   const result = await db.transaction(
-    query(input, schema.system, {
+    query(input, schemaCore.system, {
       filter: ({ table }, { eq }) => eq(table.$id, 'NAME'),
     }),
   );
@@ -35,7 +35,7 @@ test('should query for all rows from the schema.system table in descending order
   const input = await prepareInput(db);
 
   const result = await db.transaction(
-    query(input, schema.system, {
+    query(input, schemaCore.system, {
       order: ({ table }, { desc }) => [ desc(table.$id) ],
     }),
   );
@@ -51,7 +51,7 @@ test('should query for all rows from the schema.system table in ascending order'
   const input = await prepareInput(db);
 
   const result = await db.transaction(
-    query(input, schema.system, {
+    query(input, schemaCore.system, {
       order: ({ table }, { asc }) => [ asc(table.$id) ],
     }),
   );
@@ -70,7 +70,7 @@ test('should NOT find the row with the $id "NAME" from the schema.system table w
     query({
       ...input,
       ambit: Ambit.Owned,
-    }, schema.system, {
+    }, schemaCore.system, {
       filter: ({ table }, { eq }) => eq(table.$id, 'NAME'),
     }),
   );

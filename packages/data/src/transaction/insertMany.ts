@@ -1,7 +1,7 @@
 import type { Transaction } from './transaction.types';
 import { getTableName, type TableConfig } from 'drizzle-orm';
 import type { PgTableWithColumns } from 'drizzle-orm/pg-core';
-import { schema, Schema } from '@do-ob/data/schema';
+import { schemaCore, SchemaCore } from '@do-ob/data/schema';
 import { auditMutation, AuditMutationChanges } from './audit';
 import { Ambit, Input } from '@do-ob/core';
 
@@ -11,7 +11,7 @@ export function insertMany<
   input: Input,
   table: PgTableWithColumns<C>,
   values: (Omit<PgTableWithColumns<C>['$inferInsert'], '$id'> & { $id?: string })[],
-  meta: Pick<Schema['entity']['$inferInsert'], '$owner' | '$creator' | 'public'> = {},
+  meta: Pick<SchemaCore['entity']['$inferInsert'], '$owner' | '$creator' | 'public'> = {},
 ) {
   return async (tx: Transaction): Promise<PgTableWithColumns<C>['$inferSelect'][]> => {
     const { $subject, $dispatch, ambit } = input;
@@ -33,13 +33,13 @@ export function insertMany<
     /**
      * Create an entity record.
      */
-      const entities = await tx.insert(schema.entity).values(values.map((value) => ({
+      const entities = await tx.insert(schemaCore.entity).values(values.map((value) => ({
         type: tableName.replace('entity_', ''),
         $owner: $subject,
         $creator: $subject,
         ...meta,
         $id: value.$id,
-      }))).returning() as (Schema['entity']['$inferSelect'])[];
+      }))).returning() as (SchemaCore['entity']['$inferSelect'])[];
 
       entityId.push(...entities.map(entity => entity.$id));
 
@@ -49,7 +49,7 @@ export function insertMany<
 
       mutationItems.push(...entities.map(entity => ({
         type: 'insert', 
-        table: schema.entity,
+        table: schemaCore.entity,
         value: entity,
       })) as AuditMutationChanges[]);
 

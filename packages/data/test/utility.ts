@@ -1,6 +1,6 @@
 import { assert } from 'vitest';
 import { Database } from '@do-ob/data/database';
-import { schema } from '@do-ob/data/schema';
+import { schemaCore } from '@do-ob/data/schema';
 import { Ambit, inputify } from '@do-ob/core';
 
 export async function prepareInput(db: Database) {
@@ -9,10 +9,10 @@ export async function prepareInput(db: Database) {
   });
   assert(register);
 
-  const [ dispatch ] = await db.insert(schema.dispatch).values({
+  const [ dispatch ] = await db.insert(schemaCore.dispatch).values({
     $subject: register.value,
     $action: 'register',
-  }).returning({ $id: schema.dispatch.$id });
+  }).returning({ $id: schemaCore.dispatch.$id });
 
   return inputify({
     $dispatch: dispatch.$id,

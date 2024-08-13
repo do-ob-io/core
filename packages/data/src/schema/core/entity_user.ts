@@ -6,8 +6,8 @@ import { relations } from 'drizzle-orm';
 import { table as entity } from './entity.ts';
 import { table as email } from './entity_email.ts';
 import { table as phone } from './entity_phone.ts';
-import { table as image } from './file/entity_file_image.ts';
-import { table as dispatch } from '../dispatch.ts';
+import { table as image } from './entity_file_image.ts';
+import { table as dispatch } from './dispatch.ts';
 import { table as profile } from './entity_profile.ts';
 
 /**

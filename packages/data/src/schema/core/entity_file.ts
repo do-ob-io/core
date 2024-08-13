@@ -3,7 +3,7 @@ import {
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
-import { table as entity } from '../entity.ts';
+import { table as entity } from './entity.ts';
 
 /**
  * Information about files that can be uploaded.

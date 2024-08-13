@@ -1,6 +1,6 @@
-import type { Schema } from '@do-ob/data/schema';
+import type { SchemaCore } from '@do-ob/data/schema';
 
-export const records: Array<Schema['system']['$inferInsert']> = [
+export const records: Array<SchemaCore['system']['$inferInsert']> = [
   {
     $id: 'NAME',
     type: 'string',

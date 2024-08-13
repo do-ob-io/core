@@ -1,6 +1,6 @@
 import dictionaryAction from '@do-ob/action/dictionary';
 import { uuidv4 } from '@do-ob/core';
-import type { Schema } from '@do-ob/data/schema';
+import type { SchemaCore } from '@do-ob/data/schema';
 
 const actionDictionary = Object.keys(dictionaryAction).map((key) => {
   return {
@@ -11,4 +11,4 @@ const actionDictionary = Object.keys(dictionaryAction).map((key) => {
   };
 });
 
-export const records: Array<Schema['entity_locale']['$inferInsert']> = actionDictionary;
+export const records: Array<SchemaCore['entity_locale']['$inferInsert']> = actionDictionary;

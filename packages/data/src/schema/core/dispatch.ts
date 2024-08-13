@@ -10,7 +10,7 @@ import {
 } from 'drizzle-orm/pg-core';
 
 import { table as mutate } from './mutate.ts';
-import { table as entity } from './entity/entity.ts';
+import { table as entity } from './entity.ts';
 import { table as action } from './action.ts';
 
 /**

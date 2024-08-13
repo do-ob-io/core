@@ -1,10 +1,10 @@
 import postgres from 'postgres';
 import { drizzle, type PostgresJsDatabase } from 'drizzle-orm/postgres-js';
-import { schema, type Schema } from '@do-ob/data/schema';
+import { schemaCore, type SchemaCore } from '@do-ob/data/schema';
 
 const DATABASE_CONNECTION = process.env.DATABASE_CONNECTION || 'memory://local';
 
-export type Database = PostgresJsDatabase<Schema>;
+export type Database = PostgresJsDatabase<SchemaCore>;
 
 declare global {
   // eslint-disable-next-line no-var
@@ -22,7 +22,7 @@ export function database(connection?: string) {
   }
 
   const sql = postgres(connection ?? DATABASE_CONNECTION);
-  globalThis.doob_postgres_database_instance =  drizzle(sql, { schema });
+  globalThis.doob_postgres_database_instance =  drizzle(sql, { schema: schemaCore });
 
   return globalThis.doob_postgres_database_instance;
 };

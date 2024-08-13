@@ -1,17 +1,17 @@
 import type { Transaction } from './transaction.types';
-import { schema, Schema } from '@do-ob/data/schema';
+import { schemaCore, SchemaCore } from '@do-ob/data/schema';
 
 /**
  * Prepares a a dispatch for an action with the database.
  */
 export function dispatch(
-  options: Pick<Schema['dispatch']['$inferInsert'], '$subject' | '$action' | 'status' | 'initiate' | 'message' | 'payload'>,
+  options: Pick<SchemaCore['dispatch']['$inferInsert'], '$subject' | '$action' | 'status' | 'initiate' | 'message' | 'payload'>,
 ) {
-  return async (tx: Transaction): Promise<Schema['dispatch']['$inferSelect']> => {
+  return async (tx: Transaction): Promise<SchemaCore['dispatch']['$inferSelect']> => {
     /**
      * Initialize the dispatch record.
      */
-    const [ dispatch ] = await tx.insert(schema.dispatch).values({
+    const [ dispatch ] = await tx.insert(schemaCore.dispatch).values({
       ...options
     }).returning();
 

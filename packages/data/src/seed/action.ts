@@ -1,7 +1,7 @@
 import * as actionSchema from '@do-ob/action/schema';
-import type { Schema } from '@do-ob/data/schema';
+import type { SchemaCore } from '@do-ob/data/schema';
 
-export const records: Array<Schema['action']['$inferInsert']> = Object.keys(actionSchema).map((key) => {
+export const records: Array<SchemaCore['action']['$inferInsert']> = Object.keys(actionSchema).map((key) => {
   const definition = actionSchema[key as keyof typeof actionSchema];
 
   if  (!definition) {

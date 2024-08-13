@@ -3,10 +3,10 @@ import {
   pgTable, timestamp, boolean, uuid, varchar
 } from 'drizzle-orm/pg-core';
 
-import { table as mutate } from '../mutate.ts';
+import { table as mutate } from './mutate.ts';
 
-import { table as assignment } from '../join/join_assignment.ts';
-import { table as entitle } from '../join/join_entitle.ts';
+import { table as assignment } from './join_assignment.ts';
+import { table as entitle } from './join_entitle.ts';
 import { table as permit } from './entity_permit.ts';
 import { table as credential } from './entity_credential.ts';
 

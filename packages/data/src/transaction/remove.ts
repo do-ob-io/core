@@ -1,7 +1,7 @@
 import type { Transaction } from './transaction.types';
 import { and, eq, SQL, sql, type TableConfig } from 'drizzle-orm';
 import type { PgTableWithColumns } from 'drizzle-orm/pg-core';
-import { schema } from '@do-ob/data/schema';
+import { schemaCore } from '@do-ob/data/schema';
 import { auditMutation } from './audit';
 import { Ambit, type Input } from '@do-ob/core';
 import { RowList } from 'postgres';
@@ -17,9 +17,9 @@ function scope(
     case Ambit.Global:
       return sql`true`;
     case Ambit.Owned:
-      return eq(schema.entity.$owner, $subject);
+      return eq(schemaCore.entity.$owner, $subject);
     case Ambit.Created:
-      return eq(schema.entity.$creator, $subject);
+      return eq(schemaCore.entity.$creator, $subject);
     case Ambit.Member:
       return sql`false`; // TODO: Implement member scope.
     case Ambit.None:
@@ -49,9 +49,9 @@ export function remove<
      * See issue for updates: https://github.com/drizzle-team/drizzle-orm/issues/2304
      */
     const chunks: SQL[] = [];
-    chunks.push(tx.update(schema.entity).set({ deleted: true }).getSQL());
+    chunks.push(tx.update(schemaCore.entity).set({ deleted: true }).getSQL());
     chunks.push(sql`where ${and(
-      eq(schema.entity.$id, $id),
+      eq(schemaCore.entity.$id, $id),
       scope($subject, ambit),
     )}`);
     chunks.push(sql`returning *`);

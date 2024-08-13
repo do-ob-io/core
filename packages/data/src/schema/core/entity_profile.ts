@@ -4,7 +4,7 @@ import {
 import { relations } from 'drizzle-orm';
 
 import { table as entity } from './entity.ts';
-import { table as image } from './file/entity_file_image.ts';
+import { table as image } from './entity_file_image.ts';
 import { table as user } from './entity_user.ts';
 
 /**

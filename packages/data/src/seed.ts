@@ -1,7 +1,7 @@
 import { PgTableWithColumns } from 'drizzle-orm/pg-core';
 import { Ambit, inputify, Rate } from '@do-ob/core';
 import { database } from '@do-ob/data/database';
-import { schema } from '@do-ob/data/schema';
+import { schemaCore } from '@do-ob/data/schema';
 import { insertMany } from '@do-ob/data/transaction';
 import { Database } from './pglite';
 
@@ -51,7 +51,7 @@ export async function seed(db?: Database) {
     /**
      * Create the subject entity.
      */
-    await tx.insert(schema.entity).values({
+    await tx.insert(schemaCore.entity).values({
       $id: $subject,
       type: null,
       $owner: $subject,
@@ -61,7 +61,7 @@ export async function seed(db?: Database) {
     /**
      * Create the initial seed action.
      */
-    await tx.insert(schema.action).values({
+    await tx.insert(schemaCore.action).values({
       $id: 'seed',
       definition: {
         $id: 'seed',
@@ -71,7 +71,7 @@ export async function seed(db?: Database) {
       description: 'Seeds the database with initial data.',
     });
 
-    const [ dispatch ] = await tx.insert(schema.dispatch).values({
+    const [ dispatch ] = await tx.insert(schemaCore.dispatch).values({
       $subject,
       $action: 'seed',
       payload: null,
@@ -97,11 +97,11 @@ export async function seed(db?: Database) {
      * Insert the core data.
      */
     for (const key of moduleKeys) {
-      if(!(key in schema)) {
+      if(!(key in schemaCore)) {
         console.warn(`No schema found for ${key}`);
         continue;
       }
-      const table = schema[key as keyof typeof schema] as PgTableWithColumns<any>;
+      const table = schemaCore[key as keyof typeof schemaCore] as PgTableWithColumns<any>;
       const records = modules[key as keyof typeof modules].records;
 
       if(key.startsWith('entity_')) {
