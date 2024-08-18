@@ -27,7 +27,7 @@ export type Payload = {
 }[];
 
 
-export const type = 'locale_define';
+export const type = 'define';
 
 export function act(payload: Payload): Action<typeof type, Payload> {
   return {

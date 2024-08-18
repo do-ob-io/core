@@ -1,6 +1,6 @@
 import { test, expect } from 'vitest';
 import { logician } from './logic';
-import { register, locale_define } from '@do-ob/action';
+import { register, define } from '@do-ob/action';
 import { contextify } from '@do-ob/core';
 import { processify } from './process';
 
@@ -21,7 +21,7 @@ test('should be able to use a custom process', async () => {
         username: 'test'
       };
     } ],
-    [ locale_define, async () => {
+    [ define, async () => {
       return {
         code: 'en-US'
       } as const;

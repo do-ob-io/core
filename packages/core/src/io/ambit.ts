@@ -23,9 +23,14 @@ export enum Ambit {
   Member = 1 << 2,
 
   /**
+   * The action applies to the public entity/entities.
+   */
+  Public = 1 << 3,
+
+  /**
    * Unlimited scope.
    */
-  Global = 1 << 3,
+  Global = 1 << 4,
 }
 
 /**

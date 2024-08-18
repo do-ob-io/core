@@ -1,32 +1,11 @@
 import type { Transaction } from './transaction.types';
 import { and, eq, SQL, sql, type TableConfig } from 'drizzle-orm';
 import type { PgTableWithColumns } from 'drizzle-orm/pg-core';
+import { scope } from '@do-ob/data/scope';
 import { schemaCore } from '@do-ob/data/schema';
 import { auditMutation } from './audit';
-import { Ambit, type Input } from '@do-ob/core';
+import { type Input } from '@do-ob/core';
 import type { RowList } from 'postgres';
-
-/**
- * Builds an sql filter based on an ambit.
- */
-function scope(
-  $subject: string,
-  ambit: Ambit,
-): SQL {
-  switch(ambit) {
-    case Ambit.Global:
-      return sql`true`;
-    case Ambit.Owned:
-      return eq(schemaCore.entity.$owner, $subject);
-    case Ambit.Created:
-      return eq(schemaCore.entity.$creator, $subject);
-    case Ambit.Member:
-      return sql`false`; // TODO: Implement member scope.
-    case Ambit.None:
-    default:
-      return sql`false`;
-  }
-}
 
 export function update<
   C extends TableConfig,

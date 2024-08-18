@@ -38,6 +38,12 @@ export const records: Array<SchemaCore['system']['$inferInsert']> = [
     description: 'Convenient flag to enable clients to register new user accounts if assigned with the registration actions.',
   },
   {
+    $id: 'ADMINISTRATOR_ROLE_NAME',
+    type: 'string',
+    value: 'Administrator',
+    description: 'The role assigned to administrators. This allows users with this role to perform any actions regardless of permissions.',
+  },
+  {
     $id: 'ANONYMOUS_ROLE_NAME',
     type: 'string',
     value: 'Anonymous',

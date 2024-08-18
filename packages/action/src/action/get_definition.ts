@@ -1,11 +1,11 @@
 import { type Action, Ambit, Rate } from '@do-ob/core/io';
 
 /**
- * Array dictionary entry names.
+ * Array dictionary entry keys to get the definition for.
  */
 export type Payload = string[];
 
-export const type = 'get_text';
+export const type = 'get_definition';
 
 export function act(payload: Payload): Action<typeof type, Payload> {
   return {
