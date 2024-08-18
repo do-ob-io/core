@@ -1,6 +1,6 @@
 {
   "name": "@do-ob/logic",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Logic for processing, mutating, and providing data.",
   "type": "module",
   "files": [
