@@ -24,8 +24,8 @@ test('should query for the row with the $id "NAME" from the schema.system table'
   expect(result).toEqual([
     {
       $id: 'NAME',
-      type: 'string',
       value: 'My Application',
+      pattern: null,
       description: expect.any(String),
     },
   ]);
