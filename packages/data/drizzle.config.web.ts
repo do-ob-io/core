@@ -4,10 +4,10 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 export default {
-  schema: './src/schema/core.ts',
-  out: './_migrations',
+  schema: './src/schema/web.ts',
+  out: './_migration_web',
   dialect: 'postgresql',
   dbCredentials: {
-    url: process.env.DATABASE_CONNECTION || 'file://./pglite',
+    url: process.env.DATABASE_CONNECTION || 'memory://./pglite',
   },
 } satisfies Config;

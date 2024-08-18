@@ -4,18 +4,6 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
-DO $$ BEGIN
- CREATE TYPE "public"."mutate_operation" AS ENUM('insert', 'update', 'remove');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- CREATE TYPE "public"."system_type" AS ENUM('boolean', 'number', 'string');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "action" (
 	"id" varchar(64) PRIMARY KEY NOT NULL,
 	"definition" jsonb NOT NULL,
@@ -32,6 +20,17 @@ CREATE TABLE IF NOT EXISTS "dispatch" (
 	"status" "dispatch_status" DEFAULT 'pending' NOT NULL,
 	"result" jsonb,
 	"message" text
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "entity" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"type" varchar(64),
+	"created" timestamp DEFAULT now() NOT NULL,
+	"updated" timestamp DEFAULT now() NOT NULL,
+	"public" boolean DEFAULT false NOT NULL,
+	"deleted" boolean DEFAULT false NOT NULL,
+	"owner_id" uuid,
+	"creator_id" uuid
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "entity_credential" (
@@ -56,6 +55,37 @@ CREATE TABLE IF NOT EXISTS "entity_email" (
 	"address" varchar(255) NOT NULL,
 	"verified" boolean DEFAULT false NOT NULL,
 	CONSTRAINT "entity_email_address_unique" UNIQUE("address")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "entity_file" (
+	"id" uuid PRIMARY KEY NOT NULL,
+	"name" varchar(32) NOT NULL,
+	"description" varchar(1024),
+	"mime_type" varchar(64) NOT NULL,
+	"size" bigint NOT NULL,
+	"path" varchar(2048),
+	CONSTRAINT "entity_file_name_unique" UNIQUE("name")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "entity_file_audio" (
+	"id" uuid PRIMARY KEY NOT NULL,
+	"length" integer NOT NULL,
+	"volume" smallint NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "entity_file_image" (
+	"id" uuid PRIMARY KEY NOT NULL,
+	"height" smallint NOT NULL,
+	"width" smallint NOT NULL,
+	"animated" boolean DEFAULT false NOT NULL,
+	"frames" smallint
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "entity_file_video" (
+	"id" uuid PRIMARY KEY NOT NULL,
+	"height" smallint NOT NULL,
+	"width" smallint NOT NULL,
+	"length" integer NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "entity_locale" (
@@ -119,59 +149,17 @@ CREATE TABLE IF NOT EXISTS "entity_user" (
 	CONSTRAINT "entity_user_name_unique" UNIQUE("name")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "entity" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"type" varchar(64),
-	"created" timestamp DEFAULT now() NOT NULL,
-	"updated" timestamp DEFAULT now() NOT NULL,
-	"public" boolean DEFAULT false NOT NULL,
-	"deleted" boolean DEFAULT false NOT NULL,
-	"owner_id" uuid,
-	"creator_id" uuid
-);
---> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "entity_file_audio" (
-	"id" uuid PRIMARY KEY NOT NULL,
-	"length" integer NOT NULL,
-	"volume" smallint NOT NULL
-);
---> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "entity_file_image" (
-	"id" uuid PRIMARY KEY NOT NULL,
-	"height" smallint NOT NULL,
-	"width" smallint NOT NULL,
-	"animated" boolean DEFAULT false NOT NULL,
-	"frames" smallint
-);
---> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "entity_file_video" (
-	"id" uuid PRIMARY KEY NOT NULL,
-	"height" smallint NOT NULL,
-	"width" smallint NOT NULL,
-	"length" integer NOT NULL
-);
---> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "entity_file" (
-	"id" uuid PRIMARY KEY NOT NULL,
-	"name" varchar(32) NOT NULL,
-	"description" varchar(1024),
-	"mime_type" varchar(64) NOT NULL,
-	"size" bigint NOT NULL,
-	"path" varchar(2048),
-	CONSTRAINT "entity_file_name_unique" UNIQUE("name")
-);
---> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "join_assignment" (
 	"entity_id" uuid NOT NULL,
 	"role_id" uuid NOT NULL,
 	CONSTRAINT "join_assignment_entity_id_role_id_pk" PRIMARY KEY("entity_id","role_id")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "entitle" (
+CREATE TABLE IF NOT EXISTS "join_entitle" (
 	"entity_id" uuid NOT NULL,
 	"target_id" uuid NOT NULL,
 	"action_id" varchar(64) NOT NULL,
-	CONSTRAINT "entitle_entity_id_target_id_action_id_pk" PRIMARY KEY("entity_id","target_id","action_id")
+	CONSTRAINT "join_entitle_entity_id_target_id_action_id_pk" PRIMARY KEY("entity_id","target_id","action_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "mutate" (
@@ -198,8 +186,8 @@ CREATE TABLE IF NOT EXISTS "storage" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "system" (
 	"id" varchar PRIMARY KEY NOT NULL,
-	"type" "system_type" NOT NULL,
 	"value" text NOT NULL,
+	"pattern" varchar(64),
 	"description" text
 );
 --> statement-breakpoint
@@ -247,6 +235,30 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "entity_email" ADD CONSTRAINT "entity_email_user_id_entity_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."entity_user"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "entity_file" ADD CONSTRAINT "entity_file_id_entity_id_fk" FOREIGN KEY ("id") REFERENCES "public"."entity"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "entity_file_audio" ADD CONSTRAINT "entity_file_audio_id_entity_file_id_fk" FOREIGN KEY ("id") REFERENCES "public"."entity_file"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "entity_file_image" ADD CONSTRAINT "entity_file_image_id_entity_file_id_fk" FOREIGN KEY ("id") REFERENCES "public"."entity_file"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "entity_file_video" ADD CONSTRAINT "entity_file_video_id_entity_file_id_fk" FOREIGN KEY ("id") REFERENCES "public"."entity_file"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -336,30 +348,6 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "entity_file_audio" ADD CONSTRAINT "entity_file_audio_id_entity_file_id_fk" FOREIGN KEY ("id") REFERENCES "public"."entity_file"("id") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "entity_file_image" ADD CONSTRAINT "entity_file_image_id_entity_file_id_fk" FOREIGN KEY ("id") REFERENCES "public"."entity_file"("id") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "entity_file_video" ADD CONSTRAINT "entity_file_video_id_entity_file_id_fk" FOREIGN KEY ("id") REFERENCES "public"."entity_file"("id") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "entity_file" ADD CONSTRAINT "entity_file_id_entity_id_fk" FOREIGN KEY ("id") REFERENCES "public"."entity"("id") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
  ALTER TABLE "join_assignment" ADD CONSTRAINT "join_assignment_entity_id_entity_id_fk" FOREIGN KEY ("entity_id") REFERENCES "public"."entity"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -372,19 +360,19 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "entitle" ADD CONSTRAINT "entitle_entity_id_entity_id_fk" FOREIGN KEY ("entity_id") REFERENCES "public"."entity"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "join_entitle" ADD CONSTRAINT "join_entitle_entity_id_entity_id_fk" FOREIGN KEY ("entity_id") REFERENCES "public"."entity"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "entitle" ADD CONSTRAINT "entitle_target_id_entity_id_fk" FOREIGN KEY ("target_id") REFERENCES "public"."entity"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "join_entitle" ADD CONSTRAINT "join_entitle_target_id_entity_id_fk" FOREIGN KEY ("target_id") REFERENCES "public"."entity"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "entitle" ADD CONSTRAINT "entitle_action_id_action_id_fk" FOREIGN KEY ("action_id") REFERENCES "public"."action"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "join_entitle" ADD CONSTRAINT "join_entitle_action_id_action_id_fk" FOREIGN KEY ("action_id") REFERENCES "public"."action"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -403,10 +391,10 @@ END $$;
 --> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "credential_client_id_idx" ON "entity_credential" USING btree ("client_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "email_address_idx" ON "entity_email" USING btree ("address");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "file_name_idx" ON "entity_file" USING btree ("name");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "file_path_idx" ON "entity_file" USING btree ("path");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "locale_code_idx" ON "entity_locale" USING btree ("code");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "locale_name_idx" ON "entity_locale" USING btree ("name");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "profile_given_name_idx" ON "entity_profile" USING btree ("given_name");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "profile_family_name_idx" ON "entity_profile" USING btree ("family_name");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "user_name_idx" ON "entity_user" USING btree ("name");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "file_name_idx" ON "entity_file" USING btree ("name");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "file_path_idx" ON "entity_file" USING btree ("path");
+CREATE INDEX IF NOT EXISTS "user_name_idx" ON "entity_user" USING btree ("name");

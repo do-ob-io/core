@@ -10,7 +10,7 @@ let $creator: string;
 
 describe.sequential('create entity with owner', () => {
   beforeAll(async () => {
-    db = database();
+    db = await database();
     // Ensure all rows in the entity table are deleted.
     await db.delete(schemaCore.entity);
   });

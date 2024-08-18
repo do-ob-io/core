@@ -20,18 +20,23 @@ declare global {
  */
 globalThis.doob_database_instance = globalThis.doob_database_instance || null;
 
-export function database(connection?: string): Database {
+export async function database(connection: string = DATABASE_CONNECTION): Promise<Database> {
+
   if (globalThis.doob_database_instance !== null) {
     return globalThis.doob_database_instance;
   }
 
   if (process.env.NODE_ENV === 'production') {
-    const sql = postgres(connection ?? DATABASE_CONNECTION);
+    const sql = postgres(connection);
     globalThis.doob_database_instance =  drizzlePostgres(sql, { schema: schemaCore });
   } else {
-    const sql = new PGlite(connection ?? DATABASE_CONNECTION);
-    const sqlFile = readFileSync(resolve(import.meta.dirname, '../scripts/data.sql'), 'utf8');
-    sql.exec(sqlFile);
+    const sql = new PGlite(connection);
+
+    if(connection.startsWith('memory://')) {
+      const coreSql = readFileSync(resolve(import.meta.dirname, '../scripts/core.sql'), 'utf8');
+      await sql.exec(coreSql);
+    }
+    
     globalThis.doob_database_instance = drizzlePGlite(sql, { schema: schemaCore }) as unknown as Database;
   }
 

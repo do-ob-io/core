@@ -20,10 +20,15 @@ declare global {
  */
 globalThis.doob_pglite_database_instance = globalThis.doob_pglite_database_instance || null;
 
-export function database(connection?: string): Database {
-  const sql = new PGlite(connection ?? DATABASE_CONNECTION);
-  const sqlFile = readFileSync(resolve(import.meta.dirname, '../scripts/data.sql'), 'utf8');
-  sql.exec(sqlFile);
+export function database(connection: string = DATABASE_CONNECTION): Database {
+
+  const sql = new PGlite(connection);
+
+  if(connection.startsWith('memory://')) {
+    const coreSql = readFileSync(resolve(import.meta.dirname, '../scripts/core.sql'), 'utf8');
+    sql.exec(coreSql);
+  }
+
   globalThis.doob_pglite_database_instance = drizzle(sql, { schema: schemaCore }) as unknown as Database;
 
   return globalThis.doob_pglite_database_instance;

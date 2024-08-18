@@ -29,11 +29,10 @@ export const modules = {
 /**
  * Seeds a database with initial data necessary to run an application.
  */
-export async function seed(db?: Database) {
-  if(!db) {
-    db = await database();
-  }
-  const systemValue = await db.query.system.findFirst({
+export async function seed(db?: Database | Promise<Database>): Promise<Database> {
+  const dbResolved = db ? await db : await database();
+
+  const systemValue = await dbResolved.query.system.findFirst({
     where: (table, { eq }) => eq(table.$id, 'SEEDED'),
   });
 
@@ -41,7 +40,7 @@ export async function seed(db?: Database) {
     throw new Error('Database already seeded.');
   }
 
-  await db.transaction(async (tx) => {
+  await dbResolved.transaction(async (tx) => {
 
     /**
      * The subject id to use for the seed operation.
@@ -113,5 +112,5 @@ export async function seed(db?: Database) {
     };
   });
 
-  return db;
+  return dbResolved;
 }

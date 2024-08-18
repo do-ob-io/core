@@ -16,7 +16,7 @@ import { table as action } from './action.ts';
 /**
  * The possible data types for a dispatch status.
  */
-export const dispatchStatus = pgEnum('dispatch_status', [ 'success', 'rejected', 'pending' ]);
+export const status = pgEnum('dispatch_status', [ 'success', 'rejected', 'pending' ]);
 
 /**
  * Whenever a subject performs an action, a dispatch is created to apply the action.
@@ -29,7 +29,7 @@ export const table = pgTable('dispatch', {
   created: timestamp('created').defaultNow().notNull(), // When the dispatch was created.
   initiate: timestamp('initiate').defaultNow().notNull(), // When the dispatch was/will be initiated.
   payload: jsonb('payload'), // The payload data to send with the action.
-  status: dispatchStatus('status').notNull().default('pending'), // The status of the dispatch.
+  status: status('status').notNull().default('pending'), // The status of the dispatch.
   result: jsonb('result'), // The result data from the action.
   message: text('message'), // A message to describe the dispatch.
 });

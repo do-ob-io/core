@@ -27,7 +27,10 @@
   "scripts": {
     "build": "vite build --mode production",
     "test": "vitest --run",
-    "generate": "drizzle-kit generate",
+    "generate": "pnpm generate:core && pnpm generate:web",
+    "generate:core": "drizzle-kit generate --config ./drizzle.config.core.ts && pnpm generate:post",
+    "generate:web": "drizzle-kit generate --config ./drizzle.config.web.ts && pnpm generate:post",
+    "generate:post": "tsx ./generate.post.ts",
     "push": "drizzle-kit push"
   },
   "dependencies": {

@@ -14,7 +14,7 @@ import { table as entity } from './entity.ts';
 /**
  * Possible operations to a historical change.
  */
-export const mutateOperation = pgEnum('mutate_operation', [ 'insert', 'update', 'remove' ]);
+export const operation = pgEnum('mutate_operation', [ 'insert', 'update', 'remove' ]);
 
 /**
  * Defines a log of CUD changes to records on other tables in the database.
@@ -25,7 +25,7 @@ export const table = pgTable('mutate', {
   $dispatch: uuid('dispatch_id').notNull().references(() => dispatch.$id), // The dispatch ID that was responsible for the mutation.
   $entity: uuid('record_id').notNull().references(() => entity.$id), // The record ID that was changed.
   table: varchar('table').notNull(), // The table that was changed.
-  operation: mutateOperation('operation').notNull(), // The operation performed on the record.
+  operation: operation('operation').notNull(), // The operation performed on the record.
   occurred: timestamp('occurred').defaultNow().notNull(), // When the operation was performed.
   mutation: jsonb('mutation').notNull(), // The mutation that was performed.
 });

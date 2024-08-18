@@ -1,5 +1,5 @@
 export { table as action } from './core/action.ts';
-export { table as dispatch, relates as dispatchRelates } from './core/dispatch.ts';
+export { table as dispatch, relates as dispatchRelates, status as dispatchStatus } from './core/dispatch.ts';
 
 export { table as entity_credential, relates as entity_credentialRelates } from './core/entity_credential.ts';
 export { table as entity_document } from './core/entity_document.ts';
@@ -21,7 +21,7 @@ export { table as entity, relates as entityRelates } from './core/entity.ts';
 export { table as join_assignment, relates as join_assignmentRelates } from './core/join_assignment.ts';
 export { table as join_entitle, relates as join_entitleRelates } from './core/join_entitle.ts';
 
-export { table as mutate, relates as mutateRelates } from './core/mutate.ts';
+export { table as mutate, relates as mutateRelates, operation as mutateOperation } from './core/mutate.ts';
 export { table as session } from './core/session.ts';
 export { table as storage } from './core/storage.ts';
 export { table as system } from './core/system.ts';

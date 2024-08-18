@@ -1,22 +1,16 @@
 import {
-  pgEnum,
   pgTable,
   text,
   varchar,
 } from 'drizzle-orm/pg-core';
 
 /**
- * The possible data types for a system settings.
- */
-export const systemType = pgEnum('system_type', [ 'boolean', 'number', 'string' ]);
-
-/**
  * The system table serves as a flat registry for global configuration settings.
  */
 export const table = pgTable('system', {
   $id: varchar('id').primaryKey(), // Name of the system setting.
-  type: systemType('type').notNull(), // Type of the system setting (boolean, number, string).
-  value: text('value').notNull(), // Value of the system setting. The string value will be converted to the type.
+  value: text('value').notNull(), // String value of the system setting.
+  pattern: varchar('pattern', { length: 64 }), // Optional pattern to validate the system setting value.
   description: text('description'), // Optional description of the system setting.
 });
 
