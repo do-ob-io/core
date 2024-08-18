@@ -4,6 +4,12 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "public"."mutate_operation" AS ENUM('insert', 'update', 'remove');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "action" (
 	"id" varchar(64) PRIMARY KEY NOT NULL,
 	"definition" jsonb NOT NULL,

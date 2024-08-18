@@ -1,22 +1,49 @@
-import fs from 'node:fs';
-import path from 'node:path';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const scriptsPath = path.resolve(import.meta.url, './scripts');
+// Resolve the directory name where the script is located
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-// Copy the *.sql file from _migration_core to scripts core.sql. Overwrite if it exists. Ensure that paths are relative to where this script exists.
-const coreMigrationPath = path.resolve(import.meta.url, './_migration_core');
-const coreSql = path.resolve(scriptsPath, './core.sql');
-if (fs.existsSync(coreMigrationPath) && fs.existsSync(scriptsPath)) {
-  fs.copyFileSync(coreMigrationPath, coreSql);
-  // Remove the _migration_core directory.
-  fs.rmdirSync(coreMigrationPath, { recursive: true });
+// Define the target directory for copied scripts
+const targetDir = path.join(__dirname, 'scripts');
+
+// Ensure the target directory exists
+if (!fs.existsSync(targetDir)) {
+  fs.mkdirSync(targetDir, { recursive: true });
 }
 
-// Copy the *.sql file from _migration_web to scripts web.sql. Overwrite if it exists. Ensure that paths are relative to where this script exists.
-const webMigrationPath = path.resolve(import.meta.url, './_migration_web');
-const webSql = path.resolve(scriptsPath, './web.sql');
-if (fs.existsSync(webMigrationPath) && fs.existsSync(scriptsPath)) {
-  fs.copyFileSync(webMigrationPath, webSql);
-  // Remove the _migration_web directory.
-  fs.rmdirSync(webMigrationPath, { recursive: true });
-}
+// Get all directories in the current script's directory
+const directories = fs.readdirSync(__dirname, { withFileTypes: true })
+  .filter(dirent => dirent.isDirectory())
+  .map(dirent => dirent.name);
+
+// Process each directory that matches the pattern "_migration_<name>"
+directories.forEach(directory => {
+  const match = directory.match(/^_migration_(.+)$/);
+  if (match) {
+    const name = match[1];
+    const migrationDir = path.join(__dirname, directory);
+        
+    // Get the first *.sql file in the directory
+    const sqlFiles = fs.readdirSync(migrationDir).filter(file => file.endsWith('.sql'));
+
+    if (sqlFiles.length > 0) {
+      const sourceFile = path.join(migrationDir, sqlFiles[0]);
+      const destFile = path.join(targetDir, `${name}.sql`);
+
+      // Copy the file to the target directory
+      fs.copyFileSync(sourceFile, destFile);
+
+      console.log(`Copied ${sourceFile} to ${destFile}`);
+
+      // Remove the _migration_<name> directory
+      fs.rmSync(migrationDir, { recursive: true, force: true });
+
+      console.log(`Removed directory: ${migrationDir}`);
+    }
+  }
+});
+
+console.log('Script completed.');
