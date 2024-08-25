@@ -12,6 +12,11 @@ type MemoizedCache<T extends (...args: any[]) => any> = {
  */
 interface MemoizeOptions {
   /**
+   * Set the dependencies for the memoized function instead of the arguments.
+   */
+  deps?: any[];
+
+  /**
    * The amount of time the cache has to live in milliseconds.
    * 
    * @default undefined
@@ -27,6 +32,7 @@ export function memoize<
 >(
   fn: T,
   {
+    deps,
     ttl,
   }: MemoizeOptions = {},
 ) {
@@ -34,7 +40,7 @@ export function memoize<
 
   const memoizedFn = (...args: Parameters<T>): ReturnType<T> => {
 
-    const key = JSON.stringify(args);
+    const key = JSON.stringify(deps ?? args);
 
     if (cache.has(key)) {
       const goods = cache.get(key) ?? {} as MemoizedCache<T>;

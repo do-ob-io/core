@@ -32,15 +32,12 @@ const databaseMocked = {
 };
 
 test('should create a context', () => {
-  const adapter = adaptify({
-    driver: () => () => databaseMocked,
-    insert: ({ ambit }) => async <K extends keyof SchemaInsert, S extends SchemaInsert>(table: K, values: S[K][]) => {
-      if (ambit === 0) {
-        return [] as S[K][];
-      }
+  const adapter = adaptify(({
+    driver: () => databaseMocked,
+    insert: () => async <K extends keyof SchemaInsert, S extends SchemaInsert>(table: K, values: S[K][]) => {
       return databaseMocked.insert(table, values);
     }
-  });
+  }));
 
   expect(adapter).toBeDefined();
 });

@@ -22,6 +22,11 @@ export function query<
   options: QueryOptions<C> = {},
 
   /**
+   * Ambit to scope the query to.
+   */
+  ambit: Ambit = Ambit.None,
+
+  /**
    * If true, deleted records will be included in the result.
    */
   clairvoyance: boolean = false,
@@ -35,7 +40,7 @@ export function query<
   } = options;
 
   return async (tx: Transaction): Promise<PgTableWithColumns<C>['$inferSelect'][]> => {
-    const { ambit, $subject } = input;
+    const { $subject } = input;
 
     if (!$subject) {
       throw new Error('Unauthorized. No subject provided for the query operation.');

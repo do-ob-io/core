@@ -1,20 +1,31 @@
 import { adaptify } from '@do-ob/core';
 import { Database } from '@do-ob/data/database';
 
+import * as cache from './cache';
+
 import insert from './adapter/insert';
 import insertMany from './adapter/insert';
 import query from './adapter/query';
 import update from './adapter/update';
 import remove from './adapter/remove';
+import authorization from './adapter/authorization';
 
 
 export function adapter<
   D extends Database,
 >(database: D | Promise<D>) {
-
+  
   return adaptify({
 
-    driver: () => async () => await database,
+    /**
+     * Cache for memoization.
+     */
+    cache: () => cache,
+
+    /**
+     * The database driver.
+     */
+    driver: async () => await database,
 
     /**
      * Safely inserts a new entity into the database with authorization controls and audits.
@@ -40,6 +51,10 @@ export function adapter<
      * Safely removes an entity from the database with authorization controls and audits.
      */
     remove: remove(database),
+
+    /**
+     * Gets authorization values based on an IO Input.
+     */
+    authorization: authorization(database),
   });
-  
 };
