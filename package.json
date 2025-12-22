@@ -1,14 +1,17 @@
 {
-  "name": "core",
+  "name": "@do-ob/core",
   "version": "1.0.0",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
     "build": "tsc -p ./tsconfig.json",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest"
   },
   "keywords": [],
   "author": "Eric Crowell",
   "license": "MIT",
-  "packageManager": "pnpm@10.26.1"
+  "packageManager": "pnpm@10.26.1",
+  "devDependencies": {
+    "vitest": "^4.0.16"
+  }
 }
