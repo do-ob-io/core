@@ -1,8 +1,18 @@
 {
   "name": "@do-ob/core",
   "version": "1.0.0",
-  "description": "",
-  "main": "lib/index.js",
+  "description": "Core utilities for do-ob packages and applications.",
+  "main": "dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./strings": {
+      "import": "./dist/strings/index.js",
+      "types": "./dist/strings/index.d.ts"
+    }
+  },
   "scripts": {
     "build": "tsc -p ./tsconfig.json",
     "test": "vitest"
