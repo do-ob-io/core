@@ -39,3 +39,4 @@ Before considering any change complete, AI agents **must ensure**:
 1. **All tests pass**
    ```bash
    pnpm test
+   ```
