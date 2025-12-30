@@ -1,22 +1,41 @@
-# do-ob Core Node.js Library
+# AGENT.md — do-ob Core Node.js Library
 
-The Core packages defines common functions, constants, types, and regular expressions for re-use across all other do-ob projects. The source is organized into sub-modules under the `src` folder:
+## Project Overview
 
-- **strings**: Common utilities for mutating, encoding, and decoding string types.
-- **structs**: TypeScript interfaces and types for common data structures.
-- **crypto**: Simple cryptographic algorithms for hashing, structuring, and encrypting/decrypting data.
+The **do-ob Core** package provides foundational utilities shared across all do-ob projects.  
+It is intentionally small, dependency-free, and environment-agnostic.
 
-## Devlopment Instructions
-- New code should work for both a browser and Node.js environment only using polyfils if absolutely necessary.
-- This package should rely on zero dependencies in its release.
+All source code lives under `src/` and is organized into focused submodules:
 
-## Testing instructions
-- From the package root you can call `pnpm test`. Updates/additions should pass all tests.
-- To focus on one step, add the Vitest pattern: `pnpm vitest run -t "<test name>"`.
-- Fix any test or type errors until the whole suite is green.
-- After moving files or changing imports, run `pnpm lint` from this directory to be sure ESLint and TypeScript rules still pass.
-- Add or update tests for the code you change, even if nobody asked.
+- **strings** — String mutation, encoding/decoding, and normalization utilities
+- **structs** — Reusable TypeScript types, interfaces, and structural helpers
+- **crypto** — Lightweight cryptographic helpers (hashing, structuring, encrypt/decrypt)
 
-## PR instructions
-- Title format: <Title>
-- Always run `pnpm lint` and `pnpm test` before committing.
+This package is a *low-level dependency*. Changes here ripple outward—treat modifications with care.
+
+## Development Constraints (Hard Rules)
+
+AI agents **must comply with all of the following**:
+
+1. **Environment Compatibility**
+   - Code **must run in both Node.js and modern browsers**
+   - Avoid Node-only APIs (`fs`, `crypto` Node module, etc.)
+   - Use polyfills **only if absolutely unavoidable**, and prefer standards-based APIs
+
+2. **Zero Runtime Dependencies**
+   - **No dependencies** may be added to the published package
+   - Do not introduce transitive dependencies via helpers or build artifacts
+   - Dev-only tooling changes are acceptable only if explicitly requested
+
+3. **Minimal Surface Area**
+   - Prefer small, composable utilities
+   - Avoid clever abstractions or over-generalization
+   - Public APIs should remain stable unless explicitly instructed otherwise
+
+## Testing & Validation Requirements
+
+Before considering any change complete, AI agents **must ensure**:
+
+1. **All tests pass**
+   ```bash
+   pnpm test
