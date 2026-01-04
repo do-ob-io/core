@@ -1,4 +1,4 @@
-import { normalizeCase } from './normalize-case';
+import { normalizeCase } from './normalize-case.js';
 
 /**
  * Converts a string to dot.case.

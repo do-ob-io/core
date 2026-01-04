@@ -2,12 +2,12 @@
  * @module strings
  */
 
-export { camelCase } from './camel-case';
-export { constantCase } from './constant-case';
-export { dotCase } from './dot-case';
-export { kebabCase } from './kebab-case';
-export { normalizeCase } from './normalize-case';
-export { pascalCase } from './pascal-case';
-export { pathCase } from './path-case';
-export { snakeCase } from './snake-case';
-export { titlizeCase } from './titlize-case';
+export { camelCase } from './camel-case.js';
+export { constantCase } from './constant-case.js';
+export { dotCase } from './dot-case.js';
+export { kebabCase } from './kebab-case.js';
+export { normalizeCase } from './normalize-case.js';
+export { pascalCase } from './pascal-case.js';
+export { pathCase } from './path-case.js';
+export { snakeCase } from './snake-case.js';
+export { titlizeCase } from './titlize-case.js';

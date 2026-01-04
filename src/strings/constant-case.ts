@@ -1,4 +1,4 @@
-import { normalizeCase } from './normalize-case';
+import { normalizeCase } from './normalize-case.js';
 
 /**
  * Converts a string to CONSTANT_CASE (also known as SCREAMING_SNAKE_CASE).

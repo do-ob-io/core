@@ -10,6 +10,7 @@ All source code lives under `src/` and is organized into focused submodules:
 - **strings** — String mutation, encoding/decoding, and normalization utilities
 - **structs** — Reusable TypeScript types, interfaces, and structural helpers
 - **crypto** — Lightweight cryptographic helpers (hashing, structuring, encrypt/decrypt)
+- **web** — Browser-only utilities (fetch wrappers, URL manipulation, HTML class helpers)
 
 This package is a *low-level dependency*. Changes here ripple outward—treat modifications with care.
 
@@ -34,9 +35,20 @@ AI agents **must comply with all of the following**:
 
 ## Testing & Validation Requirements
 
-Before considering any change complete, AI agents **must ensure**:
+This project uses **Vitest** for unit testing. Before considering any change complete, AI agents **must ensure**:
 
 1. **All tests pass**
    ```bash
    pnpm test
    ```
+
+2. **A test exists for every new utility**
+   - New functions/classes **must have corresponding tests** in `*.test.ts` files
+   - Tests should cover typical use cases, edge cases, and error conditions
+
+### Test Files
+- Tests must be written in files suffixed with `*.test.ts`
+- Tests execute in a **Node.js environment**
+- Test files should be colocated near the code they validate when practical
+
+
