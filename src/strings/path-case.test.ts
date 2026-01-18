@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { pathCase } from './path-case';
+import { pathCase } from './path-case.js';
 
 describe('pathCase', () => {
   it('should convert space-separated words to path/case', () => {

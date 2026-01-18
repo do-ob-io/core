@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { dotCase } from './dot-case';
+import { dotCase } from './dot-case.js';
 
 describe('dotCase', () => {
   it('should convert space-separated words to dot.case', () => {

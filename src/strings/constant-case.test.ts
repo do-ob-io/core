@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { constantCase } from './constant-case';
+import { constantCase } from './constant-case.js';
 
 describe('constantCase', () => {
   it('should convert space-separated words to CONSTANT_CASE', () => {

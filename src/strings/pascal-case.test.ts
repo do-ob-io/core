@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { pascalCase } from './pascal-case';
+import { pascalCase } from './pascal-case.js';
 
 describe('pascalCase', () => {
   it('should convert space-separated words to PascalCase', () => {

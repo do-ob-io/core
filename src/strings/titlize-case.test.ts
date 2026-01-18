@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { titlizeCase } from './titlize-case';
+import { titlizeCase } from './titlize-case.js';
 
 describe('titlizeCase', () => {
   it('should convert a string to title case', () => {

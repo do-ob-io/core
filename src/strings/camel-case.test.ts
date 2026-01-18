@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { camelCase } from './camel-case';
+import { camelCase } from './camel-case.js';
 
 describe('camelCase', () => {
   it('should convert space-separated words to camelCase', () => {

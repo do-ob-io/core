@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { snakeCase } from './snake-case';
+import { snakeCase } from './snake-case.js';
 
 describe('snakeCase', () => {
   it('should convert space-separated words to snake_case', () => {

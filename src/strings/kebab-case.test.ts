@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { kebabCase } from './kebab-case';
+import { kebabCase } from './kebab-case.js';
 
 describe('kebabCase', () => {
   it('should convert space-separated words to kebab-case', () => {
