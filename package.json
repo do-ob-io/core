@@ -5,10 +5,6 @@
   "type": "module",
   "main": "dist/index.js",
   "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    },
     "./strings": {
       "import": "./dist/strings/index.js",
       "types": "./dist/strings/index.d.ts"
@@ -19,7 +15,7 @@
     }
   },
   "scripts": {
-    "build": "tsc -p ./tsconfig.build.json",
+    "build": "tsc -p ./tsconfig.lib.json",
     "test": "vitest run"
   },
   "keywords": [],
