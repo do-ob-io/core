@@ -7,6 +7,7 @@ Foundational utilities shared across all do-ob projects. Zero runtime dependenci
 - **Typecheck**: `tsc --noEmit`
 - **Lint**: `eslint --fix`
 - **Test**: `vitest run`
+- **Build**: `pnpm build`
 
 ## Structure
 
