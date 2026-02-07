@@ -1,4 +1,4 @@
-import { normalizeCase } from './normalize-case.js';
+import { normalizeCase } from '../normalize-case/normalize-case.js';
 
 /**
  * Converts a string to Title Case, capitalizing the first letter of each word.

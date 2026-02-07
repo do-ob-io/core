@@ -1,4 +1,4 @@
-# @do-ob/core Library
+# Core Library
 
 Foundational utilities shared across all do-ob projects. Zero runtime dependencies, runs in both Node.js and browsers.
 

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { normalizeCase } from './normalize-case.js';
+import { normalizeCase } from '../normalize-case/normalize-case.js';
 
 describe('normalizeCase', () => {
   it('should normalize camelCase', () => {
