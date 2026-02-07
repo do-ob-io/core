@@ -14,6 +14,8 @@
  * pathNormalize('../secret') // 'secret'
  * ```
  */
+import { pathStripQueryHash } from '../path-strip-query-hash/path-strip-query-hash.js';
+
 export function pathNormalize(path: string): string {
   if (!path) {
     return '';
@@ -25,7 +27,7 @@ export function pathNormalize(path: string): string {
     return '';
   }
 
-  const withoutQueryHash = stripQueryHash(trimmed);
+  const withoutQueryHash = pathStripQueryHash(trimmed);
   let normalized = withoutQueryHash.replaceAll('\0', '');
 
   // Decode encoded percent sign to catch double-encoded traversal markers.
@@ -65,20 +67,4 @@ export function pathNormalize(path: string): string {
   }
 
   return safeSegments.join('/');
-}
-
-function stripQueryHash(value: string): string {
-  const hashIndex = value.indexOf('#');
-  const queryIndex = value.indexOf('?');
-  let cutoff = value.length;
-
-  if (hashIndex !== -1 && hashIndex < cutoff) {
-    cutoff = hashIndex;
-  }
-
-  if (queryIndex !== -1 && queryIndex < cutoff) {
-    cutoff = queryIndex;
-  }
-
-  return value.slice(0, cutoff).trim();
 }
