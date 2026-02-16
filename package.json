@@ -24,5 +24,8 @@
   "packageManager": "pnpm@10.26.1",
   "devDependencies": {
     "vitest": "^4.0.16"
+  },
+  "dependencies": {
+    "tailwind-merge": "^3.4.0"
   }
 }

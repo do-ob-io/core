@@ -76,6 +76,24 @@ describe('cn', () => {
     });
   });
 
+  describe('function arguments', () => {
+    it('should handle a function that returns a class string', () => {
+      expect(cn('base', () => 'active')).toBe('base active');
+    });
+
+    it('should accept a function with arguments as long as it returns a string', () => {
+      expect(cn('base', (variant: string): string => variant ?? 'active')).toBe('base active');
+    });
+
+    it('should accept a function with arguments that returns undefined', () => {
+      expect(cn('base', (_state: string): string | undefined => undefined)).toBe('base');
+    });
+
+    it('should support conflict resolution for function return values', () => {
+      expect(cn('px-4', () => 'px-2')).toBe('px-2');
+    });
+  });
+
   describe('twMerge features - conflict resolution', () => {
     it('should resolve padding conflicts', () => {
       expect(cn('px-4', 'px-2')).toBe('px-2');

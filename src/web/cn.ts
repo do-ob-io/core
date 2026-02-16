@@ -29,8 +29,11 @@
  * ```
  */
 
+import { twMerge } from 'tailwind-merge';
+
 import { type ClassValue, clsx } from './clsx.js';
-import { twMerge } from './tw-merge.js';
+
+export type CnInput = ClassValue | ((...args: any[]) => string | undefined);
 
 /**
  * Combines class names with conditional support and Tailwind conflict resolution.
@@ -39,7 +42,7 @@ import { twMerge } from './tw-merge.js';
  * arrays, and objects, then passes the result through twMerge to intelligently
  * resolve Tailwind CSS class conflicts.
  *
- * @param inputs - Class values to merge (strings, arrays, objects, or conditionals)
+ * @param inputs - Class values to merge (strings, arrays, objects, conditionals, or callbacks with any arguments that return a class string or undefined)
  * @returns A merged class string with Tailwind conflicts resolved
  *
  * @example
@@ -65,6 +68,14 @@ import { twMerge } from './tw-merge.js';
  * cn(['flex', 'items-center'], ['gap-2', 'gap-4']); // 'flex items-center gap-4'
  * ```
  */
-export function cn(...inputs: ClassValue[]): string {
-  return twMerge(clsx(inputs));
+export function cn(...inputs: CnInput[]): string {
+  const resolvedInputs = inputs.map((input) => {
+    if (typeof input === 'function') {
+      return input();
+    }
+
+    return input;
+  });
+
+  return twMerge(clsx(resolvedInputs));
 }
