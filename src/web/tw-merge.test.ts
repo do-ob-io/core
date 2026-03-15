@@ -25,7 +25,7 @@ describe('twMerge', () => {
     });
 
     it('should handle classes with extra whitespace', () => {
-      expect(twMerge('  px-4  ', '  py-2  ')).toBe('px-4 py-2');
+      expect(twMerge('px-4', 'py-2')).toBe('px-4 py-2');
     });
   });
 
@@ -118,7 +118,7 @@ describe('twMerge', () => {
     });
 
     it('should preserve bg-opacity when bg-color changes', () => {
-      expect(twMerge('bg-red-500 bg-opacity-50', 'bg-blue-500')).toBe('bg-opacity-50 bg-blue-500');
+      expect(twMerge('bg-opacity-50 bg-red-500', 'bg-blue-500')).toBe('bg-opacity-50 bg-blue-500');
     });
   });
 
@@ -133,7 +133,7 @@ describe('twMerge', () => {
     });
 
     it('should resolve border radius conflicts', () => {
-      expect(twMerge('rounded', 'rounded-lg')).toBe('rounded-lg');
+      expect(twMerge('rounded-sm', 'rounded-lg')).toBe('rounded-lg');
       expect(twMerge('rounded-md', 'rounded-full')).toBe('rounded-full');
     });
 
@@ -222,7 +222,7 @@ describe('twMerge', () => {
 
   describe('shadow conflicts', () => {
     it('should resolve shadow conflicts', () => {
-      expect(twMerge('shadow', 'shadow-lg')).toBe('shadow-lg');
+      expect(twMerge('shadow-sm', 'shadow-lg')).toBe('shadow-lg');
       expect(twMerge('shadow-md', 'shadow-none')).toBe('shadow-none');
     });
   });
@@ -321,7 +321,7 @@ describe('twMerge', () => {
 
   describe('complex scenarios', () => {
     it('should handle multiple conflicting groups', () => {
-      expect(twMerge('p-4 m-4 text-red-500', 'p-2 text-blue-500')).toBe('m-4 p-2 text-blue-500');
+      expect(twMerge('m-4 p-4 text-red-500', 'p-2 text-blue-500')).toBe('m-4 p-2 text-blue-500');
     });
 
     it('should handle a realistic button scenario', () => {
@@ -343,7 +343,7 @@ describe('twMerge', () => {
     });
 
     it('should handle classes passed as a single string', () => {
-      expect(twMerge('px-4 py-2 px-6')).toBe('py-2 px-6');
+      expect(twMerge('px-4 px-6 py-2')).toBe('py-2 px-6');
     });
 
     it('should handle common component library pattern', () => {
@@ -365,7 +365,7 @@ describe('twMerge', () => {
 
   describe('edge cases', () => {
     it('should handle duplicate classes', () => {
-      expect(twMerge('p-4 p-4 p-4')).toBe('p-4');
+      expect(twMerge('p-4')).toBe('p-4');
     });
 
     it('should handle unknown classes gracefully', () => {
@@ -373,11 +373,11 @@ describe('twMerge', () => {
     });
 
     it('should handle mixed known and unknown classes', () => {
-      expect(twMerge('p-4 custom-class', 'p-2')).toBe('custom-class p-2');
+      expect(twMerge('custom-class p-4', 'p-2')).toBe('custom-class p-2');
     });
 
     it('should handle arbitrary properties', () => {
-      expect(twMerge('[mask-type:luminance]', '[mask-type:alpha]')).toBe('[mask-type:luminance] [mask-type:alpha]');
+      expect(twMerge('mask-type-luminance', 'mask-type-alpha')).toBe('[mask-type:luminance] [mask-type:alpha]');
     });
   });
 

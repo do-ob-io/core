@@ -147,7 +147,7 @@ describe('cva', () => {
   });
 
   describe('complex variants with different ClassValue types', () => {
-    const alertVariants = cva('alert rounded p-4', {
+    const alertVariants = cva('alert rounded-sm p-4', {
       variants: {
         variant: {
           info: [ 'bg-blue-100', 'text-blue-800' ],
@@ -155,7 +155,7 @@ describe('cva', () => {
           warning: 'bg-yellow-100 text-yellow-800',
         },
         size: {
-          sm: 'text-sm px-3 py-2',
+          sm: 'px-3 py-2 text-sm',
           md: [ 'text-base', 'px-4', 'py-3' ],
           lg: { 'text-lg': true, 'px-6': true, 'py-4': true },
         },
@@ -196,7 +196,7 @@ describe('cva', () => {
     });
 
     it('should handle base class as array', () => {
-      const variants = cva([ 'btn', 'rounded' ], {
+      const variants = cva([ 'btn', 'rounded-sm' ], {
         variants: { size: { sm: 'px-2' } },
       });
       expect(variants({ size: 'sm' })).toBe('btn rounded px-2');

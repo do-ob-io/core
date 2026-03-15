@@ -140,7 +140,7 @@ describe('cn', () => {
         primary: 'bg-blue-500 text-white',
         secondary: 'bg-gray-200 text-gray-900',
       };
-      const result = cn('px-4 py-2 rounded', variants[variant], 'px-6');
+      const result = cn('rounded-sm px-4 py-2', variants[variant], 'px-6');
       expect(result).toBe('py-2 rounded bg-blue-500 text-white px-6');
     });
 
@@ -148,9 +148,15 @@ describe('cn', () => {
       const isDisabled = true;
       const result = cn(
         'inline-flex items-center justify-center',
-        'bg-blue-500 hover:bg-blue-600',
-        isDisabled && 'opacity-50 cursor-not-allowed',
-        isDisabled && 'bg-gray-400 hover:bg-gray-400',
+        `
+          bg-blue-500
+          hover:bg-blue-600
+        `,
+        isDisabled && 'cursor-not-allowed opacity-50',
+        isDisabled && `
+          bg-gray-400
+          hover:bg-gray-400
+        `,
       );
       expect(result).toContain('opacity-50');
       expect(result).toContain('cursor-not-allowed');
@@ -165,7 +171,9 @@ describe('cn', () => {
 
     it('should handle state variants with conditionals', () => {
       const shouldOverride = true;
-      const result = cn('hover:bg-red-500', shouldOverride && 'hover:bg-blue-500');
+      const result = cn('hover:bg-red-500', shouldOverride && `
+        hover:bg-blue-500
+      `);
       expect(result).toBe('hover:bg-blue-500');
     });
   });
@@ -192,19 +200,28 @@ describe('cn', () => {
     it('should work with input component pattern', () => {
       const hasError = true;
       const result = cn(
-        'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2',
-        'text-sm placeholder:text-muted-foreground',
-        'focus-visible:outline-none focus-visible:ring-2',
-        hasError && 'border-red-500 focus-visible:ring-red-500',
+        `
+          border-input bg-background flex h-10 w-full rounded-md border px-3
+          py-2
+        `,
+        `
+          placeholder:text-muted-foreground
+          text-sm
+        `,
+        'focus-visible:ring-2 focus-visible:outline-none',
+        hasError && `
+          border-red-500
+          focus-visible:ring-red-500
+        `,
       );
       expect(result).toContain('border-red-500');
       expect(result).toContain('focus-visible:ring-red-500');
     });
 
     it('should work with card component pattern', () => {
-      const className = 'shadow-lg rounded-xl';
+      const className = 'rounded-xl shadow-lg';
       const result = cn(
-        'rounded-lg border bg-card text-card-foreground shadow-sm',
+        'bg-card text-card-foreground rounded-lg border shadow-sm',
         className,
       );
       expect(result).toContain('shadow-lg');
