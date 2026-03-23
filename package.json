@@ -18,7 +18,7 @@
   "license": "MIT",
   "packageManager": "pnpm@10.26.1",
   "devDependencies": {
-    "tsdown": "catalog:vite-latest"
+    "tsdown": "catalog:vite"
   },
   "dependencies": {
     "tailwind-merge": "^3.4.0"
