@@ -168,22 +168,22 @@ describe('cva', () => {
 
     it('should handle array ClassValues', () => {
       expect(alertVariants({ variant: 'info' }))
-        .toBe('alert rounded p-4 bg-blue-100 text-blue-800 text-base px-4 py-3');
+        .toBe('alert rounded-sm p-4 bg-blue-100 text-blue-800 text-base px-4 py-3');
     });
 
     it('should handle object ClassValues', () => {
       expect(alertVariants({ variant: 'success' }))
-        .toBe('alert rounded p-4 bg-green-100 text-green-800 text-base px-4 py-3');
+        .toBe('alert rounded-sm p-4 bg-green-100 text-green-800 text-base px-4 py-3');
     });
 
     it('should handle string ClassValues', () => {
       expect(alertVariants({ variant: 'warning' }))
-        .toBe('alert rounded p-4 bg-yellow-100 text-yellow-800 text-base px-4 py-3');
+        .toBe('alert rounded-sm p-4 bg-yellow-100 text-yellow-800 text-base px-4 py-3');
     });
 
     it('should handle mixed ClassValue types', () => {
       expect(alertVariants({ variant: 'success', size: 'lg' }))
-        .toBe('alert rounded p-4 bg-green-100 text-green-800 text-lg px-6 py-4');
+        .toBe('alert rounded-sm p-4 bg-green-100 text-green-800 text-lg px-6 py-4');
     });
   });
 
@@ -199,7 +199,7 @@ describe('cva', () => {
       const variants = cva([ 'btn', 'rounded-sm' ], {
         variants: { size: { sm: 'px-2' } },
       });
-      expect(variants({ size: 'sm' })).toBe('btn rounded px-2');
+      expect(variants({ size: 'sm' })).toBe('btn rounded-sm px-2');
     });
 
     it('should handle base class as object', () => {

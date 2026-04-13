@@ -141,7 +141,7 @@ describe('cn', () => {
         secondary: 'bg-gray-200 text-gray-900',
       };
       const result = cn('rounded-sm px-4 py-2', variants[variant], 'px-6');
-      expect(result).toBe('py-2 rounded bg-blue-500 text-white px-6');
+      expect(result).toBe('rounded-sm py-2 bg-blue-500 text-white px-6');
     });
 
     it('should handle button component with conditional disabled state', () => {
@@ -201,12 +201,12 @@ describe('cn', () => {
       const hasError = true;
       const result = cn(
         `
-          border-input bg-background flex h-10 w-full rounded-md border px-3
+          flex h-10 w-full rounded-md border border-input bg-background px-3
           py-2
         `,
         `
-          placeholder:text-muted-foreground
           text-sm
+          placeholder:text-muted-foreground
         `,
         'focus-visible:ring-2 focus-visible:outline-none',
         hasError && `
@@ -221,7 +221,7 @@ describe('cn', () => {
     it('should work with card component pattern', () => {
       const className = 'rounded-xl shadow-lg';
       const result = cn(
-        'bg-card text-card-foreground rounded-lg border shadow-sm',
+        'rounded-lg border bg-card text-card-foreground shadow-sm',
         className,
       );
       expect(result).toContain('shadow-lg');

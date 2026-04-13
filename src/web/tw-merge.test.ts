@@ -343,7 +343,8 @@ describe('twMerge', () => {
     });
 
     it('should handle classes passed as a single string', () => {
-      expect(twMerge('px-4 px-6 py-2')).toBe('py-2 px-6');
+      // eslint-disable-next-line better-tailwindcss/no-conflicting-classes
+      expect(twMerge('px-4 px-6 py-2')).toBe('px-6 py-2');
     });
 
     it('should handle common component library pattern', () => {
@@ -377,7 +378,7 @@ describe('twMerge', () => {
     });
 
     it('should handle arbitrary properties', () => {
-      expect(twMerge('mask-type-luminance', 'mask-type-alpha')).toBe('[mask-type:luminance] [mask-type:alpha]');
+      expect(twMerge('mask-type-luminance', 'mask-type-alpha')).toBe('mask-type-luminance mask-type-alpha');
     });
   });
 
