@@ -5,6 +5,7 @@
   "type": "module",
   "exports": {
     ".": "./dist/index.mjs",
+    "./data": "./dist/data/index.mjs",
     "./strings": "./dist/strings/index.mjs",
     "./web": "./dist/web/index.mjs",
     "./package.json": "./package.json"

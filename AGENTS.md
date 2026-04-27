@@ -11,6 +11,7 @@ Foundational utilities shared across all do-ob projects. Zero runtime dependenci
 
 ## Structure
 
+- `src/data/` — Binary data utilities (obfuscation, byte transforms)
 - `src/strings/` — String mutation, encoding/decoding, normalization
 - `src/web` - Website oriented utilities
 - `src/node` - Node.js-only utilities

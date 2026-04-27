@@ -15,3 +15,4 @@ export { pathNormalize } from './path-normalize/path-normalize.js';
 export { pathStripQueryHash } from './path-strip-query-hash/path-strip-query-hash.js';
 export { snakeCase } from './snake-case/snake-case.js';
 export { titlizeCase } from './titlize-case/titlize-case.js';
+export { deobfuscateString, obfuscateString } from './obfuscate-string/obfuscate-string.js';
