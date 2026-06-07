@@ -31,7 +31,7 @@ export function pathNormalize(path: string): string {
   let normalized = withoutQueryHash.replaceAll('\0', '');
 
   // Decode encoded percent sign to catch double-encoded traversal markers.
-  normalized = normalized.replaceAll(/%25/gi, '%');
+  normalized = normalized.replaceAll('%25', '%');
 
   // Convert encoded separators and backslashes into forward slashes.
   normalized = normalized.replaceAll(/%2f|%5c/gi, '/');
@@ -57,7 +57,7 @@ export function pathNormalize(path: string): string {
       continue;
     }
 
-    const comparable = cleaned.replaceAll(/%2e/gi, '.');
+    const comparable = cleaned.replaceAll('%2e', '.');
 
     if (comparable === '.' || comparable === '..') {
       continue;
