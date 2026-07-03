@@ -44,31 +44,33 @@ describe('clsx', () => {
   });
 
   it('should handle array arguments', () => {
-    expect(clsx([ 'foo' ])).toBe('foo');
-    expect(clsx([ 'foo', 'bar' ])).toBe('foo bar');
-    expect(clsx([ 'foo', [ 'bar' ] ])).toBe('foo bar');
-    expect(clsx([ 'foo', [ 'bar', 'baz' ] ])).toBe('foo bar baz');
+    expect(clsx(['foo'])).toBe('foo');
+    expect(clsx(['foo', 'bar'])).toBe('foo bar');
+    expect(clsx(['foo', ['bar']])).toBe('foo bar');
+    expect(clsx(['foo', ['bar', 'baz']])).toBe('foo bar baz');
   });
 
   it('should handle nested arrays', () => {
-    expect(clsx([ 'foo', [ 'bar', [ 'baz' ] ] ])).toBe('foo bar baz');
-    expect(clsx([ [ 'foo' ], 'bar' ])).toBe('foo bar');
-    expect(clsx([ [ [ 'foo' ] ], 'bar' ])).toBe('foo bar');
+    expect(clsx(['foo', ['bar', ['baz']]])).toBe('foo bar baz');
+    expect(clsx([['foo'], 'bar'])).toBe('foo bar');
+    expect(clsx([[['foo']], 'bar'])).toBe('foo bar');
   });
 
   it('should handle mixed arrays with objects', () => {
-    expect(clsx([ 'foo', { bar: true } ])).toBe('foo bar');
-    expect(clsx([ 'foo', { bar: false } ])).toBe('foo');
-    expect(clsx([ { foo: true }, 'bar' ])).toBe('foo bar');
-    expect(clsx([ { foo: true }, { bar: false }, 'baz' ])).toBe('foo baz');
+    expect(clsx(['foo', { bar: true }])).toBe('foo bar');
+    expect(clsx(['foo', { bar: false }])).toBe('foo');
+    expect(clsx([{ foo: true }, 'bar'])).toBe('foo bar');
+    expect(clsx([{ foo: true }, { bar: false }, 'baz'])).toBe('foo baz');
   });
 
   it('should handle complex mixed arguments', () => {
-    expect(clsx('foo', 'bar', { baz: true, qux: false }, [ 'hello', { world: true } ]))
-      .toBe('foo bar baz hello world');
+    expect(clsx('foo', 'bar', { baz: true, qux: false }, ['hello', { world: true }])).toBe(
+      'foo bar baz hello world',
+    );
 
-    expect(clsx('foo', null, undefined, '', 0, false, { bar: true }, [ 'baz', { qux: false } ]))
-      .toBe('foo bar baz');
+    expect(clsx('foo', null, undefined, '', 0, false, { bar: true }, ['baz', { qux: false }])).toBe(
+      'foo bar baz',
+    );
   });
 
   it('should handle empty arrays and empty objects', () => {
@@ -79,14 +81,15 @@ describe('clsx', () => {
   });
 
   it('should handle edge cases with falsy values in arrays', () => {
-    expect(clsx([ 'foo', null, undefined, false, 0, '' ])).toBe('foo');
-    expect(clsx([ null, 'foo', false, 'bar', undefined ])).toBe('foo bar');
+    expect(clsx(['foo', null, undefined, false, 0, ''])).toBe('foo');
+    expect(clsx([null, 'foo', false, 'bar', undefined])).toBe('foo bar');
   });
 
   it('should handle nested objects in arrays', () => {
-    expect(clsx([ { foo: true, bar: false }, { baz: true } ])).toBe('foo baz');
-    expect(clsx([ 'hello', { foo: true, bar: false }, { baz: true }, 'world' ]))
-      .toBe('hello foo baz world');
+    expect(clsx([{ foo: true, bar: false }, { baz: true }])).toBe('foo baz');
+    expect(clsx(['hello', { foo: true, bar: false }, { baz: true }, 'world'])).toBe(
+      'hello foo baz world',
+    );
   });
 
   it('should preserve original order of classes', () => {

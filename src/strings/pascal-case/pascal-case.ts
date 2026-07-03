@@ -19,7 +19,5 @@ import { normalizeCase } from '../normalize-case/normalize-case.js';
  */
 export function pascalCase(input: string): string {
   const normalized = normalizeCase(input);
-  return normalized
-    .replaceAll(/\b\w/g, (char) => char.toUpperCase())
-    .replaceAll(/\s+/g, '');
+  return normalized.replaceAll(/\b\w/g, (char) => char.toUpperCase()).replaceAll(/\s+/g, '');
 }

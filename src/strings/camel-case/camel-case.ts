@@ -19,6 +19,5 @@ import { normalizeCase } from '../normalize-case/normalize-case.js';
  */
 export function camelCase(input: string): string {
   const normalized = normalizeCase(input);
-  return normalized
-    .replaceAll(/\s+(\w)/g, (_, char) => char.toUpperCase());
+  return normalized.replaceAll(/\s+(\w)/g, (_, char) => char.toUpperCase());
 }

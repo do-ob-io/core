@@ -23,7 +23,7 @@ const decoder = new TextDecoder();
  * const text = deobfuscateString(hidden); // 'hello world'
  * ```
  */
-export function obfuscateString(text: string, keyByte: number = 0x5A): Uint8Array {
+export function obfuscateString(text: string, keyByte: number = 0x5a): Uint8Array {
   const bytes = encoder.encode(text);
   return obfuscate(bytes, keyByte);
 }
@@ -42,6 +42,6 @@ export function obfuscateString(text: string, keyByte: number = 0x5A): Uint8Arra
  * const text = deobfuscateString(hidden); // 'hello world'
  * ```
  */
-export function deobfuscateString(data: Uint8Array, keyByte: number = 0x5A): string {
+export function deobfuscateString(data: Uint8Array, keyByte: number = 0x5a): string {
   return decoder.decode(deobfuscate(data, keyByte));
 }

@@ -17,17 +17,14 @@ import { pathNormalize } from '../path-normalize/path-normalize.js';
  * pathHasFileExtension('/assets/readme', 'md') // false
  * ```
  */
-export function pathHasFileExtension(
-  path: string,
-  extension: string | string[],
-): boolean {
+export function pathHasFileExtension(path: string, extension: string | string[]): boolean {
   const normalized = pathNormalize(path);
 
   if (!normalized) {
     return false;
   }
 
-  const extensions = Array.isArray(extension) ? extension : [ extension ];
+  const extensions = Array.isArray(extension) ? extension : [extension];
   const normalizedExtensions = extensions
     .map((item) => item.trim().replace(/^\./, '').toLowerCase())
     .filter(Boolean);

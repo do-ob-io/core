@@ -249,7 +249,9 @@ describe('twMerge', () => {
     });
 
     it('should not conflict overflow-x with overflow-y', () => {
-      expect(twMerge('overflow-x-auto', 'overflow-y-hidden')).toBe('overflow-x-auto overflow-y-hidden');
+      expect(twMerge('overflow-x-auto', 'overflow-y-hidden')).toBe(
+        'overflow-x-auto overflow-y-hidden',
+      );
     });
   });
 
@@ -296,12 +298,16 @@ describe('twMerge', () => {
     });
 
     it('should not conflict across different states', () => {
-      expect(twMerge('hover:bg-red-500', 'focus:bg-blue-500')).toBe('hover:bg-red-500 focus:bg-blue-500');
+      expect(twMerge('hover:bg-red-500', 'focus:bg-blue-500')).toBe(
+        'hover:bg-red-500 focus:bg-blue-500',
+      );
     });
 
     it('should handle combined responsive and state variants', () => {
       expect(twMerge('sm:hover:bg-red-500', 'sm:hover:bg-blue-500')).toBe('sm:hover:bg-blue-500');
-      expect(twMerge('sm:hover:bg-red-500', 'md:hover:bg-blue-500')).toBe('sm:hover:bg-red-500 md:hover:bg-blue-500');
+      expect(twMerge('sm:hover:bg-red-500', 'md:hover:bg-blue-500')).toBe(
+        'sm:hover:bg-red-500 md:hover:bg-blue-500',
+      );
     });
   });
 
@@ -331,15 +337,14 @@ describe('twMerge', () => {
     });
 
     it('should handle chained merges', () => {
-      const result = twMerge(
-        twMerge('p-4', 'p-2'),
-        twMerge('m-4', 'm-2'),
-      );
+      const result = twMerge(twMerge('p-4', 'p-2'), twMerge('m-4', 'm-2'));
       expect(result).toBe('p-2 m-2');
     });
 
     it('should preserve order of non-conflicting classes', () => {
-      expect(twMerge('flex items-center justify-between')).toBe('flex items-center justify-between');
+      expect(twMerge('flex items-center justify-between')).toBe(
+        'flex items-center justify-between',
+      );
     });
 
     it('should handle classes passed as a single string', () => {
@@ -349,7 +354,8 @@ describe('twMerge', () => {
 
     it('should handle common component library pattern', () => {
       // Base button styles
-      const base = 'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors';
+      const base =
+        'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors';
       // Variant styles
       const variant = 'bg-primary text-primary-foreground hover:bg-primary/90';
       // Size styles
@@ -378,7 +384,9 @@ describe('twMerge', () => {
     });
 
     it('should handle arbitrary properties', () => {
-      expect(twMerge('mask-type-luminance', 'mask-type-alpha')).toBe('mask-type-luminance mask-type-alpha');
+      expect(twMerge('mask-type-luminance', 'mask-type-alpha')).toBe(
+        'mask-type-luminance mask-type-alpha',
+      );
     });
   });
 

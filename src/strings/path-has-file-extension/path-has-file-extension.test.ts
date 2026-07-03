@@ -8,7 +8,7 @@ describe('pathHasFileExtension', () => {
   });
 
   it('accepts extension arrays with and without dots', () => {
-    expect(pathHasFileExtension('/videos/intro.webm', [ '.mp4', 'webm' ])).toBe(true);
+    expect(pathHasFileExtension('/videos/intro.webm', ['.mp4', 'webm'])).toBe(true);
   });
 
   it('returns false when there is no extension', () => {

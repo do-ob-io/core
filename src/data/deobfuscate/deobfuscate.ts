@@ -18,23 +18,18 @@
  * // restored is structurally equal to bytes
  * ```
  */
-export function deobfuscate(
-  data: Uint8Array,
-  keyByte: number = 0x5A,
-): Uint8Array {
+export function deobfuscate(data: Uint8Array, keyByte: number = 0x5a): Uint8Array {
   const saltLength = 16;
 
   if (data.length < saltLength) {
-    throw new RangeError(
-      `Obfuscated data must be at least ${saltLength} bytes long`,
-    );
+    throw new RangeError(`Obfuscated data must be at least ${saltLength} bytes long`);
   }
 
   const salt = data.subarray(0, saltLength);
   const payload = data.subarray(saltLength);
   const out = new Uint8Array(payload.length);
 
-  for (const [ i, element ] of payload.entries()) {
+  for (const [i, element] of payload.entries()) {
     out[i] = element ^ keyByte ^ salt[i & 15];
   }
 

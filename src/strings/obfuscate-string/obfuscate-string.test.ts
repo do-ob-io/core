@@ -26,7 +26,7 @@ describe('obfuscateString / deobfuscateString', () => {
 
   it('should round-trip using a custom key byte', () => {
     const text = 'custom key';
-    expect(deobfuscateString(obfuscateString(text, 0xA5), 0xA5)).toBe(text);
+    expect(deobfuscateString(obfuscateString(text, 0xa5), 0xa5)).toBe(text);
   });
 
   it('should produce a wrong result when the wrong key is used', () => {

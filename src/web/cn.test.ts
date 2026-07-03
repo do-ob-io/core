@@ -35,7 +35,9 @@ describe('cn', () => {
     it('should handle mixed conditionals', () => {
       const isActive = true;
       const isDisabled = false;
-      expect(cn('btn', isActive && 'btn-active', isDisabled && 'btn-disabled')).toBe('btn btn-active');
+      expect(cn('btn', isActive && 'btn-active', isDisabled && 'btn-disabled')).toBe(
+        'btn btn-active',
+      );
     });
   });
 
@@ -59,20 +61,20 @@ describe('cn', () => {
 
   describe('clsx features - array syntax', () => {
     it('should handle array of strings', () => {
-      expect(cn([ 'foo', 'bar' ])).toBe('foo bar');
+      expect(cn(['foo', 'bar'])).toBe('foo bar');
     });
 
     it('should handle nested arrays', () => {
-      expect(cn([ 'foo', [ 'bar', 'baz' ] ])).toBe('foo bar baz');
+      expect(cn(['foo', ['bar', 'baz']])).toBe('foo bar baz');
     });
 
     it('should handle array with objects', () => {
-      expect(cn([ 'foo', { bar: true } ])).toBe('foo bar');
+      expect(cn(['foo', { bar: true }])).toBe('foo bar');
     });
 
     it('should handle array with conditionals', () => {
       const showBar = false;
-      expect(cn([ 'foo', showBar && 'bar', 'baz' ])).toBe('foo baz');
+      expect(cn(['foo', showBar && 'bar', 'baz'])).toBe('foo baz');
     });
   });
 
@@ -131,7 +133,7 @@ describe('cn', () => {
     });
 
     it('should merge array syntax with conflict resolution', () => {
-      expect(cn([ 'px-4', 'py-2' ], 'px-6')).toBe('py-2 px-6');
+      expect(cn(['px-4', 'py-2'], 'px-6')).toBe('py-2 px-6');
     });
 
     it('should handle complex component pattern', () => {
@@ -153,7 +155,8 @@ describe('cn', () => {
           hover:bg-blue-600
         `,
         isDisabled && 'cursor-not-allowed opacity-50',
-        isDisabled && `
+        isDisabled &&
+          `
           bg-gray-400
           hover:bg-gray-400
         `,
@@ -171,9 +174,13 @@ describe('cn', () => {
 
     it('should handle state variants with conditionals', () => {
       const shouldOverride = true;
-      const result = cn('hover:bg-red-500', shouldOverride && `
+      const result = cn(
+        'hover:bg-red-500',
+        shouldOverride &&
+          `
         hover:bg-blue-500
-      `);
+      `,
+      );
       expect(result).toBe('hover:bg-blue-500');
     });
   });
@@ -209,7 +216,8 @@ describe('cn', () => {
           placeholder:text-muted-foreground
         `,
         'focus-visible:ring-2 focus-visible:outline-none',
-        hasError && `
+        hasError &&
+          `
           border-red-500
           focus-visible:ring-red-500
         `,
@@ -220,10 +228,7 @@ describe('cn', () => {
 
     it('should work with card component pattern', () => {
       const className = 'rounded-xl shadow-lg';
-      const result = cn(
-        'rounded-lg border bg-card text-card-foreground shadow-sm',
-        className,
-      );
+      const result = cn('rounded-lg border bg-card text-card-foreground shadow-sm', className);
       expect(result).toContain('shadow-lg');
       expect(result).toContain('rounded-xl');
       expect(result).not.toContain('shadow-sm');
@@ -233,7 +238,7 @@ describe('cn', () => {
 
   describe('edge cases', () => {
     it('should handle numbers in arrays', () => {
-      expect(cn([ 'foo', 123 ])).toBe('foo 123');
+      expect(cn(['foo', 123])).toBe('foo 123');
     });
 
     it('should handle empty strings', () => {
@@ -241,7 +246,7 @@ describe('cn', () => {
     });
 
     it('should handle deeply nested arrays', () => {
-      expect(cn([ [ [ 'foo' ] ] ], [ [ 'bar' ] ])).toBe('foo bar');
+      expect(cn([[['foo']]], [['bar']])).toBe('foo bar');
     });
 
     it('should handle mixed complex inputs', () => {
@@ -249,7 +254,7 @@ describe('cn', () => {
       const showConditionalTrue = true;
       const result = cn(
         'base',
-        [ 'array-class', { 'object-class': true } ],
+        ['array-class', { 'object-class': true }],
         showConditionalFalse && 'conditional-false',
         showConditionalTrue && 'conditional-true',
         null,

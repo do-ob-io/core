@@ -18,7 +18,7 @@
  */
 export function breakLines(str: string, length: number): string[] {
   if (!str || length <= 0) {
-    return [ ];
+    return [];
   }
 
   const words = str.split(/\s+/);

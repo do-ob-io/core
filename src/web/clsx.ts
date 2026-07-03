@@ -63,7 +63,7 @@ export function clsx(...inputs: ClassValue[]): string {
         }
       } else {
         // Process object keys where values are truthy
-        for (const [ key, value ] of Object.entries(input)) {
+        for (const [key, value] of Object.entries(input)) {
           if (value) {
             classes.push(key);
           }

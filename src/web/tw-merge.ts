@@ -714,9 +714,7 @@ function getConflictGroup(className: string): string | null {
     : className;
 
   // Handle negative values (e.g., "-m-4" -> "m")
-  const normalizedClass = baseClass.startsWith('-')
-    ? baseClass.slice(1)
-    : baseClass;
+  const normalizedClass = baseClass.startsWith('-') ? baseClass.slice(1) : baseClass;
 
   // Check standalone classes first (exact match)
   if (STANDALONE_CLASSES[normalizedClass]) {
@@ -727,12 +725,13 @@ function getConflictGroup(className: string): string | null {
     let longestPrefix = '';
 
     for (const prefix of Object.keys(CONFLICT_GROUPS)) {
-      if ((
-        normalizedClass === prefix ||
-        (normalizedClass.startsWith(prefix) &&
-          (normalizedClass[prefix.length] === '-' ||
-            normalizedClass.length === prefix.length))
-      ) && prefix.length > longestPrefix.length) {
+      if (
+        (normalizedClass === prefix ||
+          (normalizedClass.startsWith(prefix) &&
+            (normalizedClass[prefix.length] === '-' ||
+              normalizedClass.length === prefix.length))) &&
+        prefix.length > longestPrefix.length
+      ) {
         longestPrefix = prefix;
       }
     }
@@ -743,7 +742,7 @@ function getConflictGroup(className: string): string | null {
       const value = normalizedClass.slice(Math.max(0, prefix.length + 1));
 
       // Check if this is a color value (contains color name or hex-like pattern)
-      group = isColorValue(prefix, value) ? `${prefix}-color` : CONFLICT_GROUPS[prefix] ?? null;
+      group = isColorValue(prefix, value) ? `${prefix}-color` : (CONFLICT_GROUPS[prefix] ?? null);
     }
   }
 
@@ -758,7 +757,7 @@ function getConflictGroup(className: string): string | null {
   // Store in cache with size limit management
   if (conflictCache.size >= MAX_CACHE_SIZE) {
     // Clear oldest entries (simple strategy: clear half the cache)
-    const entries = [ ...conflictCache.keys() ];
+    const entries = [...conflictCache.keys()];
     for (let i = 0; i < MAX_CACHE_SIZE / 2; i++) {
       conflictCache.delete(entries[i]!);
     }

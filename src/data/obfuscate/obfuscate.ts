@@ -21,16 +21,13 @@
  * const restored = deobfuscate(hidden);
  * ```
  */
-export function obfuscate(
-  data: Uint8Array,
-  keyByte: number = 0x5A,
-): Uint8Array {
+export function obfuscate(data: Uint8Array, keyByte: number = 0x5a): Uint8Array {
   const salt = crypto.getRandomValues(new Uint8Array(16));
   const out = new Uint8Array(salt.length + data.length);
 
   out.set(salt, 0);
 
-  for (const [ i, element ] of data.entries()) {
+  for (const [i, element] of data.entries()) {
     out[salt.length + i] = element ^ keyByte ^ salt[i & 15];
   }
 

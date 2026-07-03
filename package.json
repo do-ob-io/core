@@ -2,6 +2,9 @@
   "name": "@do-ob/core",
   "version": "2.0.0-alpha.0",
   "description": "Core utilities for do-ob packages and applications.",
+  "keywords": [],
+  "license": "MIT",
+  "author": "Eric Crowell",
   "type": "module",
   "exports": {
     ".": "./dist/index.mjs",
@@ -14,14 +17,11 @@
     "build": "tsdown --config ./tsdown.config.ts",
     "test": "vitest run"
   },
-  "keywords": [],
-  "author": "Eric Crowell",
-  "license": "MIT",
-  "packageManager": "pnpm@10.26.1",
+  "dependencies": {
+    "tailwind-merge": "^3.4.0"
+  },
   "devDependencies": {
     "tsdown": "catalog:vite"
   },
-  "dependencies": {
-    "tailwind-merge": "^3.4.0"
-  }
+  "packageManager": "pnpm@10.26.1"
 }

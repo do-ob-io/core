@@ -59,11 +59,11 @@ describe('cva', () => {
     });
 
     it('should apply multiple variant classes', () => {
-      expect(buttonVariants({ variant: 'primary', size: 'sm' }))
-        .toBe('btn bg-blue-500 px-2 py-1');
+      expect(buttonVariants({ variant: 'primary', size: 'sm' })).toBe('btn bg-blue-500 px-2 py-1');
 
-      expect(buttonVariants({ variant: 'secondary', size: 'lg' }))
-        .toBe('btn bg-gray-500 px-4 py-2');
+      expect(buttonVariants({ variant: 'secondary', size: 'lg' })).toBe(
+        'btn bg-gray-500 px-4 py-2',
+      );
     });
 
     it('should apply partial variant classes', () => {
@@ -95,16 +95,15 @@ describe('cva', () => {
     });
 
     it('should override default variants with provided props', () => {
-      expect(buttonVariants({ variant: 'secondary' }))
-        .toBe('btn bg-gray-500 px-2 py-1');
+      expect(buttonVariants({ variant: 'secondary' })).toBe('btn bg-gray-500 px-2 py-1');
 
-      expect(buttonVariants({ size: 'lg' }))
-        .toBe('btn bg-blue-500 px-4 py-2');
+      expect(buttonVariants({ size: 'lg' })).toBe('btn bg-blue-500 px-4 py-2');
     });
 
     it('should override all defaults with provided props', () => {
-      expect(buttonVariants({ variant: 'secondary', size: 'lg' }))
-        .toBe('btn bg-gray-500 px-4 py-2');
+      expect(buttonVariants({ variant: 'secondary', size: 'lg' })).toBe(
+        'btn bg-gray-500 px-4 py-2',
+      );
     });
   });
 
@@ -121,28 +120,31 @@ describe('cva', () => {
     });
 
     it('should append custom className', () => {
-      expect(buttonVariants({ className: 'custom-class' }))
-        .toBe('btn bg-blue-500 custom-class');
+      expect(buttonVariants({ className: 'custom-class' })).toBe('btn bg-blue-500 custom-class');
     });
 
     it('should handle complex className values', () => {
-      expect(buttonVariants({ className: 'custom multiple classes' }))
-        .toBe('btn bg-blue-500 custom multiple classes');
+      expect(buttonVariants({ className: 'custom multiple classes' })).toBe(
+        'btn bg-blue-500 custom multiple classes',
+      );
     });
 
     it('should handle className with variant override', () => {
-      expect(buttonVariants({ variant: 'primary', className: 'custom' }))
-        .toBe('btn bg-blue-500 custom');
+      expect(buttonVariants({ variant: 'primary', className: 'custom' })).toBe(
+        'btn bg-blue-500 custom',
+      );
     });
 
     it('should handle className as array', () => {
-      expect(buttonVariants({ className: [ 'custom', 'array' ] }))
-        .toBe('btn bg-blue-500 custom array');
+      expect(buttonVariants({ className: ['custom', 'array'] })).toBe(
+        'btn bg-blue-500 custom array',
+      );
     });
 
     it('should handle className as object', () => {
-      expect(buttonVariants({ className: { custom: true, hidden: false } }))
-        .toBe('btn bg-blue-500 custom');
+      expect(buttonVariants({ className: { custom: true, hidden: false } })).toBe(
+        'btn bg-blue-500 custom',
+      );
     });
   });
 
@@ -150,13 +152,13 @@ describe('cva', () => {
     const alertVariants = cva('alert rounded-sm p-4', {
       variants: {
         variant: {
-          info: [ 'bg-blue-100', 'text-blue-800' ],
+          info: ['bg-blue-100', 'text-blue-800'],
           success: { 'bg-green-100': true, 'text-green-800': true },
           warning: 'bg-yellow-100 text-yellow-800',
         },
         size: {
           sm: 'px-3 py-2 text-sm',
-          md: [ 'text-base', 'px-4', 'py-3' ],
+          md: ['text-base', 'px-4', 'py-3'],
           lg: { 'text-lg': true, 'px-6': true, 'py-4': true },
         },
       },
@@ -167,23 +169,27 @@ describe('cva', () => {
     });
 
     it('should handle array ClassValues', () => {
-      expect(alertVariants({ variant: 'info' }))
-        .toBe('alert rounded-sm p-4 bg-blue-100 text-blue-800 text-base px-4 py-3');
+      expect(alertVariants({ variant: 'info' })).toBe(
+        'alert rounded-sm p-4 bg-blue-100 text-blue-800 text-base px-4 py-3',
+      );
     });
 
     it('should handle object ClassValues', () => {
-      expect(alertVariants({ variant: 'success' }))
-        .toBe('alert rounded-sm p-4 bg-green-100 text-green-800 text-base px-4 py-3');
+      expect(alertVariants({ variant: 'success' })).toBe(
+        'alert rounded-sm p-4 bg-green-100 text-green-800 text-base px-4 py-3',
+      );
     });
 
     it('should handle string ClassValues', () => {
-      expect(alertVariants({ variant: 'warning' }))
-        .toBe('alert rounded-sm p-4 bg-yellow-100 text-yellow-800 text-base px-4 py-3');
+      expect(alertVariants({ variant: 'warning' })).toBe(
+        'alert rounded-sm p-4 bg-yellow-100 text-yellow-800 text-base px-4 py-3',
+      );
     });
 
     it('should handle mixed ClassValue types', () => {
-      expect(alertVariants({ variant: 'success', size: 'lg' }))
-        .toBe('alert rounded-sm p-4 bg-green-100 text-green-800 text-lg px-6 py-4');
+      expect(alertVariants({ variant: 'success', size: 'lg' })).toBe(
+        'alert rounded-sm p-4 bg-green-100 text-green-800 text-lg px-6 py-4',
+      );
     });
   });
 
@@ -196,16 +202,19 @@ describe('cva', () => {
     });
 
     it('should handle base class as array', () => {
-      const variants = cva([ 'btn', 'rounded-sm' ], {
+      const variants = cva(['btn', 'rounded-sm'], {
         variants: { size: { sm: 'px-2' } },
       });
       expect(variants({ size: 'sm' })).toBe('btn rounded-sm px-2');
     });
 
     it('should handle base class as object', () => {
-      const variants = cva({ btn: true, disabled: false }, {
-        variants: { size: { sm: 'px-2' } },
-      });
+      const variants = cva(
+        { btn: true, disabled: false },
+        {
+          variants: { size: { sm: 'px-2' } },
+        },
+      );
       expect(variants({ size: 'sm' })).toBe('btn px-2');
     });
 
@@ -235,54 +244,57 @@ describe('cva', () => {
   });
 
   describe('real-world usage patterns', () => {
-    const cardVariants = cva(
-      'rounded-lg border border-gray-200 shadow-sm',
-      {
-        variants: {
-          variant: {
-            default: 'bg-white',
-            destructive: 'border-red-200 bg-red-50',
-            outline: 'bg-transparent',
-          },
-          size: {
-            default: 'p-4',
-            sm: 'p-2 text-sm',
-            lg: 'p-6 text-lg',
-          },
-          shadow: {
-            none: 'shadow-none',
-            sm: 'shadow-sm',
-            md: 'shadow-md',
-            lg: 'shadow-lg',
-          },
+    const cardVariants = cva('rounded-lg border border-gray-200 shadow-sm', {
+      variants: {
+        variant: {
+          default: 'bg-white',
+          destructive: 'border-red-200 bg-red-50',
+          outline: 'bg-transparent',
         },
-        defaultVariants: {
-          variant: 'default',
-          size: 'default',
-          shadow: 'sm',
+        size: {
+          default: 'p-4',
+          sm: 'p-2 text-sm',
+          lg: 'p-6 text-lg',
+        },
+        shadow: {
+          none: 'shadow-none',
+          sm: 'shadow-sm',
+          md: 'shadow-md',
+          lg: 'shadow-lg',
         },
       },
-    );
+      defaultVariants: {
+        variant: 'default',
+        size: 'default',
+        shadow: 'sm',
+      },
+    });
 
     it('should work with realistic component patterns', () => {
-      expect(cardVariants())
-        .toBe('rounded-lg border border-gray-200 shadow-sm bg-white p-4 shadow-sm');
+      expect(cardVariants()).toBe(
+        'rounded-lg border border-gray-200 shadow-sm bg-white p-4 shadow-sm',
+      );
 
-      expect(cardVariants({
-        variant: 'destructive',
-        size: 'lg',
-        shadow: 'lg',
-        className: 'my-4',
-      }))
-        .toBe('rounded-lg border border-gray-200 shadow-sm border-red-200 bg-red-50 p-6 text-lg shadow-lg my-4');
+      expect(
+        cardVariants({
+          variant: 'destructive',
+          size: 'lg',
+          shadow: 'lg',
+          className: 'my-4',
+        }),
+      ).toBe(
+        'rounded-lg border border-gray-200 shadow-sm border-red-200 bg-red-50 p-6 text-lg shadow-lg my-4',
+      );
     });
 
     it('should handle partial overrides', () => {
-      expect(cardVariants({ variant: 'outline' }))
-        .toBe('rounded-lg border border-gray-200 shadow-sm bg-transparent p-4 shadow-sm');
+      expect(cardVariants({ variant: 'outline' })).toBe(
+        'rounded-lg border border-gray-200 shadow-sm bg-transparent p-4 shadow-sm',
+      );
 
-      expect(cardVariants({ size: 'sm', shadow: 'none' }))
-        .toBe('rounded-lg border border-gray-200 shadow-sm bg-white p-2 text-sm shadow-none');
+      expect(cardVariants({ size: 'sm', shadow: 'none' })).toBe(
+        'rounded-lg border border-gray-200 shadow-sm bg-white p-2 text-sm shadow-none',
+      );
     });
   });
 });

@@ -52,16 +52,18 @@ export interface VariantsConfig<T = Record<string, Record<string, ClassValue>>> 
 export type VariantProps<TFunction extends (...args: any) => any> =
   TFunction extends CVAFunction<infer TVariants>
     ? {
-      [K in keyof TVariants]?: keyof TVariants[K];
-    } & { className?: ClassValue }
+        [K in keyof TVariants]?: keyof TVariants[K];
+      } & { className?: ClassValue }
     : { className?: ClassValue };
 
 /**
  * Type for a CVA function with specific variant configuration.
  */
-export type CVAFunction<TVariants extends Record<string, Record<string, ClassValue>>> = (props?: {
-  [K in keyof TVariants]?: keyof TVariants[K];
-} & { className?: ClassValue }) => string;
+export type CVAFunction<TVariants extends Record<string, Record<string, ClassValue>>> = (
+  props?: {
+    [K in keyof TVariants]?: keyof TVariants[K];
+  } & { className?: ClassValue },
+) => string;
 
 /**
  * Creates a class variance authority function for generating component class names
@@ -108,9 +110,11 @@ export function cva<TVariants extends Record<string, Record<string, ClassValue>>
   base: ClassValue,
   config?: VariantsConfig<TVariants>,
 ): CVAFunction<TVariants> {
-  return ((props?: {
-    [K in keyof TVariants]?: keyof TVariants[K];
-  } & { className?: ClassValue }) => {
+  return ((
+    props?: {
+      [K in keyof TVariants]?: keyof TVariants[K];
+    } & { className?: ClassValue },
+  ) => {
     if (!config) {
       return clsx(base, props?.className);
     }
@@ -122,10 +126,10 @@ export function cva<TVariants extends Record<string, Record<string, ClassValue>>
     }
 
     // Collect variant classes
-    const variantClasses: ClassValue[] = [ base ];
+    const variantClasses: ClassValue[] = [base];
 
     // Apply variant classes based on props and defaults
-    for (const [ variantName, variantOptions ] of Object.entries(variants)) {
+    for (const [variantName, variantOptions] of Object.entries(variants)) {
       const variantValue =
         props?.[variantName as keyof typeof props] ??
         defaultVariants?.[variantName as keyof typeof defaultVariants];
